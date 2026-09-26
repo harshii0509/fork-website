@@ -1,11 +1,12 @@
 /*
- * Measurements come from the Figma frame (1512 wide). Text sits in a 929px column that starts at
- * x=291, so a doodle's `left` here is its Figma x minus 291, and vertical gaps are the distances
- * between Figma y positions.
+ * Measurements come from the Figma frame (1512 wide). Text sits in a 640px column, centred, so it
+ * starts at x=436; a doodle's `left` here is its x minus 436. The screenshot, snowman, thanks and bio
+ * are placed from the centre instead, so they don't move with the column. Vertical gaps are the
+ * distances between Figma y positions.
  */
 .page {
   position: relative;
-  width: 929px;
+  width: 640px;
   margin: 0 auto;
   padding-bottom: 37px;
 }
@@ -23,8 +24,81 @@
 
 .noodle {
   position: absolute;
-  left: -126px;
+  left: -271px; /* page x 165, beside the screenshot */
   top: 132.5px;
+}
+
+/* The noodle flows out of the bowl, once: its path draws itself from the top (pathLength is 1). */
+.noodlePath {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: noodle-flow 2000ms var(--ease-in-out-cubic) 300ms forwards;
+}
+
+@keyframes noodle-flow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The bowl's two inks, in the Display P3 versions its SVG export carried (hex stays as fallback). */
+.ink {
+  fill: color(display-p3 0.8353 0.3373 0.4902);
+}
+
+.paper {
+  fill: color(display-p3 0.9216 0.8118 0.8431);
+}
+
+/* Steam off the noodles: each wisp rises a little and fades, staggered so one is always going. */
+.steam {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: steam-rise 2400ms var(--ease-in-out-quad) infinite;
+}
+
+.steam:nth-of-type(19) {
+  animation-delay: -800ms;
+}
+
+.steam:nth-of-type(20) {
+  animation-delay: -1600ms;
+}
+
+@keyframes steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  35% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* The hero rises in on load, one piece after another. Nothing waits on it. */
+.headline,
+.actions,
+.screenshot {
+  animation: rise 500ms var(--ease-out) both;
+}
+
+.actions {
+  animation-delay: 60ms;
+}
+
+.screenshot {
+  animation-delay: 120ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .bowl {
@@ -67,7 +141,7 @@
   letter-spacing: -0.3px;
   white-space: nowrap;
   transition:
-    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 160ms var(--ease-out),
     background-color 160ms ease;
 }
 
@@ -83,6 +157,37 @@
     -6px 15px 10px 0 rgba(88, 14, 35, 0.06),
     -3px 7px 7px 0 rgba(88, 14, 35, 0.1),
     -1px 2px 4px 0 rgba(88, 14, 35, 0.12);
+}
+
+/* "Download for Mac" and "Downloading…" share one cell; the old one slides up and out. */
+.labels {
+  --shift: 4px;
+  display: grid;
+}
+
+.label {
+  grid-area: 1 / 1;
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+
+.label + .label,
+.download[data-started] .label:first-child {
+  opacity: 0;
+}
+
+.label + .label {
+  transform: translateY(var(--shift));
+}
+
+.download[data-started] .label:first-child {
+  transform: translateY(calc(-1 * var(--shift)));
+}
+
+.download[data-started] .label + .label {
+  opacity: 1;
+  transform: none;
 }
 
 .github {
@@ -118,7 +223,457 @@
   display: block;
   width: 1011px;
   height: auto;
-  margin: 40px 0 0 -43.5px;
+  margin: 40px 0 0 calc(50% - 508px); /* 1011px wide, centred, as in the design */
+}
+
+/* ---- The Fork window (ForkApp.tsx) ---------------------------------------------
+ * A copy of the app, built at its real 1280 × 800 and scaled to fit. Sizes and colours come from
+ * designer-terminal/index.html (the Designer theme), so everything below is in app pixels.
+ */
+.mock {
+  aspect-ratio: 2784 / 1824; /* the old screenshot's box, shadow margin included */
+}
+
+/* Where the window sat inside the screenshot. */
+.mFrame {
+  position: absolute;
+  left: 3.987%;
+  top: 4.22%;
+  width: 91.92%;
+  aspect-ratio: 1280 / 800;
+  container-type: inline-size;
+}
+
+.mWin {
+  --m-bg: #141416;
+  --m-text: #ececf1;
+  --m-tree: #e6e6e6;
+  --m-accent: #7c6cff;
+  --m-line: color-mix(in srgb, var(--m-text) 12%, var(--m-bg));
+  --m-faint: color-mix(in srgb, var(--m-text) 30%, var(--m-bg));
+  --m-dim: color-mix(in srgb, var(--m-text) 60%, var(--m-bg));
+  --m-hover: color-mix(in srgb, var(--m-text) 8%, transparent);
+  --m-sel: color-mix(in srgb, var(--m-text) 10%, transparent);
+  --m-accent-soft: color-mix(in srgb, var(--m-accent) 14%, transparent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 800px;
+  display: grid;
+  grid-template: 44px 1fr / 232px 1fr;
+  overflow: hidden;
+  border-radius: 15px;
+  background: var(--m-bg);
+  color: var(--m-text);
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-inter), sans-serif;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 0 0 1px #000000b3, 0 24px 70px 6px #0000004d;
+  transform-origin: 0 0;
+  transform: scale(0.7259); /* fallback: the desktop size */
+  transform: scale(tan(atan2(100cqw, 1280px))); /* the frame's width ÷ 1280, as a plain number */
+}
+
+/* macOS's light rim around the window, over everything. */
+.mWin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px #ffffff2e;
+  pointer-events: none;
+}
+
+.mIc {
+  display: block;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.5;
+}
+
+.mIc * {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Sidebar: the frosted glass, as it looked in the screenshot. */
+.mSide {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #4a4948;
+  border-right: 1px solid var(--m-hover);
+}
+
+.mSideTop {
+  position: relative;
+  flex: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px 0 76px;
+}
+
+.mLights {
+  position: absolute;
+  left: 13.5px;
+  top: 14.5px;
+  display: flex;
+  gap: 9px;
+}
+
+.mLights > span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px #0000002e;
+}
+
+.mLights svg {
+  display: block;
+  fill: none;
+  stroke: #0000008c;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.mClose {
+  background: #ec6765;
+}
+
+.mMin {
+  background: #f2ca44;
+}
+
+.mMax {
+  background: #65c466;
+}
+
+.mIbtn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: var(--m-dim);
+}
+
+.mOff {
+  opacity: 0.35;
+}
+
+.mSideScroll {
+  flex: 1;
+  overflow: hidden;
+  padding: 4px 8px 12px;
+}
+
+.mBrand {
+  margin: 2px 8px 12px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.mSrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--m-tree);
+}
+
+.mKbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font: 500 11px/1 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+  background: var(--m-hover);
+  color: var(--m-dim);
+}
+
+.mDiv {
+  height: 1px;
+  margin: 8px 8px 14px;
+  background: var(--m-hover);
+}
+
+.mChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.mChip {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: var(--m-hover);
+  border: 1px solid var(--m-hover);
+  transition: border-color 150ms, background 150ms;
+}
+
+.mSide h3 {
+  margin: 4px 8px 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--m-dim);
+}
+
+.mSec {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 4px 6px 8px;
+}
+
+.mSide .mSec h3 {
+  margin: 0;
+}
+
+.mAdd {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--m-dim);
+}
+
+.mTab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.mTab.mOn {
+  background: var(--m-sel);
+}
+
+.mTblob {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.mBlob {
+  display: block;
+  margin: -3px; /* a 22px blob in a 16px slot, as in the app */
+}
+
+.mTname {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mTclose {
+  display: grid;
+  padding: 2px;
+  border-radius: 4px;
+  color: var(--m-dim);
+  opacity: 0;
+}
+
+.mTclose .mIc,
+.mTwisty .mIc {
+  width: 12px;
+  height: 12px;
+}
+
+.mSide h3.mFolder {
+  margin-top: 20px;
+}
+
+.mEntry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 5px calc(2px + var(--depth, 0) * 14px);
+  border-radius: 6px;
+  white-space: nowrap;
+  color: var(--m-tree);
+}
+
+.mNoise {
+  opacity: 0.45;
+}
+
+.mTwisty {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  color: var(--m-dim);
+}
+
+.mOpen svg {
+  transform: rotate(90deg);
+}
+
+/* Top bar: where am I. */
+.mTop {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 16px;
+  background: var(--m-bg);
+  border-bottom: 1px solid var(--m-line);
+}
+
+.mCrumb {
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--m-dim);
+  white-space: nowrap;
+}
+
+.mCrumb.mHere {
+  color: var(--m-text);
+  font-weight: 600;
+}
+
+.mSep {
+  color: var(--m-faint);
+}
+
+.mSpacer {
+  flex: 1;
+}
+
+/* The terminal: type anywhere, nothing runs. */
+.mTerm {
+  position: relative;
+  grid-area: 2 / 2;
+  min-height: 0;
+  background: var(--m-bg);
+  cursor: text;
+}
+
+.mScreen {
+  position: absolute;
+  inset: 10px 4px 0 14px;
+  overflow: hidden;
+  font: 13px/18.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* xterm's row height at 13px × 1.25 */
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.mLine {
+  min-height: 18.5px;
+}
+
+.mText {
+  color: #ececf1;
+}
+
+.mDim {
+  color: #8e8e99;
+}
+
+.mAccent {
+  color: #9d91ff;
+}
+
+/* xterm's cursor: an outline while the page has focus elsewhere, a blinking block while typing. */
+.mCursor {
+  color: #ececf1;
+  box-shadow: inset 0 0 0 1px #ececf1;
+}
+
+.mCursor.mFocused {
+  background: #ececf1;
+  color: var(--m-bg);
+  box-shadow: none;
+  animation: m-blink 1s steps(1) infinite;
+}
+
+@keyframes m-blink {
+  50% {
+    background: transparent;
+    color: #ececf1;
+  }
+}
+
+/* Takes the keys (and brings up a phone's keyboard); what it holds is drawn in .mScreen. 16px keeps
+   iOS from zooming in on focus. */
+.mInput {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mLights:hover svg {
+    opacity: 1;
+  }
+
+  .mIbtn:not(.mOff):hover {
+    background: var(--m-line);
+    color: var(--m-text);
+  }
+
+  .mSrow:hover,
+  .mTab:hover,
+  .mEntry:hover {
+    background: var(--m-hover);
+  }
+
+  .mChip:hover {
+    border-color: var(--m-accent);
+    background: var(--m-accent-soft);
+  }
+
+  .mAdd:hover {
+    background: var(--m-hover);
+    color: var(--m-text);
+  }
+
+  .mTab:hover .mTclose {
+    opacity: 1;
+  }
+
+  .mTclose:hover {
+    color: var(--m-text);
+  }
+
+  .mTwisty:not(:empty):hover {
+    background: color-mix(in srgb, var(--m-text) 14%, transparent);
+    color: var(--m-text);
+  }
+
+  .mCrumb:hover {
+    background: var(--m-line);
+    color: var(--m-text);
+  }
 }
 
 /* ---- Why I made this -------------------------------------------------------- */
@@ -144,16 +699,17 @@
   top: -65px;
 }
 
+/* Body text at 15px (the design had 24px). */
 .story p,
 .bio {
-  font-size: 24px;
+  font-size: 15px;
   font-weight: 450;
   line-height: 1.5;
-  letter-spacing: -0.48px;
+  letter-spacing: -0.3px;
 }
 
 .story p {
-  margin-top: 36px; /* one blank line between paragraphs */
+  margin-top: 22.5px; /* one blank line between paragraphs */
 }
 
 .story .why + p {
@@ -165,18 +721,84 @@
   margin-top: 126px;
 }
 
-.snowman {
+/* The snowman is a button: poke it (see Snowman.tsx). */
+.snowmanButton {
+  position: relative;
   display: block;
-  margin-left: 383px;
+  margin-left: calc(50% - 82px);
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.snowmanButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.snowmanArt {
+  display: block;
+  overflow: visible; /* hops and raised arms go past the drawing's box */
+  stroke: #d5567d;
+  stroke: color(display-p3 0.8353 0.3373 0.4902);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Every moving part pivots on a point given in drawing units (the style's transform-origin). */
+.part {
+  transform-box: view-box;
+}
+
+.paperFill {
+  fill: var(--bg);
+}
+
+.inkFill {
+  fill: #d5567d;
+  fill: color(display-p3 0.8353 0.3373 0.4902);
+  stroke: none;
+}
+
+.lean {
+  transition: transform 200ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .snowmanButton:hover .lean {
+    transform: rotate(-3deg);
+  }
+}
+
+.snowfield {
+  position: absolute;
+  inset: -60px -90px;
+  pointer-events: none;
+}
+
+.flake {
+  position: absolute;
+  top: 0;
+  overflow: visible;
+  fill: none;
+  stroke: #d5567d;
+  stroke: color(display-p3 0.8353 0.3373 0.4902);
+  stroke-width: 1.5;
+  stroke-linecap: round;
 }
 
 .thanksNote {
-  margin-left: 330px;
+  margin-left: calc(50% - 135px);
 }
 
 .bio {
   width: 591px;
-  margin: 19.5px 0 0 152px;
+  margin: 19.5px 0 0 calc(50% - 313px);
   text-align: center;
 }
 
@@ -205,7 +827,7 @@
 .socials a {
   display: block;
   border-radius: 4px;
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 160ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -219,6 +841,45 @@
   .github,
   .socials a {
     transition: none;
+  }
+
+  /* Gentler, not gone: fades without movement. */
+  .labels {
+    --shift: 0px;
+  }
+
+  /* The noodle is simply there, and the steam holds still, as drawn. */
+  .noodlePath {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .steam {
+    animation: none;
+  }
+
+  .lean {
+    transition: none;
+  }
+
+  .snowmanButton:hover .lean {
+    transform: none;
+  }
+
+  .headline,
+  .actions,
+  .screenshot {
+    animation: fade 200ms ease both;
+  }
+
+  .mCursor.mFocused {
+    animation: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
   }
 }
 
@@ -272,22 +933,12 @@
     height: auto;
   }
 
-  .story p,
-  .bio {
-    font-size: 19px;
-    letter-spacing: -0.3px;
-  }
-
-  .story p {
-    margin-top: 28px;
-  }
-
   .thanks {
     margin-top: 88px;
     text-align: center;
   }
 
-  .snowman {
+  .snowmanButton {
     margin: 0 auto;
   }
 

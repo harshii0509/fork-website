@@ -1,4 +1,9 @@
 import Image from "next/image";
+import DownloadButton from "./DownloadButton";
+import ForkApp from "./ForkApp";
+import Noodle from "./Noodle";
+import NoodleBowl from "./NoodleBowl";
+import Snowman from "./Snowman";
 import styles from "./page.module.css";
 
 // Always the newest release: every build is named Fork.dmg, so GitHub's "latest" link never changes.
@@ -16,8 +21,8 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <Doodle src="/art/Fallingnoodle.svg" width={231} height={975} className={styles.noodle} />
-        <Doodle src="/art/NoodleBowl.svg" width={89} height={98} className={styles.bowl} />
+        <Noodle className={styles.noodle} />
+        <NoodleBowl className={styles.bowl} />
         <Doodle src="/art/Fork.svg" width={76} height={102} className={styles.fork} />
 
         <h1 className={styles.headline}>
@@ -26,25 +31,14 @@ export default function Home() {
         </h1>
 
         <div className={styles.actions}>
-          <a className={styles.download} href={DOWNLOAD}>
-            <Image src="/art/apple.svg" width={20} height={20} alt="" aria-hidden />
-            Download for Mac
-          </a>
-          <a className={styles.github} href={GITHUB} target="_blank" rel="noopener noreferrer">
+          <DownloadButton href={DOWNLOAD} />
+          <a className={styles.github} href={GITHUB} target="_blank" rel="noopener noreferrer" data-track="github_clicked">
             <Image src="/art/github.svg" width={20} height={20} alt="" aria-hidden />
             View on Github
           </a>
         </div>
 
-        <Image
-          className={styles.screenshot}
-          src="/app-screenshot.png"
-          width={2784}
-          height={1824}
-          sizes="(max-width: 1100px) 100vw, 1011px"
-          alt="Fork: a sidebar with the folder's files and open terminals, next to Claude working in the terminal"
-          preload
-        />
+        <ForkApp className={styles.screenshot} />
       </header>
 
       <main>
@@ -72,7 +66,7 @@ export default function Home() {
         </section>
 
         <section className={styles.thanks} aria-labelledby="thanks">
-          <Doodle src="/art/Snowman.svg" width={119} height={139} className={styles.snowman} />
+          <Snowman />
           <h2 id="thanks" className={`${styles.note} ${styles.thanksNote}`}>
             THANKS A TON!
           </h2>
@@ -87,10 +81,10 @@ export default function Home() {
         <Doodle src="/art/Wave.svg" width={134} height={48} className={styles.wave} />
         <p className={styles.signoff}>Built by Harshvardhan :), reach out to me here</p>
         <nav className={styles.socials} aria-label="Harshvardhan elsewhere">
-          <a href={X} target="_blank" rel="noopener noreferrer" aria-label="Harshvardhan on X (Twitter)">
+          <a href={X} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="x" aria-label="Harshvardhan on X (Twitter)">
             <Image src="/art/TwitterIcon.svg" width={28} height={24} alt="" />
           </a>
-          <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="Harshvardhan on LinkedIn">
+          <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="linkedin" aria-label="Harshvardhan on LinkedIn">
             <Image src="/art/LinkedInIcon.svg" width={24} height={24} alt="" />
           </a>
         </nav>
