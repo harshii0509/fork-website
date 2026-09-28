@@ -1,0 +1,349 @@
+// Everything that's gone into Fork, newest first: the app, this website, and the kitchen (work behind
+// the scenes). Add an entry with every change, big or small, in plain words: what changed and why.
+//
+// at:      when it landed, in India time. A full time comes from the commit; a date alone means there
+//          was no commit to read the time from.
+// version: the Fork release it shipped in. An app entry without one is "on the stove": built, not
+//          released yet. Add the version when `npm run release` ships it.
+
+export type Kind = "new" | "better" | "fixed" | "kitchen";
+export type Where = "app" | "website" | "kitchen";
+
+// What each kind says on its sticker.
+export const STICKER: Record<Kind, string> = { new: "Fresh", better: "Seasoned", fixed: "Patched", kitchen: "Kitchen" };
+
+export type Entry = {
+  at: string;
+  title: string;
+  what: string;
+  why: string;
+  kind: Kind;
+  where: Where;
+  version?: string;
+};
+
+// Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
+export const RELEASES: { version: string; at: string }[] = [
+  { version: "0.3.1", at: "2026-09-27T04:59+05:30" },
+  { version: "0.3.0", at: "2026-09-27T04:45+05:30" },
+  { version: "0.2.1", at: "2026-09-26T19:53+05:30" },
+  { version: "0.2.0", at: "2026-09-26T17:21+05:30" },
+  { version: "0.1.0", at: "2026-09-26T02:37+05:30" },
+];
+
+export const ENTRIES: Entry[] = [
+  // ---- 29 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-29T01:10+05:30",
+    title: "What's cooking: this page",
+    what: "A changelog for everything that goes into Fork, with the time it landed and why it was made. It's updated with every change, big or small. The newest one is pinned to the Fork window on the home page as a sticky note.",
+    why: "Fork changes a lot, often several times a day. Release notes say what changed, but not why. This keeps the whole story in one place for anyone curious, and for me.",
+    kind: "new",
+    where: "website",
+  },
+  {
+    at: "2026-09-29T00:50+05:30",
+    title: "“Claude is working” only while it's actually working",
+    what: "The bar at the bottom shows only while Claude is working on your prompt. It says “Claude is working.” and Stop sends Esc, the key Claude listens for. When Claude is waiting for you, the bar is gone and the tab's blob shows Ready. If Claude finishes in another tab, that tab says “Finished while you were away”.",
+    why: "Before this, the bar said “Something is running” the whole time Claude was open, even when it was just sitting there waiting for you. The cause was a small bug: the shell told Fork only the first letter of one-word commands, so plain `claude` was reported as “c”. Fixing it also means Claude reopens properly after a restart.",
+    kind: "fixed",
+    where: "app",
+  },
+
+  // ---- 28 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-28T23:05+05:30",
+    title: "Read a book while Claude works",
+    what: "Open a PDF or EPUB in the side panel (⌘P → Read, drag one in, or click it in the file list) and read next to your terminal. Books keep their own fonts and white pages. Read a page at a time or as one long scroll. Fork remembers your place in every book, and when Claude finishes a gentle note says so, with a link back to the terminal.",
+    why: "Waiting on a long prompt is dead time, and plenty of people would rather read a few pages than stare at a spinner. The panel already showed files and your running app, so a book fitted right in.",
+    kind: "new",
+    where: "app",
+  },
+
+  // ---- 27 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-27T12:48+05:30",
+    title: "A dashboard for the website",
+    what: "A PostHog dashboard, “Fork website — who visits”: visits per day and week, where people come from, countries, desktop vs phone, how many visits turn into a download, and who finds the snowman.",
+    why: "The app had a dashboard but the website didn't, so there was no way to see whether people actually reach the Download button. Its charts are kept as code, so it stays in sync.",
+    kind: "kitchen",
+    where: "kitchen",
+  },
+  {
+    at: "2026-09-27T04:59+05:30",
+    title: "Smarter matching, without a key inside the app",
+    what: "Smarter matching now goes through Fork's own server, so the app carries no secret key. It works exactly as before.",
+    why: "Anything inside an app can be dug out by someone determined. Keeping the key on the server is the safe way to ship it.",
+    kind: "better",
+    where: "app",
+    version: "0.3.1",
+  },
+  {
+    at: "2026-09-27T04:56+05:30",
+    title: "The website answers Fork's questions",
+    what: "fork-terminal.vercel.app/api/jev: the server that ⌘K's smarter matching talks to. It holds the TypeSafe key, accepts only Fork's two questions, and limits how often each person can ask.",
+    why: "It lets the app use TypeSafe without shipping the key. It's rate limited and fussy about what it accepts, so nobody can borrow it for anything else.",
+    kind: "kitchen",
+    where: "website",
+  },
+  {
+    at: "2026-09-27T04:44+05:30",
+    title: "⌘K: names that match come first",
+    what: "Typing “play snake” opens Snake, and exact names beat loose matches. Game cards also say what each game is.",
+    why: "Asking for something by name and getting something else first felt broken.",
+    kind: "better",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T04:43+05:30",
+    title: "Games open beside the terminal",
+    what: "Snake, Stack and Space Run open in a split next to your terminal (or their own tab if there's no room), in small square pixels. Esc goes back to the terminal, and the game pauses when Claude or a command finishes.",
+    why: "Games are for the wait, so they should sit next to the thing you're waiting on, not cover it up.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T04:37+05:30",
+    title: "Ask AI answers sooner",
+    what: "Fork gets Claude ready in the background while ⌘K is open, so answers arrive in about 5 seconds instead of 8 to 10. Nothing is sent until you press Ask AI.",
+    why: "Most of the wait was Claude starting up, not thinking. Starting it early removes that without sending anything you didn't ask for.",
+    kind: "better",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T04:26+05:30",
+    title: "⌘K answers in place",
+    what: "Type what you want and ⌘K shows the answer as a card: what it does, the command, and Run. Commands that need a name ask for it right in the card.",
+    why: "Before, ⌘K typed half a command into your terminal and left you to finish it. If you're new to terminals, that's exactly the scary part.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T04:03+05:30",
+    title: "⌘K understands plain words",
+    what: "“take me up one folder” or “save my work” finds the right command in under a second, without Claude. “What went wrong?” also recognises errors worded differently from the ones it knows. You can turn it off in Settings → Privacy.",
+    why: "People describe what they want in their own words, not in command names. Claude could handle that, but it's slow for something this small.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T03:45+05:30",
+    title: "“What went wrong?” knows 35 common errors",
+    what: "Missing tools, typos in folder names, a port already in use, Git asking who you are, merge conflicts and more are explained instantly, even offline, with a fix Fork types for you. For anything unusual, Ask AI takes a look.",
+    why: "Most errors people hit are the same few dozen. Answering those instantly and for free beats waiting on AI every time.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-27T03:33+05:30",
+    title: "The app dashboard keeps itself in sync",
+    what: "The dashboard's charts live in code. Checks fail if Fork sends an event no chart shows, and every release updates the dashboard.",
+    why: "Dashboards quietly go stale. This way a new feature can't ship without being counted.",
+    kind: "kitchen",
+    where: "kitchen",
+  },
+  {
+    at: "2026-09-27T03:28+05:30",
+    title: "A dashboard for the app",
+    what: "“Fork — how it's going”: 20 PostHog charts on new installs, the first run, and which features people use.",
+    why: "To learn where new people get stuck, from real use instead of guesses. It's all anonymous, and never your commands or files.",
+    kind: "kitchen",
+    where: "kitchen",
+  },
+
+  // ---- 26 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-26T21:10+05:30",
+    title: "Open things in their own apps",
+    what: "Settings → Links & files: turn off “Open links and files inside Fork”, and your app opens in your browser and files open in Preview, Figma or whatever your Mac uses for them.",
+    why: "Some people like everything in one window, others have their browser just so. Both are fine.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-26T20:57+05:30",
+    title: "Find, clickable links, and a much longer memory",
+    what: "⌘F finds text in a terminal. ⌘-click opens any web address. Each terminal keeps 10,000 lines instead of 1,000, and your Mac's graphics chip draws them, so long output scrolls smoothly.",
+    why: "Claude conversations get long. Scrolling up to find something that had already vanished, or stuttering through it, got old fast.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-26T20:33+05:30",
+    title: "Fork reopens the way you left it",
+    what: "Quit, close or update, and next time your tabs, splits, folders and what was on screen are back. If Claude was running, it picks up the conversation where it left off.",
+    why: "Updates restart Fork, and losing your whole setup every time you update is a good reason not to update.",
+    kind: "new",
+    where: "app",
+    version: "0.3.0",
+  },
+  {
+    at: "2026-09-26T19:53+05:30",
+    title: "Updates show up within the hour",
+    what: "Fork checks for a new version every hour and whenever you switch back to it, instead of every 6 hours.",
+    why: "Fixes were landing faster than people were getting them.",
+    kind: "better",
+    where: "app",
+    version: "0.2.1",
+  },
+  {
+    at: "2026-09-26T19:39+05:30",
+    title: "One command to ship a release",
+    what: "`npm run release` checks everything, bumps the version, turns the changelog into release notes, builds, verifies and publishes. Betas never get pushed to people on the normal releases.",
+    why: "Releasing by hand has a dozen steps to forget. Now every release goes out the same careful way.",
+    kind: "kitchen",
+    where: "kitchen",
+  },
+  {
+    at: "2026-09-26",
+    title: "Fork looks for updates by itself",
+    what: "When there's a new Fork, a small pill shows in the top bar. Click it for what's new, then Update and restart. The first time you open a new version, its notes show once.",
+    why: "Nobody should have to reinstall an app by hand to get fixes.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "A welcome for people new to terminals",
+    what: "Three short cards with the blob explain what a terminal is and that Fork does the typing. Then a spotlight tour lights up one part of the window at a time. You can replay it from Settings → Help.",
+    why: "Fork is for designers, and a blinking cursor is a scary first thing to see.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "Every tab has its own blob",
+    what: "Each terminal in the sidebar has a little blob that shows what it's doing: ready, running, failed, finished while you were away, or dozing.",
+    why: "With a few tabs open, you couldn't tell which one needed you without clicking through them all.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "Light, dark or follow the Mac",
+    what: "Appearance can be Light, Dark or System. System picks a light and a dark theme and swaps between them when your Mac does.",
+    why: "Plenty of people switch to dark mode at night. Their terminal should follow.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "Back and forward through folders",
+    what: "← → in the sidebar (or ⌘[ and ⌘]) move through the folders you've visited, like Finder.",
+    why: "Designers already know how Finder moves around. Fork should work the same way.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "Anonymous usage",
+    what: "Fork sends which features get used, under a random ID. Never commands, file names or what's on screen. You can turn it off from the start screen or Settings → Privacy.",
+    why: "To make Fork better for people new to terminals, I need to see where they get stuck. It's anonymous, so nobody gives up their privacy for that.",
+    kind: "new",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "Shift+Enter starts a new line in Claude",
+    what: "Shift+Enter adds a line instead of sending your message. Enter still sends.",
+    why: "Sending half-written prompts by accident is the worst.",
+    kind: "fixed",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "An installer that looks like Fork",
+    what: "Opening Fork.dmg shows a warm cream window with a hand-drawn arrow: “Drag Fork into Applications”.",
+    why: "The installer is the first thing anyone sees of Fork, and it was a plain grey box.",
+    kind: "better",
+    where: "app",
+    version: "0.2.0",
+  },
+  {
+    at: "2026-09-26T13:54+05:30",
+    title: "A live Fork window on the website",
+    what: "The screenshot at the top became a working copy of the Fork window. You can hover it and type in its terminal (nothing actually runs). The noodle, bowl and snowman doodles came to life too.",
+    why: "A terminal you can poke at says more than a picture of one. The doodles make it feel like a person made it, because one did.",
+    kind: "new",
+    where: "website",
+  },
+  {
+    at: "2026-09-26T12:59+05:30",
+    title: "Fork gets a website",
+    what: "fork-terminal.vercel.app, built from the Figma design: Download for Mac, why Fork exists, and a thank-you.",
+    why: "Fork needed a home that isn't a GitHub page, somewhere to send people.",
+    kind: "new",
+    where: "website",
+  },
+  {
+    at: "2026-09-26T02:37+05:30",
+    title: "Fork is public, and a real Mac app",
+    what: "Fork is public on GitHub and installs as a real Mac app, with a hand-drawn fork for its icon.",
+    why: "It had been living as a side project on one Mac. Time to let other people try it.",
+    kind: "new",
+    where: "app",
+    version: "0.1.0",
+  },
+  {
+    at: "2026-09-26",
+    title: "The blob shows when something is working",
+    what: "Bloub, the blob mascot, replaced the green pulsing dot. It thinks while a command runs and follows your theme's colours.",
+    why: "A dot tells you something is happening. A blob that thinks along with you is nicer company.",
+    kind: "new",
+    where: "app",
+    version: "0.1.0",
+  },
+
+  // ---- 25 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-25",
+    title: "One set of icons everywhere",
+    what: "Lucide icons across the whole app, and files show what they are: images, code, styles and docs each get their own icon.",
+    why: "The mix of hand-drawn icons and text characters looked unfinished.",
+    kind: "better",
+    where: "app",
+    version: "0.1.0",
+  },
+  {
+    at: "2026-09-25",
+    title: "See your files and your app next to the terminal",
+    what: "⌘P opens a side panel. Click a file to preview it (images, video, Markdown, code with colours), and it updates live as Claude edits it. When your app runs on localhost, “Show it” opens it right there.",
+    why: "Designers want to see what Claude is changing without opening a code editor. Watching the edits land is half the fun.",
+    kind: "new",
+    where: "app",
+    version: "0.1.0",
+  },
+  {
+    at: "2026-09-25",
+    title: "Settings, 27 themes and your fonts",
+    what: "Settings (⌘,) with 27 themes, four bundled coding fonts plus any on your Mac, font size, and a live preview. The whole app follows the theme.",
+    why: "People spend hours in their terminal. It should look the way they like.",
+    kind: "new",
+    where: "app",
+    version: "0.1.0",
+  },
+  {
+    at: "2026-09-25",
+    title: "Splits, sidebar and ⌘B",
+    what: "Drag to resize split panes and the sidebar. ⌘B hides the sidebar, and the bottom bar only shows when it has something to say.",
+    why: "More room for the terminal, and less for everything else.",
+    kind: "better",
+    where: "app",
+    version: "0.1.0",
+  },
+];

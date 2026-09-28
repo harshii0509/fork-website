@@ -5,6 +5,10 @@ The landing page for [Fork](https://github.com/harshii0509/Fork), a terminal for
 - **Download for Mac** links to `https://github.com/harshii0509/Fork/releases/latest/download/Fork.dmg`, which always serves the newest release, so the site never needs updating for a new version.
 - Design: Figma file "Fork", frame `13:7616`. Illustrations live in `public/art/`.
 
+## What's cooking (the changelog)
+
+[/whats-cooking](https://fork-terminal.vercel.app/whats-cooking) lists everything that's gone into Fork, newest first: what changed, when, and why. Every change, to the app, this site or behind the scenes, gets an entry in `app/whats-cooking/entries.ts` (the file explains the fields). App entries without a `version` show as "on the stove" until a release ships them; add the version then, and the release to `RELEASES`.
+
 ## Develop
 
 ```bash
@@ -33,8 +37,9 @@ PostHog, in the same project as the Fork app, so visits, downloads and app opens
 | `social_clicked` (`network`: `x` / `linkedin`) | Footer icons |
 | `snowman_poked` | First poke of the snowman in a visit |
 | `snow_unlocked` | Five quick pokes: it snows |
+| `cooking_clicked` (`from`: `note` / `footer`) | The sticky note on the Fork window, or "see what's cooking" in the footer |
 
-To add one, put `data-track="event_name"` on a link, or call `track()` from `app/track.ts`.
+To add one, put `data-track="event_name"` (plus optional `data-network` / `data-from`) on a link, or call `track()` from `app/track.ts`.
 
 **Real download numbers:** GitHub counts every `Fork.dmg` download, whether from the browser, the curl install, or in-app updates:
 

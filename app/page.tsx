@@ -1,5 +1,7 @@
 import Image from "next/image";
+import CookingNote from "./CookingNote";
 import DownloadButton from "./DownloadButton";
+import Footer from "./Footer";
 import ForkApp from "./ForkApp";
 import Noodle from "./Noodle";
 import NoodleBowl from "./NoodleBowl";
@@ -9,8 +11,6 @@ import styles from "./page.module.css";
 // Always the newest release: every build is named Fork.dmg, so GitHub's "latest" link never changes.
 const DOWNLOAD = "https://github.com/harshii0509/Fork/releases/latest/download/Fork.dmg";
 const GITHUB = "https://github.com/harshii0509/Fork";
-const X = "https://x.com/harshii04";
-const LINKEDIN = "https://www.linkedin.com/in/harshui/";
 
 // Doodles are decoration only: hidden from screen readers, and never block clicks.
 function Doodle({ src, width, height, className }: { src: string; width: number; height: number; className: string }) {
@@ -38,7 +38,10 @@ export default function Home() {
           </a>
         </div>
 
-        <ForkApp className={styles.screenshot} />
+        <div className={styles.stage}>
+          <ForkApp className={styles.screenshot} />
+          <CookingNote />
+        </div>
       </header>
 
       <main>
@@ -77,18 +80,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <Doodle src="/art/Wave.svg" width={134} height={48} className={styles.wave} />
-        <p className={styles.signoff}>Built by Harshvardhan :), reach out to me here</p>
-        <nav className={styles.socials} aria-label="Harshvardhan elsewhere">
-          <a href={X} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="x" aria-label="Harshvardhan on X (Twitter)">
-            <Image src="/art/TwitterIcon.svg" width={28} height={24} alt="" />
-          </a>
-          <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="linkedin" aria-label="Harshvardhan on LinkedIn">
-            <Image src="/art/LinkedInIcon.svg" width={24} height={24} alt="" />
-          </a>
-        </nav>
-      </footer>
+      <Footer cooking />
     </div>
   );
 }

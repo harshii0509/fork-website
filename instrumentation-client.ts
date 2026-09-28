@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "production" && !local) {
       persistence: "memory", // no cookies or local storage: no consent banner needed
       person_profiles: "identified_only",
       autocapture: false, // only the events below
-      capture_pageview: true,
+      capture_pageview: "history_change", // also counts moving between pages without a reload
       capture_pageleave: true,
       disable_session_recording: true,
     });
@@ -26,14 +26,14 @@ if (process.env.NODE_ENV === "production" && !local) {
   }
 }
 
-// Links marked data-track="event" (and optional data-network) report their click.
+// Links marked data-track="event" (and optional data-network, data-from) report their click.
 document.addEventListener(
   "click",
   (e) => {
     const link = (e.target as Element | null)?.closest<HTMLElement>("[data-track]");
     if (!link) return;
-    const { track: event, network } = link.dataset;
-    if (event) track(event, network ? { network } : undefined);
+    const { track: event, network, from } = link.dataset;
+    if (event) track(event, { ...(network && { network }), ...(from && { from }) });
   },
   true,
 );
