@@ -32,6 +32,16 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 30 Sep ----------------------------------------------------------------------------------
+  {
+    at: "2026-09-30T01:55+05:30",
+    title: "The home page fits phones",
+    what: "On a phone the sticky note on the Fork window shrinks to a small “just cooked!” tab on its corner, so the window shows through. The Download button spans the screen, with View on Github centred under it.",
+    why: "On phones the full note covered almost half the Fork window, and View on Github wrapped onto its own line in an odd spot. The tab still takes you here.",
+    kind: "fixed",
+    where: "website",
+  },
+
   // ---- 29 Sep ----------------------------------------------------------------------------------
   {
     at: "2026-09-29T01:10+05:30",

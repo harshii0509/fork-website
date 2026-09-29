@@ -1131,25 +1131,43 @@
   }
 }
 
-/* Narrow phones: a tighter gap keeps both buttons on one row. */
-@media (max-width: 420px) {
-  .actions {
-    gap: 4px;
-  }
-
-  /* The window is small here: hang the note off its bottom corner, over the empty terminal. */
-  .stage {
-    margin-bottom: 40px;
-  }
-
+/* Phones: the window is too small to carry the whole note, so it shrinks to a tab on the corner.
+   The link's aria-label still reads the full title. */
+@media (max-width: 600px) {
   .cookNote {
-    top: auto;
-    bottom: -44px;
-    right: 2px;
-    width: 164px;
+    top: -14px;
+    right: 10px;
+    width: auto;
+    padding: 10px 12px 8px;
   }
 
-  .cookTitle {
-    font-size: 13px;
+  .cookNote::before {
+    top: -8px;
+    width: 40px;
+    height: 16px;
+    margin-left: -20px;
+  }
+
+  .cookSticker,
+  .cookTitle,
+  .cookMore {
+    display: none;
+  }
+
+  .cookJust::after {
+    content: " →";
+  }
+}
+
+/* Two buttons don't fit side by side on a phone: Download spans the row, Github sits under it. */
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .github {
+    align-self: center;
   }
 }
