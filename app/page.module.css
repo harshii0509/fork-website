@@ -369,7 +369,9 @@
   aspect-ratio: 2784 / 1824; /* the old screenshot's box, shadow margin included */
 }
 
-/* Where the window sat inside the screenshot. */
+/* Where the window sat inside the screenshot. The corners are rounded and clipped here, on the
+   unscaled box: clipping the scaled .mWin left its bottom corners tighter in some browsers.
+   15px of the window's 1280 × 800, so the curve scales with it. */
 .mFrame {
   position: absolute;
   left: 3.987%;
@@ -377,6 +379,9 @@
   width: 91.92%;
   aspect-ratio: 1280 / 800;
   container-type: inline-size;
+  overflow: hidden;
+  border-radius: 1.17% / 1.875%;
+  box-shadow: var(--t-win-shadow, 0 0 0 1px #000000b3, 0 24px 70px 6px #0000004d);
 }
 
 .mWin {
@@ -406,7 +411,6 @@
   cursor: default;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: var(--t-win-shadow, 0 0 0 1px #000000b3, 0 24px 70px 6px #0000004d);
   transition: background-color 300ms ease, color 300ms ease; /* theme changes ease in */
   transform-origin: 0 0;
   transform: scale(0.7259); /* fallback: the desktop size */

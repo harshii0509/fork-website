@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T17:35+05:30",
+    title: "A pixel-dither hero, and rounded window corners",
+    what: "Behind the Fork window at the top of the new home page, the soft colour glow is now a slow purple pixel dither, the same kind of shader as the “Know what went wrong” card. The Fork windows and the small window snippets in the feature cards now have rounded corners at the bottom too, like a real Mac window.",
+    why: "The dither gives the hero more character and ties it to the rest of the page. The square bottom corners made the windows look cut off.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-09-30T15:08+05:30",
     title: "A thank-you letter, and this page in the new look",
     what: "At the bottom of the new home page, an envelope opens the first time you scroll to it, and a letter slides out with a thank-you note. Its P.S. says the soft moving colours are Paper Shaders, with `npm i @paper-design/shaders-react` and a Copy button. The letter paper is a Paper shader too. What’s cooking moves to the same cream paper: flat cards, each day’s date pinned on the left, and a quiet shader behind the title.",

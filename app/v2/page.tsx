@@ -94,20 +94,11 @@ export default function V2() {
         </div>
 
         <ShaderPanel
-          shader="GrainGradient"
-          base="#E4DAC6"
+          shader="Dithering"
+          base="#ECE6F7"
           className={styles.heroStage}
           steer={0.1}
-          params={{
-            colorBack: "#E9E1D1",
-            colors: ["#7C6CFF", "#D5567D", "#F2D58E"],
-            softness: 0.9,
-            intensity: 0.22,
-            noise: 0.28,
-            shape: "blob",
-            speed: 0.35,
-            scale: 1.3,
-          }}
+          params={{ colorBack: "#F1ECF9", colorFront: "#B4A9FF", shape: "warp", type: "4x4", size: 3, speed: 0.4 }}
         >
           <div className={styles.heroWindow}>
             <ForkApp className={styles.heroApp} />
