@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T19:05+05:30",
+    title: "The first landing page lives on at /v1",
+    what: "The original pink page, with the noodle and the snowman, is kept at /v1. The new page stays the home page.",
+    why: "It's where Fork's website started, and worth keeping around to look back at.",
+    kind: "kitchen",
+    where: "website",
+  },
+  {
     at: "2026-09-30T18:40+05:30",
     title: "A bigger Fork window at the top of the home page",
     what: "The patterned background behind the Fork window at the top is gone. The window now sits straight on the page, and it's bigger.",
