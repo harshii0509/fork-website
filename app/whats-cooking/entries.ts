@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T20:30+05:30",
+    title: "The home page is about the terminal, not one AI tool",
+    what: "The “Built around Claude Code” section and its link in the menu are gone. The headline, the games section and the questions now talk about the terminal itself: say what you want, understand what went wrong, see your work beside it, and use whatever tools you like in it.",
+    why: "Fork is a terminal for everyone and doesn’t favour any one platform. People can use it however they want.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-09-30T20:05+05:30",
     title: "The sticky note comes off the home page",
     what: "The “just cooked!” note is no longer taped to the Fork window at the top of the home page. What’s cooking is still a click away in the menu and the footer, and the note stays on the first landing page at /v1.",

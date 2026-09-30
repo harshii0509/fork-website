@@ -12,7 +12,6 @@ import Bloub from "./v2/Bloub";
 import { DOWNLOAD, FEATURES, GITHUB } from "./v2/content";
 import Nav from "./v2/Nav";
 import Reveals from "./v2/Reveals";
-import ClaudeCode from "./v2/sections/ClaudeCode";
 import Download from "./v2/sections/Download";
 import Faq from "./v2/sections/Faq";
 import { CmdKDemo, NudgeDemo, OopsDemo, SeeDemo } from "./v2/sections/FeatureDemos";
@@ -30,7 +29,7 @@ const plex = IBM_Plex_Mono({ weight: ["500", "700"], subsets: ["latin"], variabl
 
 export const metadata: Metadata = {
   title: "Fork, a terminal for people who build things",
-  description: "Say what you want in plain words, understand every error, and see Claude Code working right beside you.",
+  description: "Say what you want in plain words, understand every error, and see your work right beside the terminal.",
 };
 
 const DEMOS = { cmdk: CmdKDemo, oops: OopsDemo, nudge: NudgeDemo, see: SeeDemo };
@@ -81,8 +80,8 @@ export default function V2() {
             </span>
           </h1>
           <p className={styles.heroLede}>
-            A terminal for people who build things. Say what you want in plain words, and watch Claude Code work right
-            beside you.
+            A terminal for people who build things. Say what you want in plain words, understand what went wrong, and see
+            your work right beside it.
           </p>
           <div className={styles.ctas}>
             <DownloadButton href={DOWNLOAD} from="top" className={styles.btnPrimary} />
@@ -110,8 +109,8 @@ export default function V2() {
                 A terminal is a chat with your computer. It just never learned to talk back.
               </h2>
               <p className={styles.lede}>
-                You type commands you had to look up. When something breaks, you get a wall of red. And while Claude
-                works, you watch a spinner, never quite sure if it’s done.
+                You type commands you had to look up. When something breaks, you get a wall of red. And while a long job
+                runs, you watch a spinner, never quite sure if it’s done.
               </p>
               <p className={styles.lede}>
                 <b>Fork runs your own shell and your own setup, and gives it a friendlier face.</b>
@@ -150,20 +149,15 @@ export default function V2() {
           </div>
         </section>
 
-        {/* 4 · Value: the aha */}
-        <section id="claude" className={styles.section} aria-label="Built around Claude Code">
-          <ClaudeCode />
-        </section>
-
         {/* 5 · Value: retention */}
         <section id="wait" className={styles.section} aria-labelledby="wait-h">
           <div className={styles.head} data-reveal>
             <h2 id="wait-h" className={styles.h2}>
-              Something to do while Claude works.
+              Something to do while you wait.
             </h2>
             <p className={styles.lede}>
-              Snake, Stack and Space Run open in a split beside the terminal. When Claude finishes, the game pauses and
-              tells you. Try it: this one’s real.
+              Snake, Stack and Space Run open in a split beside the terminal, so waiting on a long job is less dull. Try
+              it: this one’s real.
             </p>
           </div>
           <WhileYouWait />

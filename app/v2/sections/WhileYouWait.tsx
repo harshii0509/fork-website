@@ -51,8 +51,8 @@ export default function WhileYouWait() {
         <span className={styles.sticker}>On the stove</span>
         <h3 className={styles.h3}>Read a book beside the terminal</h3>
         <p>
-          Open a PDF or EPUB next to your terminal. Fork remembers your place in every book, and a gentle note says
-          when Claude is done. Coming in the next release.
+          Open a PDF or EPUB next to your terminal. Fork remembers your place in every book. Coming in the next
+          release.
         </p>
       </aside>
     </div>

@@ -26,11 +26,10 @@ export const NARRATIVE: { id: string; step: string; force: Force; stage: Stage; 
   { id: "top", step: "Hook", force: "push + pull", stage: "acquisition", question: "What is this, and is it for me?" },
   { id: "insight", step: "Insight", force: "push", stage: "acquisition", question: "Why is the terminal so hard?" },
   { id: "features", step: "Value", force: "pull", stage: "activation", question: "What does Fork do for me?" },
-  { id: "claude", step: "Value (the aha)", force: "pull", stage: "activation", question: "Is it good with Claude Code?" },
-  { id: "wait", step: "Value", force: "pull", stage: "retention", question: "What do I do while Claude works?" },
+  { id: "wait", step: "Value", force: "pull", stage: "retention", question: "What do I do while I wait?" },
   { id: "yours", step: "Value", force: "pull", stage: "retention", question: "Will it feel like mine?" },
   { id: "cooking", step: "Proof", force: "pull", stage: "referral", question: "Is anyone still working on this?" },
-  { id: "faq", step: "Alternatives + objections", force: "habit + anxiety", stage: null, question: "Do I need Claude? Is it safe?" },
+  { id: "faq", step: "Alternatives + objections", force: "habit + anxiety", stage: null, question: "Do I need AI? Is it safe?" },
   { id: "download", step: "Close", force: "pull", stage: "acquisition", question: "How do I get it?" },
   { id: "thanks", step: "Close", force: "pull", stage: "referral", question: "Who made this?" },
 ];
@@ -67,41 +66,6 @@ export const FEATURES = [
   },
 ] as const;
 
-export const CLAUDE_CHIPS = [
-  {
-    id: "working",
-    label: "Knows when Claude is working",
-    lead: "Working or waiting, at a glance.",
-    body: "A bar shows only while Claude is working on your prompt, with Stop it (Esc) one click away. When Claude is waiting for you, the bar is gone.",
-  },
-  {
-    id: "blobs",
-    label: "A blob on every tab",
-    lead: "Every tab has a little face.",
-    body: "Ready, running, failed, finished while you were away, or dozing. Glance at the sidebar and know which tab needs you.",
-  },
-  {
-    id: "drop",
-    label: "Drop a file, hand over its path",
-    lead: "Show Claude the file.",
-    body: "Drag a file from the sidebar or Finder onto the terminal and its path is typed in, spaces and all. It works while Claude is running.",
-  },
-  {
-    id: "newline",
-    label: "Shift+Enter for a new line",
-    lead: "Write longer prompts.",
-    body: "Shift+Enter adds a new line in Claude Code instead of sending, so a prompt can have more than one thought in it.",
-  },
-  {
-    id: "restore",
-    label: "Picks up where you left off",
-    lead: "Close Fork, keep your place.",
-    body: "Tabs, splits, folders and the last screen of output come back when you reopen Fork, and Claude sessions carry on with claude --continue.",
-  },
-] as const;
-
-export type ClaudeChip = (typeof CLAUDE_CHIPS)[number]["id"];
-
 // A few of the app's 27 themes (designer-terminal/themes.js), as the variables ForkApp reads.
 export const THEMES = [
   { name: "Designer", bg: "#141416", text: "#ececf1", accent: "#7c6cff", dark: true },
@@ -130,8 +94,8 @@ export function themeVars(t: Theme): React.CSSProperties {
 
 export const FAQ = [
   {
-    q: "Do I need Claude Code to use Fork?",
-    a: "No. ⌘K’s built-in commands, the suggestions and the error library all work without AI. Claude Code makes Ask AI and the unusual-error explainer possible, using your own Claude login.",
+    q: "Do I need AI to use Fork?",
+    a: "No. ⌘K’s built-in commands, the suggestions and the error library all work without AI, and you can run any tool you like in it. If you use Claude Code, Ask AI and the unusual-error explainer use it, with your own login.",
   },
   {
     q: "I’m new to the terminal. Is it safe?",

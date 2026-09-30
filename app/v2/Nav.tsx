@@ -28,9 +28,6 @@ export default function Nav({ brandClass, away = false }: { brandClass: string; 
         <a href={`${at}#features`} data-track="nav_clicked" data-item="features">
           Features
         </a>
-        <a href={`${at}#claude`} data-track="nav_clicked" data-item="claude">
-          Claude Code
-        </a>
         <Link href="/whats-cooking" data-track="cooking_clicked" data-from="nav">
           What’s cooking
         </Link>
