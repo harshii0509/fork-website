@@ -1279,6 +1279,13 @@
   color: #1f6045;
 }
 
+/* Behind the scenes: an outlined pill. */
+.sticker[data-kind="kitchen"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  color: var(--body);
+}
+
 /* ---- Make it yours --------------------------------------------------------------------- */
 
 .swatches {
@@ -1600,8 +1607,104 @@
   text-align: center;
 }
 
+/* ---- The letter: an envelope that opens once, the first time it scrolls in (Letter.tsx) -----
+ * The box is always as tall as the open letter plus the envelope, so opening moves nothing else.
+ * Layers, back to front: the envelope's inside, the open flap, the letter, the pocket, the closed
+ * flap, the seal. Everything is flat: fills and 2px rose lines, like the doodles. */
+
+.letter {
+  --env: 210px; /* envelope height */
+  --tuck: 64px; /* how much of the open letter stays in the pocket */
+  --env-in: #e7dfcf;
+  --env-out: #efe9dd;
+  --env-flap: #f3eee4;
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 640px);
+  margin-top: 28px;
+  padding-bottom: calc(var(--env) - var(--tuck));
+  perspective: 1400px;
+  text-align: left;
+  overflow-x: visible;
+  overflow-y: clip; /* the closed letter hides below the envelope's bottom */
+}
+
+.envBack,
+.envFront {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--env);
+}
+
+/* Its top line is drawn by the flap, open or shut. */
+.envBack {
+  z-index: 1;
+  border: 2px solid var(--rose-doodle);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  background: var(--env-in);
+}
+
+/* The front is open along the top (the V), so no line runs across the letter. */
+.envFront {
+  z-index: 5;
+  overflow: hidden;
+  border: 2px solid var(--rose-doodle);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+
+.envFront svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.envFront path,
+.flap path {
+  stroke: var(--rose-doodle);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.envFront .envFill {
+  fill: var(--env-out);
+  stroke: none;
+}
+
+.flap {
+  position: absolute;
+  top: calc(100% - var(--env));
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: calc(var(--env) * 0.7);
+  overflow: visible;
+  transform: rotateX(180deg);
+  transform-origin: top;
+}
+
+.flap path {
+  fill: var(--env-flap);
+}
+
+.letterSlot {
+  position: relative;
+  z-index: 3;
+  padding: 0 11%;
+}
+
+.letterPaper {
+  padding: 36px 40px calc(var(--tuck) + 20px);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+}
+
 .note {
-  margin-top: 16px;
   color: var(--rose-doodle);
   font-family: var(--font-caveat), cursive;
   font-size: 40px;
@@ -1610,10 +1713,110 @@
 }
 
 .bio {
-  max-width: 520px;
   margin-top: 16px;
-  color: var(--muted);
+  color: var(--body);
   text-wrap: pretty;
+}
+
+.ps {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 15px;
+  text-wrap: pretty;
+}
+
+.psMark {
+  margin-right: 2px;
+  color: var(--rose-doodle);
+  font-family: var(--font-caveat), cursive;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ps a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rose-doodle);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.psCmd {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 8px 8px 8px 16px;
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.psCmd code {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-plex), ui-monospace, monospace;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.psCmd .copy {
+  background: var(--sunk);
+}
+
+.seal {
+  position: absolute;
+  top: calc(100% - var(--env) * 0.3 - 20px);
+  left: calc(50% - 20px);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--rose-doodle);
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.seal i {
+  display: block;
+  width: 5px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--panel);
+  transform: rotate(-18deg);
+}
+
+/* Closed (set by Letter.tsx before it scrolls in): flap down over the pocket, seal on, letter
+ * tucked inside. Closing is instant; only opening animates. */
+.letter[data-state="closed"] .flap {
+  z-index: 6;
+  transform: none;
+}
+
+.letter[data-state="closed"] .seal {
+  opacity: 1;
+  transform: none;
+}
+
+.letter[data-state="closed"] .letterSlot {
+  transform: translateY(calc(100% - var(--tuck) + 28px));
+}
+
+/* Opening: the seal pops, the flap swings up and drops behind the letter halfway, the letter rises. */
+.letter[data-state="open"] .seal {
+  transition: opacity 160ms ease-in, transform 180ms ease-in;
+}
+
+.letter[data-state="open"] .flap {
+  transition: transform 460ms var(--ease-in-out) 140ms, z-index 0s 370ms;
+}
+
+.letter[data-state="open"] .letterSlot {
+  transition: transform 900ms var(--ease-out) 460ms;
 }
 
 .outlineBlob {
@@ -1698,6 +1901,37 @@
 @media (max-width: 760px) {
   .v2 {
     --gutter: 16px;
+  }
+
+  .letter {
+    --env: 150px;
+    --tuck: 44px;
+  }
+
+  .letterSlot {
+    padding: 0 6%;
+  }
+
+  .letterPaper {
+    padding: 28px 18px calc(var(--tuck) + 18px);
+  }
+
+  .note {
+    font-size: 34px;
+  }
+
+  /* The command keeps to one line; Copy goes under it. */
+  .psCmd {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 10px 8px 8px 12px;
+  }
+
+  .psCmd code {
+    flex-basis: 100%;
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow-x: auto;
   }
 
   .hero {
@@ -1792,6 +2026,12 @@
 /* ---- Reduced motion: no rising, no drawing, no blinking -------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .letter[data-state] .seal,
+  .letter[data-state] .flap,
+  .letter[data-state] .letterSlot {
+    transition: none;
+  }
+
   .heroCopy > *,
   .heroStage {
     animation: none;

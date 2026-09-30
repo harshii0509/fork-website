@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { DOWNLOAD, GITHUB } from "./content";
+import { DOWNLOAD, GITHUB, HOME } from "./content";
 import styles from "./v2.module.css";
 
-// Once the page has scrolled a little, a cream bar fades in behind the links.
-export default function Nav({ brandClass }: { brandClass: string }) {
+// Once the page has scrolled a little, a cream bar fades in behind the links. On the home page the
+// links jump to its sections; on other pages (`away`) they lead back to them.
+export default function Nav({ brandClass, away = false }: { brandClass: string; away?: boolean }) {
+  const at = away ? HOME : "";
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
@@ -18,15 +20,15 @@ export default function Nav({ brandClass }: { brandClass: string }) {
 
   return (
     <nav className={styles.nav} data-scrolled={scrolled || undefined} aria-label="Fork">
-      <a href="#top" className={`${styles.brand} ${brandClass}`}>
+      <a href={away ? HOME : "#top"} className={`${styles.brand} ${brandClass}`}>
         <Image src="/art/Fork.svg" width={17} height={23} alt="" aria-hidden />
         Fork
       </a>
       <div className={styles.navLinks}>
-        <a href="#features" data-track="nav_clicked" data-item="features">
+        <a href={`${at}#features`} data-track="nav_clicked" data-item="features">
           Features
         </a>
-        <a href="#claude" data-track="nav_clicked" data-item="claude">
+        <a href={`${at}#claude`} data-track="nav_clicked" data-item="claude">
           Claude Code
         </a>
         <Link href="/whats-cooking" data-track="cooking_clicked" data-from="nav">

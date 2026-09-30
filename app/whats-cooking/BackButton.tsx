@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { HOME } from "../v2/content";
+import v2 from "../v2/v2.module.css";
 import styles from "./cooking.module.css";
 
 // Back to the home page. Came from there? Step back instead, so you land where you left off.
@@ -22,11 +23,10 @@ export default function BackButton() {
   }
 
   return (
-    <Link href="/" className={styles.back} onClick={back}>
+    <Link href={HOME} className={`${v2.btnSoft} ${styles.back}`} onClick={back}>
       <span className={styles.backArrow} aria-hidden>
         ←
       </span>
-      <Image src="/art/Fork.svg" width={14} height={19} alt="" aria-hidden className={styles.backFork} />
       Back to Fork
     </Link>
   );

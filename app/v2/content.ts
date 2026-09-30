@@ -13,6 +13,11 @@
 export const DOWNLOAD = "https://github.com/harshii0509/Fork/releases/latest/download/Fork.dmg";
 export const GITHUB = "https://github.com/harshii0509/Fork";
 export const INSTALL_CMD = "curl -fsSL https://raw.githubusercontent.com/harshii0509/Fork/main/install.sh | bash";
+// Where this page lives. It becomes "/" when v2 replaces the home page.
+export const HOME = "/v2";
+// The shaders behind the panels (Apache-2.0), credited in the thanks letter.
+export const PAPER = "https://shaders.paper.design";
+export const PAPER_CMD = "npm i @paper-design/shaders-react";
 
 type Force = "push" | "pull" | "push + pull" | "habit + anxiety";
 type Stage = "acquisition" | "activation" | "retention" | "referral" | "revenue" | null;

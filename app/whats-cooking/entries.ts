@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T15:08+05:30",
+    title: "A thank-you letter, and this page in the new look",
+    what: "At the bottom of the new home page, an envelope opens the first time you scroll to it, and a letter slides out with a thank-you note. Its P.S. says the soft moving colours are Paper Shaders, with `npm i @paper-design/shaders-react` and a Copy button. The letter paper is a Paper shader too. What’s cooking moves to the same cream paper: flat cards, each day’s date pinned on the left, and a quiet shader behind the title.",
+    why: "The shaders are someone else’s lovely work, so they get a proper credit, and anyone who likes them can grab them in one click. This page should look like it belongs with the new home page.",
+    kind: "new",
+    where: "website",
+  },
+  {
     at: "2026-09-30T12:02+05:30",
     title: "A new home page that shows what Fork does",
     what: "A second version of the home page, at /v2 for now. It walks through Fork one idea at a time: ⌘K in plain words, “What went wrong?”, suggestions and safety nets, your app beside the terminal, the Claude Code features, a real game of Snake, and a theme picker that re-colours the Fork window. The blob from the app says hello in the headline, and soft Paper shaders move behind the demos. It’s on cream paper, like the app icon.",

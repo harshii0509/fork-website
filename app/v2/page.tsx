@@ -18,6 +18,7 @@ import Download from "./sections/Download";
 import Faq from "./sections/Faq";
 import { CmdKDemo, NudgeDemo, OopsDemo, SeeDemo } from "./sections/FeatureDemos";
 import InsightBlob from "./sections/InsightBlob";
+import Letter from "./sections/Letter";
 import Themes from "./sections/Themes";
 import WhileYouWait from "./sections/WhileYouWait";
 import ShaderPanel from "./ShaderPanel";
@@ -245,13 +246,7 @@ export default function V2() {
         {/* 10 · Who made this */}
         <section id="thanks" className={styles.thanks} aria-labelledby="thanks-h">
           <Snowman />
-          <h2 id="thanks-h" className={styles.note}>
-            Thanks a ton!
-          </h2>
-          <p className={styles.bio}>
-            I’m Harshvardhan. I spend my days in terminals, and I wanted one that felt faster when I need it, calmer when
-            I’m juggling a dozen things, and a little more human when I’m figuring things out. So I made Fork.
-          </p>
+          <Letter />
           <svg className={styles.outlineBlob} viewBox="0 0 1000 420" aria-hidden focusable="false" data-reveal>
             <circle cx="500" cy="500" r="470" pathLength={1} />
             <rect x="560" y="200" width="46" height="120" rx="23" transform="rotate(-18 583 260)" pathLength={1} />
