@@ -92,18 +92,12 @@ export default function V2() {
           <p className={styles.micro}>Free · for Macs with Apple Silicon</p>
         </div>
 
-        <ShaderPanel
-          shader="Dithering"
-          base="#ECE6F7"
-          className={styles.heroStage}
-          steer={0.1}
-          params={{ colorBack: "#F1ECF9", colorFront: "#B4A9FF", shape: "warp", type: "4x4", size: 3, speed: 0.4 }}
-        >
+        <div className={styles.heroStage}>
           <div className={styles.heroWindow}>
             <ForkApp className={styles.heroApp} />
             <CookingNote className={styles.flatNote} />
           </div>
-        </ShaderPanel>
+        </div>
       </header>
 
       <main>

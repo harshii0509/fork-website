@@ -315,16 +315,16 @@
   font-size: 13px;
 }
 
+/* The Fork window sits straight on the page: no panel behind it, so it can be big. */
 .heroStage {
   max-width: var(--max);
-  margin: 64px auto 0;
-  padding: clamp(20px, 5vw, 64px) clamp(8px, 4vw, 72px);
-  border-radius: 32px;
+  margin: 56px auto 0;
+  padding: 0 var(--gutter);
 }
 
 .heroWindow {
   position: relative;
-  max-width: 1011px;
+  max-width: 1180px;
   margin: 0 auto;
 }
 
@@ -1959,9 +1959,10 @@
     flex: 1 1 100%;
   }
 
+  /* The window's frame already leaves a margin round it, so the page's gutter would double it. */
   .heroStage {
     margin-top: 40px;
-    border-radius: 24px;
+    padding: 0;
   }
 
   .insight {

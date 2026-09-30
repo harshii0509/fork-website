@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T18:40+05:30",
+    title: "A bigger Fork window at the top of the home page",
+    what: "The patterned background behind the Fork window at the top is gone. The window now sits straight on the page, and it's bigger.",
+    why: "The app is the point of the page, and the pattern was competing with it.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-09-30T18:10+05:30",
     title: "The new home page is the home page",
     what: "fork-terminal.vercel.app now opens on the page that walks through what Fork does, and old /v2 links land there too. It ends in one panel, edge to edge, with the thank-you letter and the footer together.",
@@ -43,9 +51,9 @@ export const ENTRIES: Entry[] = [
   },
   {
     at: "2026-09-30T17:35+05:30",
-    title: "A pixel-dither hero, and rounded window corners",
-    what: "Behind the Fork window at the top of the new home page, the soft colour glow is now a slow purple pixel dither, the same kind of shader as the “Know what went wrong” card. The Fork windows and the small window snippets in the feature cards now have rounded corners at the bottom too, like a real Mac window.",
-    why: "The dither gives the hero more character and ties it to the rest of the page. The square bottom corners made the windows look cut off.",
+    title: "Rounded corners on every window",
+    what: "The Fork windows and the small window snippets in the feature cards now have rounded corners at the bottom too, like a real Mac window.",
+    why: "The square bottom corners made the windows look cut off.",
     kind: "better",
     where: "website",
   },
