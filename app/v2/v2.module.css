@@ -191,30 +191,69 @@
   text-align: center;
 }
 
+/* The entrance, once per visit (ms after load):
+ *   0    "Meet" rises out of a blur; the blob pops at 140 (and smiles at 600); "Fork" at 180
+ *   100  the bowl, 160 the fork doodle tossed in
+ *   220  the lede, 290 the buttons, 340 "Free…"
+ *   350  the Fork window tilts up into place
+ *   950  its prompt types itself; 1550 Claude's reply, a line at a time (ForkApp's `play`)
+ *   2000 the sticky note is slapped on
+ * The buttons are usable from the start; everything else just decorates the arrival. */
 .heroCopy > * {
   animation: rise 600ms var(--ease-out) both;
 }
 
+.h1 {
+  animation: none;
+}
+
+.word {
+  display: inline-block;
+  animation: word-in 600ms var(--ease-out) both;
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+  }
+}
+
+.heroBowl {
+  animation-delay: 100ms;
+}
+
 .heroLede {
-  animation-delay: 60ms;
+  animation-delay: 220ms;
 }
 
 .ctas {
-  animation-delay: 120ms;
+  animation-delay: 290ms;
 }
 
 .micro {
-  animation-delay: 160ms;
-}
-
-.heroStage {
-  animation: rise 700ms var(--ease-out) 200ms both;
+  animation-delay: 340ms;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(16px);
+    filter: blur(4px);
+  }
+}
+
+/* The window starts tipped back and stands up, from its bottom edge. */
+.heroStage {
+  transform-origin: 50% 100%;
+  animation: stage-in 900ms var(--ease-out) 350ms both;
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) rotateX(12deg) translateY(40px) scale(0.97);
   }
 }
 
@@ -229,10 +268,30 @@
   right: -16px;
   top: -24px;
   transform: rotate(14deg);
+  animation: fork-toss 700ms var(--ease-out) 160ms both;
+}
+
+/* Tossed in: it lands at its 14° lean instead of swinging there. */
+@keyframes fork-toss {
+  from {
+    opacity: 0;
+    transform: translate(-8px, 10px) rotate(-12deg);
+  }
+  to {
+    transform: rotate(14deg);
+  }
 }
 
 .h1Blob {
   margin: -0.12em 0.04em 0;
+  animation: blob-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 140ms both;
+}
+
+@keyframes blob-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
 }
 
 .heroLede {
@@ -345,6 +404,7 @@
 .flatNote.flatNote {
   background: #fbe7a6;
   box-shadow: 0 3px 2px rgb(22 19 15 / 0.1);
+  animation-delay: 2000ms; /* slapped on last, once the terminal has played */
 }
 
 .flatNote.flatNote::before {
@@ -2047,7 +2107,10 @@
   }
 
   .heroCopy > *,
-  .heroStage {
+  .heroStage,
+  .word,
+  .h1Blob,
+  .heroFork.heroFork {
     animation: none;
   }
 

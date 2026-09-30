@@ -42,6 +42,7 @@ export default function Bloub({
   expression = null,
   color = "#7c6cff",
   gaze = false,
+  hello,
   className,
   label,
 }: {
@@ -50,6 +51,7 @@ export default function Bloub({
   expression?: string | null;
   color?: string;
   gaze?: boolean;
+  hello?: number; // ms after load: a happy face for a moment, as the page opens
   className?: string;
   label?: string;
 }) {
@@ -63,6 +65,8 @@ export default function Bloub({
   useEffect(() => {
     let view: { destroy(): void } | null = null;
     let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const loadedAt = performance.now();
     loadBloub()
       .then((B) => {
         if (cancelled || !host.current) return;
@@ -72,10 +76,17 @@ export default function Bloub({
         view = v;
         draw.current = () => v.render(c.sample(), c.paint);
         draw.current();
+        // Say hello once: happy for 1.2s, then back to the expression it was given.
+        if (hello !== undefined && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          const wait = Math.max(0, hello - (performance.now() - loadedAt));
+          timers.push(setTimeout(() => c.setExpression("happy"), wait));
+          timers.push(setTimeout(() => c.setExpression(expression), wait + 1200));
+        }
       })
       .catch(() => {}); // no mascot is fine; the space stays
     return () => {
       cancelled = true;
+      timers.forEach(clearTimeout);
       view?.destroy();
       ctrl.current = null;
       draw.current = () => {};

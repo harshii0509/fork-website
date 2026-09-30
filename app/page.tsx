@@ -76,7 +76,10 @@ export default function V2() {
           <NoodleBowl className={styles.heroBowl} />
           <Doodle src="/art/Fork.svg" width={62} height={83} className={styles.heroFork} />
           <h1 className={styles.h1}>
-            Meet <Bloub size={64} gaze className={styles.h1Blob} label="Fork’s blob" /> Fork
+            <span className={styles.word}>Meet</span> <Bloub size={64} gaze hello={600} className={styles.h1Blob} label="Fork’s blob" />{" "}
+            <span className={styles.word} style={{ animationDelay: "180ms" }}>
+              Fork
+            </span>
           </h1>
           <p className={styles.heroLede}>
             A terminal for people who build things. Say what you want in plain words, and watch Claude Code work right
@@ -94,7 +97,7 @@ export default function V2() {
 
         <div className={styles.heroStage}>
           <div className={styles.heroWindow}>
-            <ForkApp className={styles.heroApp} />
+            <ForkApp className={styles.heroApp} play />
             <CookingNote className={styles.flatNote} />
           </div>
         </div>

@@ -726,6 +726,33 @@
   min-height: 18.5px;
 }
 
+/* The transcript playing once (ForkApp's `play`): each line arrives at its --at, and the prompt
+   types itself a character at a time. */
+.mPlay .mLine {
+  animation: m-line 300ms var(--ease-out) var(--at, 0ms) backwards;
+}
+
+.mPlay .mType {
+  display: inline-block;
+  animation: m-type calc(var(--n) * 16ms) steps(var(--n), end) 950ms backwards;
+}
+
+@keyframes m-line {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes m-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
 .mText {
   color: var(--t-text, #ececf1);
 }
@@ -1045,7 +1072,9 @@
     transition: none;
   }
 
-  .mCursor.mFocused {
+  .mCursor.mFocused,
+  .mPlay .mLine,
+  .mPlay .mType {
     animation: none;
   }
 }

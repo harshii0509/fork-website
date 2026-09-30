@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T19:45+05:30",
+    title: "The home page says hello when it opens",
+    what: "Opening the home page is a little show now. “Meet” and “Fork” rise out of a soft blur, the blob pops in between them and smiles, and the fork doodle is tossed into place. Then the Fork window tips up onto the page, its prompt types itself, Claude’s reply comes in a line at a time, and the “just cooked!” note is slapped on last. With reduced motion on, it’s all simply there.",
+    why: "First impressions count, and this shows Fork working before you’ve scrolled. The buttons are ready from the first moment, so nobody waits for the show.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-09-30T19:05+05:30",
     title: "The first landing page lives on at /v1",
     what: "The original pink page, with the noodle and the snowman, is kept at /v1. The new page stays the home page.",

@@ -103,7 +103,14 @@ const TRANSCRIPT: [string, Tone][][] = [
 ];
 const TONE = { text: styles.mText, dim: styles.mDim, accent: styles.mAccent };
 
-export default function ForkApp({ className, style }: { className: string; style?: React.CSSProperties }) {
+// With `play`, the transcript plays once as the page opens: the prompt types itself at 0.95s, then
+// Claude's reply comes in a line at a time from 1.55s. When each line appears (ms after load):
+const PROMPT = 1;
+const REPLY = 3;
+const lineAt = (i: number) => (i < REPLY ? 900 : 1550 + (i - REPLY) * 80);
+const cue = (ms: number) => ({ "--at": `${ms}ms` }) as React.CSSProperties;
+
+export default function ForkApp({ className, style, play = false }: { className: string; style?: React.CSSProperties; play?: boolean }) {
   const input = useRef<HTMLInputElement>(null);
   const screen = useRef<HTMLDivElement>(null);
   const [typed, setTyped] = useState("");
@@ -213,10 +220,18 @@ export default function ForkApp({ className, style }: { className: string; style
             onMouseDown={(e) => e.preventDefault()} // keeps the typing going when clicked again
             onClick={() => input.current?.focus({ preventScroll: true })}
           >
-            <div className={styles.mScreen} ref={screen}>
+            <div className={`${styles.mScreen} ${play ? styles.mPlay : ""}`} ref={screen}>
               {TRANSCRIPT.map((line, i) => (
-                <div key={i} className={styles.mLine} aria-hidden>
-                  {line.map(([t, tone], j) => <span key={j} className={TONE[tone]}>{t}</span>)}
+                <div key={i} className={styles.mLine} style={play ? cue(lineAt(i)) : undefined} aria-hidden>
+                  {line.map(([t, tone], j) =>
+                    play && i === PROMPT && tone === "text" ? (
+                      <span key={j} className={`${TONE[tone]} ${styles.mType}`} style={{ "--n": t.length } as React.CSSProperties}>
+                        {t}
+                      </span>
+                    ) : (
+                      <span key={j} className={TONE[tone]}>{t}</span>
+                    ),
+                  )}
                 </div>
               ))}
               {sent.map((t, i) => (
@@ -224,7 +239,7 @@ export default function ForkApp({ className, style }: { className: string; style
                   <span className={styles.mDim}> ❯ </span><span className={styles.mText}>{t}</span>
                 </div>
               ))}
-              <div className={styles.mLine} aria-hidden>
+              <div className={styles.mLine} style={play ? cue(lineAt(TRANSCRIPT.length)) : undefined} aria-hidden>
                 <span className={styles.mDim}> ❯ </span>
                 <span className={styles.mText}>{typed.slice(0, caret)}</span>
                 <span className={`${styles.mCursor} ${focused ? styles.mFocused : ""}`}>{under}</span>
