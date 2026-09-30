@@ -1,86 +1,253 @@
+import type { Metadata } from "next";
+import { IBM_Plex_Mono } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 import CookingNote from "./CookingNote";
 import DownloadButton from "./DownloadButton";
 import Footer from "./Footer";
 import ForkApp from "./ForkApp";
-import Noodle from "./Noodle";
 import NoodleBowl from "./NoodleBowl";
 import Snowman from "./Snowman";
-import styles from "./page.module.css";
+import { ENTRIES, STICKER } from "./whats-cooking/entries";
+import Bloub from "./v2/Bloub";
+import { DOWNLOAD, FEATURES, GITHUB } from "./v2/content";
+import Nav from "./v2/Nav";
+import Reveals from "./v2/Reveals";
+import ClaudeCode from "./v2/sections/ClaudeCode";
+import Download from "./v2/sections/Download";
+import Faq from "./v2/sections/Faq";
+import { CmdKDemo, NudgeDemo, OopsDemo, SeeDemo } from "./v2/sections/FeatureDemos";
+import InsightBlob from "./v2/sections/InsightBlob";
+import Letter from "./v2/sections/Letter";
+import Themes from "./v2/sections/Themes";
+import WhileYouWait from "./v2/sections/WhileYouWait";
+import ShaderPanel from "./v2/ShaderPanel";
+import styles from "./v2/v2.module.css";
 
-// Always the newest release: every build is named Fork.dmg, so GitHub's "latest" link never changes.
-const DOWNLOAD = "https://github.com/harshii0509/Fork/releases/latest/download/Fork.dmg";
-const GITHUB = "https://github.com/harshii0509/Fork";
+// The Fork home page: it explains what Fork does. Section order and jobs come from NARRATIVE in
+// v2/content.ts; the look is cream paper, flat panels, and colour only from shaders.
 
-// Doodles are decoration only: hidden from screen readers, and never block clicks.
+const plex = IBM_Plex_Mono({ weight: ["500", "700"], subsets: ["latin"], variable: "--font-plex" });
+
+export const metadata: Metadata = {
+  title: "Fork, a terminal for people who build things",
+  description: "Say what you want in plain words, understand every error, and see Claude Code working right beside you.",
+};
+
+const DEMOS = { cmdk: CmdKDemo, oops: OopsDemo, nudge: NudgeDemo, see: SeeDemo };
+
+// Each feature card's shader: one quiet colour field per card, all from the same palette.
+const CARD_SHADERS = {
+  cmdk: {
+    shader: "GrainGradient",
+    base: "#E6DDF7",
+    params: { colorBack: "#EFE9FB", colors: ["#7C6CFF", "#B8AEFF", "#F2D58E"], softness: 0.8, intensity: 0.3, noise: 0.35, shape: "corners", speed: 0.6 },
+  },
+  oops: {
+    shader: "Dithering",
+    base: "#F4E4E8",
+    params: { colorBack: "#F6ECEE", colorFront: "#E7A3B6", shape: "warp", type: "4x4", size: 3, speed: 0.5 },
+  },
+  nudge: {
+    shader: "DotGrid",
+    base: "#EDE7DA",
+    params: { colorBack: "#EDE7DA", colorFill: "#CFC4AE", colorStroke: "#CFC4AE", size: 2, gapX: 18, gapY: 18, strokeWidth: 0, sizeRange: 0.4, opacityRange: 0.5, shape: "circle" },
+  },
+  see: {
+    shader: "PaperTexture",
+    base: "#EADFC8",
+    params: { colorBack: "#EADFC8", colorPaper: "#F7F1E4", colorShadow: "#C9B998", fit: "cover", scale: 1, roughness: 0.4, fiber: 0.3, folds: 0.5, crumples: 0.3, drops: 0.1, seed: 5.8 },
+  },
+} as const;
+
 function Doodle({ src, width, height, className }: { src: string; width: number; height: number; className: string }) {
   return <Image src={src} width={width} height={height} alt="" aria-hidden className={`${styles.doodle} ${className}`} />;
 }
 
-export default function Home() {
+export default function V2() {
+  const cooked = ENTRIES.filter((e) => e.where === "app").slice(0, 3);
   return (
-    <div className={styles.page}>
-      <header className={styles.hero}>
-        <Noodle className={styles.noodle} />
-        <NoodleBowl className={styles.bowl} />
-        <Doodle src="/art/Fork.svg" width={76} height={102} className={styles.fork} />
+    <div className={`${styles.v2} ${plex.variable}`}>
+      <Nav brandClass={plex.className} />
 
-        <h1 className={styles.headline}>
-          Fork is a terminal for people who build things. A fast, thoughtful place to code, experiment, break
-          stuff, and turn ideas into something real.
-        </h1>
-
-        <div className={styles.actions}>
-          <DownloadButton href={DOWNLOAD} />
-          <a className={styles.github} href={GITHUB} target="_blank" rel="noopener noreferrer" data-track="github_clicked">
-            <Image src="/art/github.svg" width={20} height={20} alt="" aria-hidden />
-            View on Github
-          </a>
+      {/* 1 · Hook */}
+      <header id="top" className={styles.hero}>
+        <div className={styles.heroCopy}>
+          <NoodleBowl className={styles.heroBowl} />
+          <Doodle src="/art/Fork.svg" width={62} height={83} className={styles.heroFork} />
+          <h1 className={styles.h1}>
+            Meet <Bloub size={64} gaze className={styles.h1Blob} label="Fork’s blob" /> Fork
+          </h1>
+          <p className={styles.heroLede}>
+            A terminal for people who build things. Say what you want in plain words, and watch Claude Code work right
+            beside you.
+          </p>
+          <div className={styles.ctas}>
+            <DownloadButton href={DOWNLOAD} from="top" className={styles.btnPrimary} />
+            <a className={styles.btnSoft} href={GITHUB} target="_blank" rel="noopener noreferrer" data-track="github_clicked" data-from="top">
+              <Image src="/art/github.svg" width={18} height={18} alt="" aria-hidden />
+              View on GitHub
+            </a>
+          </div>
+          <p className={styles.micro}>Free · for Macs with Apple Silicon</p>
         </div>
 
-        <div className={styles.stage}>
-          <ForkApp className={styles.screenshot} />
-          <CookingNote />
-        </div>
+        <ShaderPanel
+          shader="Dithering"
+          base="#ECE6F7"
+          className={styles.heroStage}
+          steer={0.1}
+          params={{ colorBack: "#F1ECF9", colorFront: "#B4A9FF", shape: "warp", type: "4x4", size: 3, speed: 0.4 }}
+        >
+          <div className={styles.heroWindow}>
+            <ForkApp className={styles.heroApp} />
+            <CookingNote className={styles.flatNote} />
+          </div>
+        </ShaderPanel>
       </header>
 
       <main>
-        <section className={styles.story} aria-labelledby="why">
-          <div className={styles.why}>
-            <Doodle src="/art/MagnifyingGlass.svg" width={75} height={103} className={styles.magnifier} />
-            <h2 id="why" className={styles.note}>
-              Why I made this?
-            </h2>
+        {/* 2 · Insight (push) */}
+        <section id="insight" className={styles.section} aria-labelledby="insight-h">
+          <div className={styles.insight} data-reveal>
+            <div className={styles.insightCopy}>
+              <h2 id="insight-h" className={styles.h2}>
+                A terminal is a chat with your computer. It just never learned to talk back.
+              </h2>
+              <p className={styles.lede}>
+                You type commands you had to look up. When something breaks, you get a wall of red. And while Claude
+                works, you watch a spinner, never quite sure if it’s done.
+              </p>
+              <p className={styles.lede}>
+                <b>Fork runs your own shell and your own setup, and gives it a friendlier face.</b>
+              </p>
+            </div>
+            <InsightBlob />
           </div>
-          <p>
-            I spend a lot of my time in terminals. For me, they’re often where ideas start taking shape with a blank
-            prompt, a blinking cursor, and a command that could take you pretty much anywhere. But somewhere along the
-            way, terminals became tools you tolerate rather than places you enjoy being in.
-          </p>
-          <p>
-            I wanted to change that. I wanted a terminal that felt faster when you need it, calmer when you’re
-            juggling a dozen things, and a little more human when you’re figuring things out.
-          </p>
-          <p>
-            Fork came from that idea, something I’d actually want to open every morning. Something that keeps up when
-            I’m moving fast, gets out of the way when I’m deep in the work, and makes the little moments in between
-            feel a bit nicer.
+        </section>
+
+        {/* 3 · Value: what it does */}
+        <section id="features" className={styles.section} aria-labelledby="features-h">
+          <div className={styles.head} data-reveal>
+            <h2 id="features-h" className={styles.h2}>
+              Fork does the typing for you.
+            </h2>
+            <p className={styles.lede}>
+              You say what you want. Fork finds the command, explains the error, and suggests the next step.
+            </p>
+          </div>
+          <div className={styles.cards}>
+            {FEATURES.map((f) => {
+              const Demo = DEMOS[f.id];
+              const s = CARD_SHADERS[f.id];
+              return (
+                <article key={f.id} className={styles.card} data-reveal>
+                  <div className={styles.cardCopy}>
+                    <h3 className={styles.h3}>{f.title}</h3>
+                    <p>{f.body}</p>
+                  </div>
+                  <ShaderPanel shader={s.shader} base={s.base} params={s.params} className={styles.cardStage}>
+                    <Demo />
+                  </ShaderPanel>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 4 · Value: the aha */}
+        <section id="claude" className={styles.section} aria-label="Built around Claude Code">
+          <ClaudeCode />
+        </section>
+
+        {/* 5 · Value: retention */}
+        <section id="wait" className={styles.section} aria-labelledby="wait-h">
+          <div className={styles.head} data-reveal>
+            <h2 id="wait-h" className={styles.h2}>
+              Something to do while Claude works.
+            </h2>
+            <p className={styles.lede}>
+              Snake, Stack and Space Run open in a split beside the terminal. When Claude finishes, the game pauses and
+              tells you. Try it: this one’s real.
+            </p>
+          </div>
+          <WhileYouWait />
+        </section>
+
+        {/* 6 · Value: make it yours */}
+        <section id="yours" className={styles.section} aria-labelledby="yours-h">
+          <div className={styles.head} data-reveal>
+            <h2 id="yours-h" className={styles.h2}>
+              27 themes. Your fonts. Light, dark, or follow the Mac.
+            </h2>
+            <p className={styles.lede}>Everything in Fork takes its colours from your theme, down to the blobs.</p>
+          </div>
+          <Themes />
+        </section>
+
+        {/* 7 · Proof */}
+        <section id="cooking" className={styles.section} aria-labelledby="cooking-h">
+          <div className={styles.head} data-reveal>
+            <h2 id="cooking-h" className={styles.h2}>
+              Cooked in the open.
+            </h2>
+            <p className={styles.lede}>Every change to Fork gets written down, with why it was made.</p>
+          </div>
+          <div className={styles.cooked}>
+            {cooked.map((e, i) => (
+              <Link key={e.at} href="/whats-cooking" className={styles.cookCard} data-reveal style={{ "--i": i } as React.CSSProperties} data-track="cooking_clicked" data-from="cooking">
+                <span className={styles.sticker} data-kind={e.kind}>
+                  {e.version ? STICKER[e.kind] : "On the stove"}
+                </span>
+                <b>{e.title}</b>
+                <p>{e.what}</p>
+                <time dateTime={e.at}>
+                  {new Date(e.at).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" })}
+                </time>
+              </Link>
+            ))}
+          </div>
+          <p className={styles.more} data-reveal>
+            <Link href="/whats-cooking" data-track="cooking_clicked" data-from="cooking-more">
+              See everything that’s cooking →
+            </Link>
           </p>
         </section>
 
-        <section className={styles.thanks} aria-labelledby="thanks">
-          <Snowman />
-          <h2 id="thanks" className={`${styles.note} ${styles.thanksNote}`}>
-            THANKS A TON!
+        {/* 8 · Objections */}
+        <section id="faq" className={`${styles.section} ${styles.split}`} aria-labelledby="faq-h">
+          <h2 id="faq-h" className={styles.h2} data-reveal>
+            Questions, before you download.
           </h2>
-          <p className={styles.bio}>
-            I’m Harshvardhan, I love building stupid things that help me work better. If you need help or have any
-            questions, please send me a message on twitter. I would be happy to help you!
-          </p>
+          <Faq />
+        </section>
+
+        {/* 9 · Close */}
+        <section id="download" className={`${styles.section} ${styles.split}`} aria-labelledby="download-h">
+          <div data-reveal>
+            <h2 id="download-h" className={styles.h2}>
+              Download Fork.
+            </h2>
+            <p className={styles.lede}>Free, for Macs with Apple Silicon. Your tabs come back after every update.</p>
+          </div>
+          <Download />
         </section>
       </main>
 
-      <Footer cooking />
+      {/* 10 · Who made this: the letter and the footer end the page in one block, edge to edge. */}
+      <div className={styles.closing}>
+        <section id="thanks" className={styles.thanks} aria-labelledby="thanks-h">
+          <Snowman />
+          <Letter />
+          <svg className={styles.outlineBlob} viewBox="0 0 1000 420" aria-hidden focusable="false" data-reveal>
+            <circle cx="500" cy="500" r="470" pathLength={1} />
+            <rect x="560" y="200" width="46" height="120" rx="23" transform="rotate(-18 583 260)" pathLength={1} />
+            <rect x="720" y="170" width="46" height="120" rx="23" transform="rotate(-18 743 230)" pathLength={1} />
+          </svg>
+        </section>
+        <Footer className={styles.footer} cooking />
+      </div>
+      <Reveals />
     </div>
   );
 }

@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     ];
   },
   skipTrailingSlashRedirect: true, // PostHog's API paths end in "/"
+  // The new home page was tried out at /v2 first; links shared from then still land on it.
+  async redirects() {
+    return [{ source: "/v2", destination: "/", permanent: true }];
+  },
 };
 
 export default nextConfig;

@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T18:10+05:30",
+    title: "The new home page is the home page",
+    what: "fork-terminal.vercel.app now opens on the page that walks through what Fork does, and old /v2 links land there too. It ends in one panel, edge to edge, with the thank-you letter and the footer together.",
+    why: "It explains Fork before you download; the old page was one line and a picture. Ending in one panel makes the letter and the sign-off read as one goodbye instead of a stray strip at the bottom.",
+    kind: "new",
+    where: "website",
+  },
+  {
     at: "2026-09-30T17:35+05:30",
     title: "A pixel-dither hero, and rounded window corners",
     what: "Behind the Fork window at the top of the new home page, the soft colour glow is now a slow purple pixel dither, the same kind of shader as the “Know what went wrong” card. The Fork windows and the small window snippets in the feature cards now have rounded corners at the bottom too, like a real Mac window.",
