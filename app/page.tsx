@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import CookingNote from "./CookingNote";
 import DownloadButton from "./DownloadButton";
 import Footer from "./Footer";
 import ForkApp from "./ForkApp";
@@ -98,7 +97,6 @@ export default function V2() {
         <div className={styles.heroStage}>
           <div className={styles.heroWindow}>
             <ForkApp className={styles.heroApp} play />
-            <CookingNote className={styles.flatNote} />
           </div>
         </div>
       </header>

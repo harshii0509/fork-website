@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T20:05+05:30",
+    title: "The sticky note comes off the home page",
+    what: "The “just cooked!” note is no longer taped to the Fork window at the top of the home page. What’s cooking is still a click away in the menu and the footer, and the note stays on the first landing page at /v1.",
+    why: "The window is the thing to look at, and the note was covering part of it.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-09-30T19:45+05:30",
     title: "The home page says hello when it opens",
     what: "Opening the home page is a little show now. “Meet” and “Fork” rise out of a soft blur, the blob pops in between them and smiles, and the fork doodle is tossed into place. Then the Fork window tips up onto the page, its prompt types itself, Claude’s reply comes in a line at a time, and the “just cooked!” note is slapped on last. With reduced motion on, it’s all simply there.",

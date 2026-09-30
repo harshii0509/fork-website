@@ -197,7 +197,6 @@
  *   220  the lede, 290 the buttons, 340 "Free…"
  *   350  the Fork window tilts up into place
  *   950  its prompt types itself; 1550 Claude's reply, a line at a time (ForkApp's `play`)
- *   2000 the sticky note is slapped on
  * The buttons are usable from the start; everything else just decorates the arrival. */
 .heroCopy > * {
   animation: rise 600ms var(--ease-out) both;
@@ -398,18 +397,6 @@
 .heroApp,
 .themeApp {
   --t-win-shadow: 0 0 0 1px rgb(0 0 0 / 0.55), var(--win-shadow);
-}
-
-/* The sticky note, flat: butter paper, one small shadow. */
-.flatNote.flatNote {
-  background: #fbe7a6;
-  box-shadow: 0 3px 2px rgb(22 19 15 / 0.1);
-  animation-delay: 2000ms; /* slapped on last, once the terminal has played */
-}
-
-.flatNote.flatNote::before {
-  box-shadow: none;
-  background: rgb(255 255 255 / 0.55);
 }
 
 /* ---- Shader panels --------------------------------------------------------------------- */
