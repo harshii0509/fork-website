@@ -1,0 +1,1829 @@
+/* The v2 landing page. Cream paper like the app icon, flat panels, colour only from the shaders.
+ * No CSS gradients and no stacked shadows: the Fork windows get one soft shadow, nothing else does.
+ * Rose is for actions and doodles only; violet lives inside the Fork window and the shaders.
+ */
+
+.v2 {
+  --paper: #f3f0e8;
+  --panel: #faf8f3;
+  --sunk: #ece7dc;
+  --ink: #16130f;
+  --body: #4a453d;
+  --muted: #6e675d; /* 4.6:1 on paper */
+  --line: rgb(22 19 15 / 0.08);
+  --line-strong: rgb(22 19 15 / 0.14);
+  --rose: #c2466e; /* the action fill: white text at 4.78:1 */
+  --rose-hover: #b83d65;
+  --rose-doodle: #d5567d;
+  --violet: #7c6cff;
+  --butter: #f2d58e;
+  --win-shadow: 0 30px 60px -30px rgb(22 19 15 / 0.45);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --gutter: 24px;
+  --max: 1232px;
+
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Overscroll shows the page colour, not the old pink. */
+:global(html):has(.v2),
+:global(body):has(.v2) {
+  background: #f3f0e8;
+}
+
+.v2 ::selection {
+  background: #e8d9ff;
+}
+
+.v2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.v2 button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.doodle {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- Type ------------------------------------------------------------------------------ */
+
+.h1 {
+  font-size: clamp(2.75rem, 1.6rem + 4.6vw, 4.75rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-size: clamp(2rem, 1.45rem + 2.1vw, 3rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: clamp(16px, 0.9rem + 0.3vw, 18px);
+  text-wrap: pretty;
+}
+
+.lede b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.lede + .lede {
+  margin-top: 14px;
+}
+
+/* ---- Nav ------------------------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 64px;
+  padding: 0 max(var(--gutter), calc((100% - var(--max)) / 2));
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(243 240 232 / 0.86);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.nav[data-scrolled]::before {
+  opacity: 1;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.navLinks {
+  display: flex;
+  gap: 4px;
+  margin: 0 auto;
+}
+
+.navLinks a {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--body);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.navDownload {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper) !important;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease;
+}
+
+.navDownload:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navLinks a:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+
+  .navDownload:hover {
+    background: #2e2922;
+  }
+}
+
+/* ---- Hero ------------------------------------------------------------------------------ */
+
+.hero {
+  padding: 136px var(--gutter) 0;
+}
+
+.heroCopy {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroCopy > * {
+  animation: rise 600ms var(--ease-out) both;
+}
+
+.heroLede {
+  animation-delay: 60ms;
+}
+
+.ctas {
+  animation-delay: 120ms;
+}
+
+.micro {
+  animation-delay: 160ms;
+}
+
+.heroStage {
+  animation: rise 700ms var(--ease-out) 200ms both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.heroBowl {
+  position: absolute !important;
+  left: -40px;
+  top: 8px;
+}
+
+.heroFork {
+  position: absolute !important;
+  right: -16px;
+  top: -24px;
+  transform: rotate(14deg);
+}
+
+.h1Blob {
+  margin: -0.12em 0.04em 0;
+}
+
+.heroLede {
+  max-width: 560px;
+  margin: 22px auto 0;
+  color: var(--muted);
+  font-size: clamp(17px, 0.95rem + 0.45vw, 20px);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.btnPrimary,
+.btnSoft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px 0 18px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease;
+}
+
+.btnPrimary {
+  background: var(--rose);
+  color: #fff !important;
+}
+
+.btnSoft {
+  background: var(--sunk);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.btnPrimary:active,
+.btnSoft:active {
+  transform: scale(0.97);
+}
+
+.btnPrimary:focus-visible,
+.btnSoft:focus-visible,
+.chip:focus-visible,
+.swatch:focus-visible,
+.faqItem button:focus-visible,
+.dlRow:focus-visible,
+.copy:focus-visible,
+.cookCard:focus-visible,
+.navLinks a:focus-visible,
+.navDownload:focus-visible,
+.brand:focus-visible {
+  outline: 2px solid var(--rose-doodle);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btnPrimary:hover {
+    background: var(--rose-hover);
+  }
+
+  .btnSoft:hover {
+    background: #e3ddcf;
+  }
+}
+
+.micro {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.heroStage {
+  max-width: var(--max);
+  margin: 64px auto 0;
+  padding: clamp(20px, 5vw, 64px) clamp(8px, 4vw, 72px);
+  border-radius: 32px;
+}
+
+.heroWindow {
+  position: relative;
+  max-width: 1011px;
+  margin: 0 auto;
+}
+
+.heroApp,
+.themeApp {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* The Fork window's own shadow is heavier than this page wants: one soft one instead. */
+.heroApp,
+.themeApp {
+  --t-win-shadow: 0 0 0 1px rgb(0 0 0 / 0.55), var(--win-shadow);
+}
+
+/* The sticky note, flat: butter paper, one small shadow. */
+.flatNote.flatNote {
+  background: #fbe7a6;
+  box-shadow: 0 3px 2px rgb(22 19 15 / 0.1);
+}
+
+.flatNote.flatNote::before {
+  box-shadow: none;
+  background: rgb(255 255 255 / 0.55);
+}
+
+/* ---- Shader panels --------------------------------------------------------------------- */
+
+.shaderPanel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.shaderCanvas {
+  position: absolute !important;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Sections -------------------------------------------------------------------------- */
+
+.section {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(80px, 10vw, 136px) var(--gutter) 0;
+  scroll-margin-top: 40px;
+}
+
+.head {
+  max-width: 660px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.head .lede {
+  margin-top: 16px;
+}
+
+/* Insight: the panel with the giant blob peeking in (x.ai's mascot panel). */
+.insight {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  min-height: 460px;
+  border-radius: 32px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.insightCopy {
+  align-self: center;
+  padding: clamp(32px, 5vw, 72px);
+}
+
+.insightCopy .lede {
+  margin-top: 18px;
+}
+
+.bigBlob {
+  position: relative;
+}
+
+.bigBlob > span:nth-child(2) {
+  position: absolute !important;
+  right: -40px;
+  bottom: -70px;
+}
+
+.statePill {
+  position: absolute;
+  z-index: 1;
+  top: 56px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+
+.statePill i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violet);
+}
+
+.statePill i[data-look="failed"] {
+  background: #e5484d;
+}
+
+.statePill i[data-look="done"] {
+  background: #41d1ff;
+}
+
+.statePill i[data-look="dozing"] {
+  background: #b8b1a3;
+}
+
+.statePill i[data-look="running"] {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.confetti i {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.confetti i:nth-child(1) {
+  top: 40px;
+  right: 180px;
+  background: var(--butter);
+}
+
+.confetti i:nth-child(2) {
+  top: 120px;
+  left: 22%;
+  width: 9px;
+  height: 9px;
+  background: #b8aeff;
+}
+
+.confetti i:nth-child(3) {
+  top: 70px;
+  right: 40px;
+  background: #f0b6c7;
+}
+
+.confetti i:nth-child(4) {
+  top: 210px;
+  left: 8%;
+  width: 8px;
+  height: 8px;
+  background: #9fd9c1;
+}
+
+/* Feature cards: 2 × 2, each with a demo on a shader. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.cardCopy {
+  padding: 32px 32px 24px;
+}
+
+.cardCopy p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.cardStage {
+  flex: 1;
+  min-height: 300px;
+  margin: 0 12px 12px;
+  border-radius: 18px;
+}
+
+.demo {
+  position: absolute;
+  inset: 32px 28px 0;
+}
+
+/* ---- The mini Fork window (Designer theme) -------------------------------------------- */
+
+.miniWin {
+  position: relative;
+  border-radius: 10px 10px 0 0;
+  background: #141416;
+  color: #ececf1;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.5), var(--win-shadow);
+  overflow: hidden;
+}
+
+.miniBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgb(236 236 241 / 0.08);
+}
+
+.miniLights {
+  display: flex;
+  gap: 6px;
+}
+
+.miniLights i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ec6765;
+}
+
+.miniLights i:nth-child(2) {
+  background: #f2ca44;
+}
+
+.miniLights i:nth-child(3) {
+  background: #65c466;
+}
+
+.miniTitle {
+  color: #8e8e99;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.miniBody {
+  min-height: 190px;
+  padding: 12px 14px 16px;
+  font: 12px/18px ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0;
+}
+
+.miniLine {
+  min-height: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tone_text {
+  color: #ececf1;
+}
+
+.tone_dim {
+  color: #8e8e99;
+}
+
+.tone_accent {
+  color: #9d91ff;
+}
+
+.tone_bad {
+  color: #ff6b6b;
+}
+
+.tone_ok {
+  color: #4ade80;
+}
+
+.miniCursor,
+.miniCursorLight {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  margin-left: 1px;
+  vertical-align: -2px;
+  background: #ececf1;
+  animation: blink 1s steps(1) infinite;
+}
+
+.miniCursorLight {
+  width: 1.5px;
+  height: 17px;
+  background: var(--violet);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The app's buttons and chips, small. */
+.appBtn,
+.appBtnGhost {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #7c6cff;
+  color: #fff;
+  font: 500 11.5px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+  white-space: nowrap;
+  transition: transform 150ms var(--ease-out);
+}
+
+.appBtn[data-pressed] {
+  transform: scale(0.94);
+}
+
+.appBtnGhost {
+  background: rgb(236 236 241 / 0.08);
+  color: #ececf1;
+}
+
+/* ⌘K palette, floating over the window. */
+.palette {
+  position: absolute;
+  top: 44px;
+  left: 8%;
+  right: 8%;
+  border-radius: 12px;
+  background: #1d1d21;
+  border: 1px solid rgb(236 236 241 / 0.12);
+  box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.6);
+  color: #ececf1;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.palette[data-open] {
+  opacity: 1;
+  transform: none;
+}
+
+.palIn {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgb(236 236 241 / 0.08);
+}
+
+.palHint {
+  color: #8e8e99;
+}
+
+.palHit {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgb(124 108 255 / 0.16);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.palHit[data-shown] {
+  opacity: 1;
+  transform: none;
+}
+
+.palHit b {
+  display: block;
+  font-weight: 600;
+}
+
+.palHit small {
+  display: block;
+  color: #8e8e99;
+  font-size: 12px;
+}
+
+.palHit code {
+  display: inline-block;
+  margin-top: 6px;
+  color: #9d91ff;
+  font: 12px ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.palRun {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #7c6cff;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+/* "That didn't work." bar. */
+.oops {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 150px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #232327;
+  border: 1px solid rgb(236 236 241 / 0.1);
+  color: #ececf1;
+  font: 12.5px/1.45 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+}
+
+.oops > span:first-child {
+  flex: 1;
+}
+
+.oopsText {
+  animation: fadeUp 260ms var(--ease-out);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.appChip {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  color: var(--body);
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: background-color 200ms ease, color 200ms ease, transform 200ms var(--ease-out);
+}
+
+.appChip[data-on] {
+  background: var(--ink);
+  color: var(--paper);
+  transform: scale(0.97);
+}
+
+/* Your app beside the terminal. */
+.seeSplit {
+  display: grid;
+  grid-template-columns: 1fr 0fr;
+  transition: grid-template-columns 500ms var(--ease-in-out);
+}
+
+.seeSplit[data-open] {
+  grid-template-columns: 1fr 1fr;
+}
+
+.seeTerm {
+  position: relative;
+  min-width: 0;
+  min-height: 190px;
+}
+
+.seePage {
+  min-width: 0;
+  overflow: hidden;
+  border-left: 1px solid rgb(236 236 241 / 0.08);
+  margin: -12px -14px -16px 14px;
+  background: #f7f3ea;
+}
+
+.seeUrl {
+  padding: 6px 10px;
+  background: #1d1d21;
+  color: #8e8e99;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.seeSite {
+  display: grid;
+  gap: 8px;
+  padding: 18px 16px;
+}
+
+.seeSite i {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: #ddd3c0;
+}
+
+.seeSite .seeH {
+  width: 80%;
+  height: 16px;
+  background: var(--ink);
+  opacity: 0.85;
+}
+
+.seeSite .seeBtn {
+  width: 72px;
+  height: 22px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--rose);
+}
+
+.ready {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #232327;
+  font: 12px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+  animation: fadeUp 260ms var(--ease-out);
+}
+
+.ready i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+.ready span:nth-child(2) {
+  flex: 1;
+}
+
+/* Claude Code's prompt box. */
+.cBox {
+  display: inline-block;
+  min-width: 70%;
+  max-width: 100%;
+  margin: 2px 0 8px;
+  padding: 4px 10px;
+  border: 1px solid #5c5c66;
+  border-radius: 6px;
+}
+
+/* ---- Built around Claude Code ----------------------------------------------------------- */
+
+.claudeGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+.claudeCopy .lede {
+  margin-top: 16px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.chip {
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--body);
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 160ms var(--ease-out);
+}
+
+.chip[aria-selected="true"] {
+  border-color: transparent;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chip:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chip[aria-selected="false"]:hover {
+    background: var(--sunk);
+    color: var(--ink);
+  }
+}
+
+.chipText {
+  min-height: 5.2em;
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.chipText b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.claudeStage {
+  min-height: 460px;
+  border-radius: 28px;
+}
+
+.claudeDemo {
+  animation: fadeUp 300ms var(--ease-out);
+}
+
+.claudeDemo .demo {
+  inset: 56px 40px 0;
+}
+
+.runBar {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 190px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #232327;
+  border: 1px solid rgb(236 236 241 / 0.1);
+  color: #ececf1;
+  font: 12.5px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.runBar[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+.runBar > span:nth-child(2) {
+  flex: 1;
+}
+
+.tabList {
+  width: min(100%, 360px);
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 14px;
+  background: #4a4948;
+  color: #e6e6e6;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.5), var(--win-shadow);
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+}
+
+.tabHead {
+  padding: 4px 8px 8px;
+  color: rgb(230 230 230 / 0.6);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.tabRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 8px;
+  border-radius: 7px;
+}
+
+.tabRow:first-of-type {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.tabName {
+  flex: 1;
+}
+
+.tabTip {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #1d1d21;
+  color: #c9c9d1;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.dragFile {
+  position: absolute;
+  top: 150px;
+  left: 60%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 9px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  transition: transform 900ms var(--ease-in-out), opacity 300ms ease;
+}
+
+.dragFile[data-step="1"] {
+  transform: translate(-150px, -90px) rotate(-4deg);
+}
+
+.dragFile[data-step="2"] {
+  opacity: 0;
+  transform: translate(-150px, -90px) scale(0.9);
+}
+
+.fileIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--butter);
+  border: 1px solid #d9b95c;
+}
+
+.keys {
+  position: absolute;
+  top: 256px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.keys kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 3px;
+  font: 500 14px/1 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+}
+
+/* ---- While you wait -------------------------------------------------------------------- */
+
+.waitGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.waitWin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-radius: 16px;
+  background: #141416;
+  color: #ececf1;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.5), var(--win-shadow);
+  overflow: hidden;
+}
+
+.waitTerm {
+  position: relative;
+  min-height: 300px;
+  padding: 20px 20px 64px;
+  font: 12.5px/19px ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.waitBar {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #232327;
+  font: 12.5px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+}
+
+.snake {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px 16px;
+  border-left: 1px solid rgb(236 236 241 / 0.08);
+  font: 12px/1.4 -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif;
+}
+
+.snakeHead {
+  display: flex;
+  width: 264px;
+  max-width: 100%;
+  justify-content: space-between;
+  color: #8e8e99;
+  font-weight: 500;
+}
+
+.snakeHead span:first-child {
+  color: #ececf1;
+}
+
+.snakeBoard {
+  position: relative;
+}
+
+.snakeBoard canvas {
+  display: block;
+  width: 264px;
+  height: 168px;
+  border-radius: 6px;
+  image-rendering: pixelated;
+  outline: none;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.snakeBoard canvas:focus-visible {
+  box-shadow: 0 0 0 2px #7c6cff;
+}
+
+.snakeCard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 6px;
+  background: rgb(20 20 22 / 0.82);
+  text-align: center;
+}
+
+.snakeCard b {
+  font-size: 15px;
+}
+
+.snakeCard > span {
+  color: #8e8e99;
+}
+
+.snakeCard div {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.snakeCard button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #7c6cff;
+  color: #fff;
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.snakeCard button + button {
+  background: rgb(236 236 241 / 0.1);
+}
+
+.snakeCard kbd {
+  padding: 0 5px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 0.18);
+  font: 10.5px/1.6 -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.snakeHint {
+  color: #5c5c66;
+}
+
+.stove {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px;
+  border-radius: 24px;
+  background: var(--panel);
+}
+
+.stove p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.sticker {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fbe7a6;
+  color: #6b5217;
+  font-size: 12px;
+  font-weight: 600;
+  transform: rotate(-2deg);
+}
+
+.sticker[data-kind="new"] {
+  background: #e3ddff;
+  color: #4a3db8;
+}
+
+.sticker[data-kind="fixed"] {
+  background: #f6dce4;
+  color: #8f2c4c;
+}
+
+.sticker[data-kind="better"] {
+  background: #d6efe2;
+  color: #1f6045;
+}
+
+/* ---- Make it yours --------------------------------------------------------------------- */
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 160ms var(--ease-out);
+}
+
+.swatch[aria-checked="true"] {
+  border-color: var(--ink);
+  background: var(--panel);
+}
+
+.swatch:active {
+  transform: scale(0.97);
+}
+
+.swatchDot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+
+.swatchDot::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .swatch[aria-checked="false"]:hover {
+    background: var(--sunk);
+  }
+}
+
+.themeWindow {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* ---- Cooking --------------------------------------------------------------------------- */
+
+.cooked {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.cookCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--panel);
+  transition: transform 200ms var(--ease-out);
+}
+
+.cookCard b {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.cookCard p {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 15px;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.cookCard time {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.cookCard:active {
+  transform: scale(0.99);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cookCard:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.more {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.more a {
+  border-bottom: 1.5px solid var(--rose-doodle);
+}
+
+/* ---- FAQ and download: title left, content right --------------------------------------- */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(24px, 6vw, 96px);
+  align-items: start;
+}
+
+.split .lede {
+  margin-top: 16px;
+}
+
+@media (min-width: 1001px) {
+  .split > :first-child {
+    position: sticky;
+    top: 104px;
+  }
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.faqItem:first-child {
+  border-top: 1px solid var(--line-strong);
+}
+
+.faqItem button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
+}
+
+.faqIcon {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.faqIcon::before,
+.faqIcon::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 14px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--muted);
+  transition: transform 300ms var(--ease-in-out);
+}
+
+.faqIcon::after {
+  transform: rotate(90deg);
+}
+
+.faqItem[data-open] .faqIcon::after {
+  transform: rotate(0deg);
+}
+
+.faqA {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease-in-out);
+}
+
+.faqItem[data-open] .faqA {
+  grid-template-rows: 1fr;
+}
+
+.faqA > div {
+  overflow: hidden;
+}
+
+.faqA p {
+  max-width: 560px;
+  padding-bottom: 22px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.dlRows {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+}
+
+.dlRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: var(--panel);
+  transition: transform 160ms var(--ease-out), background-color 150ms ease;
+}
+
+.dlMain {
+  background: var(--rose);
+  color: #fff !important;
+}
+
+.dlMain:active {
+  transform: scale(0.99);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dlMain:hover {
+    background: var(--rose-hover);
+  }
+}
+
+.dlText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dlText b {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dlText small {
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.dlText code {
+  overflow: hidden;
+  color: var(--muted);
+  font: 12.5px/1.5 var(--font-plex), ui-monospace, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dlArrow {
+  font-size: 20px;
+}
+
+.dlApple {
+  flex: none;
+}
+
+.dlTerm {
+  flex: none;
+  width: 20px;
+  color: var(--muted);
+  font: 700 13px/1 var(--font-plex), monospace;
+}
+
+.copy {
+  flex: none;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sunk);
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  transition: background-color 150ms ease, transform 160ms var(--ease-out);
+}
+
+.copy:active {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copy:hover {
+    background: #e3ddcf;
+  }
+}
+
+/* ---- Thanks and the big blob over the footer -------------------------------------------- */
+
+.thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(96px, 12vw, 160px) var(--gutter) 0;
+  text-align: center;
+}
+
+.note {
+  margin-top: 16px;
+  color: var(--rose-doodle);
+  font-family: var(--font-caveat), cursive;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.bio {
+  max-width: 520px;
+  margin-top: 16px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.outlineBlob {
+  display: block;
+  width: min(100%, 900px);
+  margin-top: 56px;
+  fill: none;
+  stroke: var(--rose-doodle);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+:global(html[data-reveals="on"]) .outlineBlob:not([data-shown]) * {
+  stroke-dashoffset: 1;
+}
+
+.outlineBlob * {
+  transition: stroke-dashoffset 2000ms var(--ease-in-out);
+}
+
+.outlineBlob rect {
+  transition-delay: 900ms;
+  transition-duration: 700ms;
+}
+
+.footer {
+  margin-top: 0;
+  border-top: 2px solid var(--rose-doodle);
+  padding-top: 40px;
+}
+
+/* Snowman.tsx centres itself with a margin meant for the old page's column. */
+.thanks > button:first-child {
+  align-self: center;
+  margin: 0 auto !important;
+}
+
+/* ---- Scroll reveals (JS adds data-reveals="on"; without JS everything just shows) ----- */
+
+:global(html[data-reveals="on"]) .v2 [data-reveal]:not([data-shown]):not(svg) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.v2 [data-reveal] {
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+/* ---- Tablet and phone ------------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .navLinks {
+    display: none;
+  }
+
+  .nav {
+    justify-content: space-between;
+  }
+
+  .claudeGrid,
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .waitGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cooked {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .heroBowl,
+  .heroFork {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .v2 {
+    --gutter: 16px;
+  }
+
+  .hero {
+    padding-top: 112px;
+  }
+
+  .h1Blob {
+    zoom: 0.72;
+  }
+
+  .ctas > * {
+    flex: 1 1 100%;
+  }
+
+  .heroStage {
+    margin-top: 40px;
+    border-radius: 24px;
+  }
+
+  .insight {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .bigBlob {
+    height: 280px;
+  }
+
+  .bigBlob > span:nth-child(2) {
+    zoom: 0.6;
+    right: -40px;
+    bottom: -120px;
+  }
+
+  .statePill {
+    top: 12px;
+    left: 32px;
+  }
+
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cardCopy {
+    padding: 24px 24px 20px;
+  }
+
+  .demo {
+    inset: 24px 16px 0;
+  }
+
+  .claudeStage {
+    min-height: 400px;
+  }
+
+  .claudeDemo .demo {
+    inset: 32px 16px 0;
+  }
+
+  .chips {
+    flex-wrap: nowrap;
+    margin-right: calc(-1 * var(--gutter));
+    padding-right: var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .chip {
+    flex: none;
+  }
+
+  .waitWin {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .waitTerm {
+    min-height: 220px;
+  }
+
+  .snake {
+    align-items: center;
+    border-left: 0;
+    border-top: 1px solid rgb(236 236 241 / 0.08);
+  }
+
+  .dlText code {
+    white-space: normal;
+    word-break: break-all;
+  }
+}
+
+/* ---- Reduced motion: no rising, no drawing, no blinking -------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .heroCopy > *,
+  .heroStage {
+    animation: none;
+  }
+
+  .v2 [data-reveal],
+  :global(html[data-reveals="on"]) .v2 [data-reveal]:not([data-shown]):not(svg) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .outlineBlob *,
+  :global(html[data-reveals="on"]) .outlineBlob:not([data-shown]) * {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+
+  .miniCursor,
+  .miniCursorLight,
+  .statePill i[data-look="running"] {
+    animation: none;
+  }
+
+  .seeSplit,
+  .palette,
+  .palHit,
+  .dragFile,
+  .runBar,
+  .faqA,
+  .faqIcon::before,
+  .faqIcon::after {
+    transition: none;
+  }
+}

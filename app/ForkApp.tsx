@@ -58,7 +58,7 @@ function Icon({ name, className }: { name: IconName; className?: string }) {
 function Blob() {
   return (
     <svg className={styles.mBlob} width="22" height="22" viewBox="0 0 22 22" aria-hidden focusable="false">
-      <circle cx="11" cy="11" r="11" fill="#7a6df7" />
+      <circle cx="11" cy="11" r="11" style={{ fill: "var(--t-accent, #7a6df7)" }} />
       <path d="M12.6 6.2l.9 1.9M16.8 5.4l.8 1.8" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   );
@@ -103,7 +103,7 @@ const TRANSCRIPT: [string, Tone][][] = [
 ];
 const TONE = { text: styles.mText, dim: styles.mDim, accent: styles.mAccent };
 
-export default function ForkApp({ className }: { className: string }) {
+export default function ForkApp({ className, style }: { className: string; style?: React.CSSProperties }) {
   const input = useRef<HTMLInputElement>(null);
   const screen = useRef<HTMLDivElement>(null);
   const [typed, setTyped] = useState("");
@@ -133,7 +133,7 @@ export default function ForkApp({ className }: { className: string }) {
 
   const under = typed[caret] ?? " "; // the block cursor sits on a character, like xterm's
   return (
-    <div className={`${className} ${styles.mock}`} role="group" aria-label="A preview of the Fork app. Try typing in its terminal.">
+    <div className={`${className} ${styles.mock}`} style={style} role="group" aria-label="A preview of the Fork app. Try typing in its terminal.">
       <div className={styles.mFrame}>
         <div className={styles.mWin}>
           <aside className={styles.mSide} aria-hidden>

@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
+    at: "2026-09-30T12:02+05:30",
+    title: "A new home page that shows what Fork does",
+    what: "A second version of the home page, at /v2 for now. It walks through Fork one idea at a time: ⌘K in plain words, “What went wrong?”, suggestions and safety nets, your app beside the terminal, the Claude Code features, a real game of Snake, and a theme picker that re-colours the Fork window. The blob from the app says hello in the headline, and soft Paper shaders move behind the demos. It’s on cream paper, like the app icon.",
+    why: "The old page had one line and a picture, so you had to install Fork to find out what it does. This one explains it before you download, and each part is measured, so we can see what people actually read.",
+    kind: "new",
+    where: "website",
+  },
+  {
     at: "2026-09-30T01:55+05:30",
     title: "The home page fits phones",
     what: "On a phone the sticky note on the Fork window shrinks to a small “just cooked!” tab on its corner, so the window shows through. The Download button spans the screen, with View on Github centred under it.",

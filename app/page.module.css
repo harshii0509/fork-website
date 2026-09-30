@@ -380,10 +380,11 @@
 }
 
 .mWin {
-  --m-bg: #141416;
-  --m-text: #ececf1;
-  --m-tree: #e6e6e6;
-  --m-accent: #7c6cff;
+  /* A parent can set --t-* to re-theme the window (the v2 page's theme picker). */
+  --m-bg: var(--t-bg, #141416);
+  --m-text: var(--t-text, #ececf1);
+  --m-tree: var(--t-text, #e6e6e6);
+  --m-accent: var(--t-accent, #7c6cff);
   --m-line: color-mix(in srgb, var(--m-text) 12%, var(--m-bg));
   --m-faint: color-mix(in srgb, var(--m-text) 30%, var(--m-bg));
   --m-dim: color-mix(in srgb, var(--m-text) 60%, var(--m-bg));
@@ -405,7 +406,8 @@
   cursor: default;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: 0 0 0 1px #000000b3, 0 24px 70px 6px #0000004d;
+  box-shadow: var(--t-win-shadow, 0 0 0 1px #000000b3, 0 24px 70px 6px #0000004d);
+  transition: background-color 300ms ease, color 300ms ease; /* theme changes ease in */
   transform-origin: 0 0;
   transform: scale(0.7259); /* fallback: the desktop size */
   transform: scale(tan(atan2(100cqw, 1280px))); /* the frame's width ÷ 1280, as a plain number */
@@ -440,8 +442,9 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  background: #4a4948;
+  background: var(--t-side, #4a4948);
   border-right: 1px solid var(--m-hover);
+  transition: background-color 300ms ease;
 }
 
 .mSideTop {
@@ -720,25 +723,25 @@
 }
 
 .mText {
-  color: #ececf1;
+  color: var(--t-text, #ececf1);
 }
 
 .mDim {
-  color: #8e8e99;
+  color: var(--t-dim, #8e8e99);
 }
 
 .mAccent {
-  color: #9d91ff;
+  color: var(--t-accent-text, #9d91ff);
 }
 
 /* xterm's cursor: an outline while the page has focus elsewhere, a blinking block while typing. */
 .mCursor {
-  color: #ececf1;
-  box-shadow: inset 0 0 0 1px #ececf1;
+  color: var(--t-text, #ececf1);
+  box-shadow: inset 0 0 0 1px var(--t-text, #ececf1);
 }
 
 .mCursor.mFocused {
-  background: #ececf1;
+  background: var(--t-text, #ececf1);
   color: var(--m-bg);
   box-shadow: none;
   animation: m-blink 1s steps(1) infinite;
@@ -747,7 +750,7 @@
 @keyframes m-blink {
   50% {
     background: transparent;
-    color: #ececf1;
+    color: var(--t-text, #ececf1);
   }
 }
 

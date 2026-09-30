@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 
 // The download happens in the browser's own UI (a toolbar corner), so the button says it started.
 // Both labels share one grid cell, so the button keeps its width while they swap.
-export default function DownloadButton({ href }: { href: string }) {
+export default function DownloadButton({ href, className = styles.download, from }: { href: string; className?: string; from?: string }) {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function DownloadButton({ href }: { href: string }) {
   }, [started]);
 
   return (
-    <a className={styles.download} href={href} onClick={() => setStarted(true)} data-track="download_clicked" data-started={started || undefined}>
+    <a className={className} href={href} onClick={() => setStarted(true)} data-track="download_clicked" data-from={from} data-started={started || undefined}>
       <Image src="/art/apple.svg" width={20} height={20} alt="" aria-hidden />
       <span className={styles.labels}>
         <span className={styles.label} aria-hidden={started}>

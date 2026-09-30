@@ -26,14 +26,14 @@ if (process.env.NODE_ENV === "production" && !local) {
   }
 }
 
-// Links marked data-track="event" (and optional data-network, data-from) report their click.
+// Links marked data-track="event" (and optional data-network, data-from, data-item) report their click.
 document.addEventListener(
   "click",
   (e) => {
     const link = (e.target as Element | null)?.closest<HTMLElement>("[data-track]");
     if (!link) return;
-    const { track: event, network, from } = link.dataset;
-    if (event) track(event, { ...(network && { network }), ...(from && { from }) });
+    const { track: event, network, from, item } = link.dataset;
+    if (event) track(event, { ...(network && { network }), ...(from && { from }), ...(item && { item }) });
   },
   true,
 );

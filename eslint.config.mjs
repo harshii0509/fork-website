@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Built third-party code (the Bloub mascot, copied from designer-terminal).
+    "public/vendor/**",
   ]),
 ]);
 
