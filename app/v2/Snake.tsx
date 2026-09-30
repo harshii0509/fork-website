@@ -176,10 +176,10 @@ export default function Snake({ onDone }: { onDone?: (done: boolean) => void }) 
                 <span>Back to it, or finish your game first?</span>
                 <div>
                   <button onClick={back}>
-                    Back to it <kbd>Enter</kbd>
+                    <kbd>Enter</kbd> Back to it
                   </button>
                   <button onClick={keep}>
-                    Keep playing <kbd>Space</kbd>
+                    <kbd>Space</kbd> Keep playing
                   </button>
                 </div>
               </>
@@ -189,7 +189,7 @@ export default function Snake({ onDone }: { onDone?: (done: boolean) => void }) 
                 <span>{mode === "over" ? `You scored ${score}.` : "Ready when you are."}</span>
                 <div>
                   <button onClick={start}>
-                    {mode === "over" ? "Play again" : "Start"} <kbd>Space</kbd>
+                    <kbd>Space</kbd> {mode === "over" ? "Play again" : "Start"}
                   </button>
                 </div>
               </>
