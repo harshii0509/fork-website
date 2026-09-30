@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // A stray package-lock.json in the home folder would otherwise be taken as the workspace root.
   turbopack: { root: import.meta.dirname },
+  // The dev server opened through a Cloudflare quick tunnel: without this, dev files and hot reload are blocked there.
+  allowedDevOrigins: ["*.trycloudflare.com"],
   // Analytics goes through this site's own address (/ingest), so ad blockers don't drop it.
   async rewrites() {
     return [
