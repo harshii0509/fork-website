@@ -32,6 +32,15 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 1 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-01T09:41+05:30",
+    title: "OpenCode and other terminal apps work fully in Fork",
+    what: "Apps that run inside the terminal, like OpenCode, now get everything they ask for. That means full colour, pictures in the terminal, copying to your clipboard (apps can never read it) and links you can ⌘-click. Fork also knows when OpenCode, Codex or Gemini is working: the bar says “OpenCode is working.”, Esc stops it, and the tab’s blob shows when it’s done, just like Claude. When something finishes or needs you while you’re in another app, a Mac notification and a dock badge tell you, and clicking it takes you to that tab. You can turn that off in Settings → Notifications.",
+    why: "The OpenCode team’s OpenTUI kit showed us what modern terminal apps expect from a terminal, and Fork was quietly missing some of it. OpenCode’s copy didn’t work, for one. Fork is for whatever tools you use, so they should all feel at home in it.",
+    kind: "new",
+    where: "app",
+  },
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
     at: "2026-09-30T20:30+05:30",
