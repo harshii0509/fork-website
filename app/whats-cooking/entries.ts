@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 1 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-01T15:01+05:30",
+    title: "Fork lives in your notch",
+    what: "On a MacBook with a notch, while you’re in another app, the notch grows down to show what your terminals are doing. You’ll see “Claude is working” with the blob thinking and how long it’s been. Then for a few seconds it shows when something’s done, when a command failed (click for “What went wrong?”) or when your app is ready (click to see it). Hover the notch to see every tab and jump to any of them. It replaces the Mac banners on these Macs, and you can turn it off in Settings → Notifications.",
+    why: "You go to another app while Claude or a build works, and you shouldn’t have to keep coming back to check. The notch is right where your eyes already go.",
+    kind: "new",
+    where: "app",
+  },
+  {
     at: "2026-10-01T11:11+05:30",
     title: "No “What’s new” repeat after you update",
     what: "Updating from the pill in Fork no longer opens the new version with a “What’s new” window. You read those notes just before clicking Update and restart. Updating any other way, like downloading it again, still shows them once.",
