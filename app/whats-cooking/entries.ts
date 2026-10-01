@@ -34,6 +34,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 1 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-01T11:11+05:30",
+    title: "No “What’s new” repeat after you update",
+    what: "Updating from the pill in Fork no longer opens the new version with a “What’s new” window. You read those notes just before clicking Update and restart. Updating any other way, like downloading it again, still shows them once.",
+    why: "After an update Fork should pick up right where you left off, not show you the same thing twice.",
+    kind: "fixed",
+    where: "app",
+  },
+  {
     at: "2026-10-01T09:41+05:30",
     title: "OpenCode and other terminal apps work fully in Fork",
     what: "Apps that run inside the terminal, like OpenCode, now get everything they ask for. That means full colour, pictures in the terminal, copying to your clipboard (apps can never read it) and links you can ⌘-click. Fork also knows when OpenCode, Codex or Gemini is working: the bar says “OpenCode is working.”, Esc stops it, and the tab’s blob shows when it’s done, just like Claude. When something finishes or needs you while you’re in another app, a Mac notification and a dock badge tell you, and clicking it takes you to that tab. You can turn that off in Settings → Notifications.",
