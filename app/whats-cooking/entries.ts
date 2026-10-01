@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "0.4.0", at: "2026-10-01T15:17+05:30" },
   { version: "0.3.1", at: "2026-09-27T04:59+05:30" },
   { version: "0.3.0", at: "2026-09-27T04:45+05:30" },
   { version: "0.2.1", at: "2026-09-26T19:53+05:30" },
@@ -40,6 +41,7 @@ export const ENTRIES: Entry[] = [
     why: "You go to another app while Claude or a build works, and you shouldn’t have to keep coming back to check. The notch is right where your eyes already go.",
     kind: "new",
     where: "app",
+    version: "0.4.0",
   },
   {
     at: "2026-10-01T11:11+05:30",
@@ -48,6 +50,7 @@ export const ENTRIES: Entry[] = [
     why: "After an update Fork should pick up right where you left off, not show you the same thing twice.",
     kind: "fixed",
     where: "app",
+    version: "0.4.0",
   },
   {
     at: "2026-10-01T09:41+05:30",
@@ -56,6 +59,7 @@ export const ENTRIES: Entry[] = [
     why: "The OpenCode team’s OpenTUI kit showed us what modern terminal apps expect from a terminal, and Fork was quietly missing some of it. OpenCode’s copy didn’t work, for one. Fork is for whatever tools you use, so they should all feel at home in it.",
     kind: "new",
     where: "app",
+    version: "0.4.0",
   },
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
@@ -155,6 +159,7 @@ export const ENTRIES: Entry[] = [
     why: "Before this, the bar said “Something is running” the whole time Claude was open, even when it was just sitting there waiting for you. The cause was a small bug: the shell told Fork only the first letter of one-word commands, so plain `claude` was reported as “c”. Fixing it also means Claude reopens properly after a restart.",
     kind: "fixed",
     where: "app",
+    version: "0.4.0",
   },
 
   // ---- 28 Sep ----------------------------------------------------------------------------------
@@ -165,6 +170,7 @@ export const ENTRIES: Entry[] = [
     why: "Waiting on a long prompt is dead time, and plenty of people would rather read a few pages than stare at a spinner. The panel already showed files and your running app, so a book fitted right in.",
     kind: "new",
     where: "app",
+    version: "0.4.0",
   },
 
   // ---- 27 Sep ----------------------------------------------------------------------------------
