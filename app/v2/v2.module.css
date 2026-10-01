@@ -184,11 +184,19 @@
   padding: 136px var(--gutter) 0;
 }
 
+/* The scroll moment (HeroCover.tsx): the copy stays pinned where it sits while the Fork window rises
+ * over it. As the window covers it, the copy recedes (fading out by 85% of the way, easing back to
+ * 96%) and the window grows from 94% to full size. Both track the scroll 1:1, through --cover and
+ * --cover-e, so there's no lag behind your finger. */
 .heroCopy {
-  position: relative;
+  position: sticky;
+  top: 136px;
   max-width: 760px;
   margin: 0 auto;
   text-align: center;
+  opacity: calc(1 - var(--cover, 0) / 0.85);
+  transform: scale(calc(1 - 0.04 * var(--cover, 0)));
+  transform-origin: 50% 0;
 }
 
 /* The entrance, once per visit (ms after load):
@@ -374,6 +382,8 @@
 
 /* The Fork window sits straight on the page: no panel behind it, so it can be big. */
 .heroStage {
+  position: relative;
+  z-index: 1;
   max-width: var(--max);
   margin: 56px auto 0;
   padding: 0 var(--gutter);
@@ -383,6 +393,8 @@
   position: relative;
   max-width: 1180px;
   margin: 0 auto;
+  transform: scale(calc(0.94 + 0.06 * var(--cover-e, 1)));
+  transform-origin: 50% 0;
 }
 
 .heroApp,
@@ -1792,6 +1804,12 @@
     padding-top: 112px;
   }
 
+  /* On a phone the window is shorter than the copy, so nothing is pinned: it just scrolls. */
+  .heroCopy {
+    position: relative;
+    top: 0;
+  }
+
   .h1Blob {
     zoom: 0.72;
   }
@@ -1869,6 +1887,16 @@
   .letter[data-state] .flap,
   .letter[data-state] .letterSlot {
     transition: none;
+  }
+
+  /* The window still slides over the pinned copy (that's just layout); nothing fades or grows. */
+  .heroCopy {
+    opacity: 1;
+    transform: none;
+  }
+
+  .heroWindow {
+    transform: none;
   }
 
   .heroCopy > *,

@@ -32,6 +32,15 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 1 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-01T08:39+05:30",
+    title: "The Fork window rises over the headline as you scroll",
+    what: "On the home page, the headline now stays where it is when you start scrolling, and the Fork window slides up over it, growing to full size while the headline fades back. Once it’s covered, the page scrolls as normal. On phones it just scrolls, and with reduced motion on nothing fades or grows.",
+    why: "It hands you from the promise straight to the thing itself, the terminal, in one motion.",
+    kind: "new",
+    where: "website",
+  },
   // ---- 30 Sep ----------------------------------------------------------------------------------
   {
     at: "2026-09-30T20:30+05:30",

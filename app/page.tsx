@@ -10,6 +10,7 @@ import Snowman from "./Snowman";
 import { ENTRIES, STICKER } from "./whats-cooking/entries";
 import Bloub from "./v2/Bloub";
 import { DOWNLOAD, FEATURES, GITHUB } from "./v2/content";
+import HeroCover from "./v2/HeroCover";
 import Nav from "./v2/Nav";
 import Reveals from "./v2/Reveals";
 import Download from "./v2/sections/Download";
@@ -69,8 +70,8 @@ export default function V2() {
       <Nav brandClass={plex.className} />
 
       {/* 1 · Hook */}
-      <header id="top" className={styles.hero}>
-        <div className={styles.heroCopy}>
+      <header id="top" className={styles.hero} data-cover>
+        <div className={styles.heroCopy} data-cover-copy>
           <NoodleBowl className={styles.heroBowl} />
           <Doodle src="/art/Fork.svg" width={62} height={83} className={styles.heroFork} />
           <h1 className={styles.h1}>
@@ -93,7 +94,7 @@ export default function V2() {
           <p className={styles.micro}>Free · for Macs with Apple Silicon</p>
         </div>
 
-        <div className={styles.heroStage}>
+        <div className={styles.heroStage} data-cover-stage>
           <div className={styles.heroWindow}>
             <ForkApp className={styles.heroApp} play />
           </div>
@@ -237,6 +238,7 @@ export default function V2() {
         <Footer className={styles.footer} cooking />
       </div>
       <Reveals />
+      <HeroCover />
     </div>
   );
 }
