@@ -35,7 +35,6 @@ export default function WhatsCooking() {
           shader="GrainGradient"
           base="#EAE3D5"
           className={styles.band}
-          steer={0.08}
           params={{
             colorBack: "#EDE7DA",
             colors: ["#D8D1FB", "#F0CAD6", "#F3E1B0"], // pale, so the words on top stay easy to read

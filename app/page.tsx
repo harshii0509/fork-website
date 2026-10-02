@@ -53,9 +53,9 @@ const CARD_SHADERS = {
     params: { colorBack: "#EDE7DA", colorFill: "#CFC4AE", colorStroke: "#CFC4AE", size: 2, gapX: 18, gapY: 18, strokeWidth: 0, sizeRange: 0.4, opacityRange: 0.5, shape: "circle" },
   },
   see: {
-    shader: "PaperTexture",
-    base: "#EADFC8",
-    params: { colorBack: "#EADFC8", colorPaper: "#F7F1E4", colorShadow: "#C9B998", fit: "cover", scale: 1, roughness: 0.4, fiber: 0.3, folds: 0.5, crumples: 0.3, drops: 0.1, seed: 5.8 },
+    shader: "GrainGradient",
+    base: "#E4EEDF",
+    params: { colorBack: "#ECF4E8", colors: ["#5FBF7A", "#A8DDB3", "#F2E6C2"], softness: 0.8, intensity: 0.3, noise: 0.35, shape: "corners", speed: 0.6 },
   },
 } as const;
 
