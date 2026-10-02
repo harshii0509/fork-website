@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "0.4.0", at: "2026-10-01T15:17+05:30" },
   { version: "0.3.1", at: "2026-09-27T04:59+05:30" },
   { version: "0.3.0", at: "2026-09-27T04:45+05:30" },
   { version: "0.2.1", at: "2026-09-26T19:53+05:30" },
@@ -33,6 +34,33 @@ export const RELEASES: { version: string; at: string }[] = [
 
 export const ENTRIES: Entry[] = [
   // ---- 1 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-01T15:01+05:30",
+    title: "Fork lives in your notch",
+    what: "On a MacBook with a notch, while you’re in another app, the notch grows down to show what your terminals are doing. You’ll see “Claude is working” with the blob thinking and how long it’s been. Then for a few seconds it shows when something’s done, when a command failed (click for “What went wrong?”) or when your app is ready (click to see it). Hover the notch to see every tab and jump to any of them. It replaces the Mac banners on these Macs, and you can turn it off in Settings → Notifications.",
+    why: "You go to another app while Claude or a build works, and you shouldn’t have to keep coming back to check. The notch is right where your eyes already go.",
+    kind: "new",
+    where: "app",
+    version: "0.4.0",
+  },
+  {
+    at: "2026-10-01T11:11+05:30",
+    title: "No “What’s new” repeat after you update",
+    what: "Updating from the pill in Fork no longer opens the new version with a “What’s new” window. You read those notes just before clicking Update and restart. Updating any other way, like downloading it again, still shows them once.",
+    why: "After an update Fork should pick up right where you left off, not show you the same thing twice.",
+    kind: "fixed",
+    where: "app",
+    version: "0.4.0",
+  },
+  {
+    at: "2026-10-01T09:41+05:30",
+    title: "OpenCode and other terminal apps work fully in Fork",
+    what: "Apps that run inside the terminal, like OpenCode, now get everything they ask for. That means full colour, pictures in the terminal, copying to your clipboard (apps can never read it) and links you can ⌘-click. Fork also knows when OpenCode, Codex or Gemini is working: the bar says “OpenCode is working.”, Esc stops it, and the tab’s blob shows when it’s done, just like Claude. When something finishes or needs you while you’re in another app, a Mac notification and a dock badge tell you, and clicking it takes you to that tab. You can turn that off in Settings → Notifications.",
+    why: "The OpenCode team’s OpenTUI kit showed us what modern terminal apps expect from a terminal, and Fork was quietly missing some of it. OpenCode’s copy didn’t work, for one. Fork is for whatever tools you use, so they should all feel at home in it.",
+    kind: "new",
+    where: "app",
+    version: "0.4.0",
+  },
   {
     at: "2026-10-01T08:39+05:30",
     title: "The Fork window rises over the headline as you scroll",
@@ -139,6 +167,7 @@ export const ENTRIES: Entry[] = [
     why: "Before this, the bar said “Something is running” the whole time Claude was open, even when it was just sitting there waiting for you. The cause was a small bug: the shell told Fork only the first letter of one-word commands, so plain `claude` was reported as “c”. Fixing it also means Claude reopens properly after a restart.",
     kind: "fixed",
     where: "app",
+    version: "0.4.0",
   },
 
   // ---- 28 Sep ----------------------------------------------------------------------------------
@@ -149,6 +178,7 @@ export const ENTRIES: Entry[] = [
     why: "Waiting on a long prompt is dead time, and plenty of people would rather read a few pages than stare at a spinner. The panel already showed files and your running app, so a book fitted right in.",
     kind: "new",
     where: "app",
+    version: "0.4.0",
   },
 
   // ---- 27 Sep ----------------------------------------------------------------------------------
