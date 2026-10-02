@@ -33,6 +33,31 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 2 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-02T14:02+05:30",
+    title: "A calmer landing page",
+    what: "The colours behind each section no longer shift when you move your mouse. The “See your work beside it” card is a soft green instead of crumpled paper. And the thank-you letter is now a plain white sheet, folded in three, that unfolds as you reach it. The envelope is gone.",
+    why: "The moving colours and the paper texture didn’t feel right for Fork. The page should feel quiet and clean, and a letter that simply opens says thanks without the extra props.",
+    kind: "better",
+    where: "website",
+  },
+  {
+    at: "2026-10-02T12:42+05:30",
+    title: "The notch stays a notch",
+    what: "While Claude works, the blob sits just left of the notch and how long it’s been sits just right of it, all inside the menu bar. When something’s done, failed or your app is ready, the notch says Done, Failed or Ready for a few seconds, and clicking it takes you there. Hovering still opens the list of every tab.",
+    why: "The notch used to grow down into a big black card every time something happened, which pulled your eyes away from what you were doing. Status should be there when you glance at it, not jump at you.",
+    kind: "better",
+    where: "app",
+  },
+  {
+    at: "2026-10-02T02:42+05:30",
+    title: "No more windows popping up or a missing Dock icon",
+    what: "Fork no longer hides and reshows its windows by itself, and its icon stays in the Dock. The notch now only rebuilds when it really moves, like when you close the lid or plug in a screen.",
+    why: "Since the notch arrived, setting it up briefly hid all of Fork, Dock icon included, and it set itself up again every time the screen changed. That looked like windows opening on their own and the icon going missing.",
+    kind: "fixed",
+    where: "app",
+  },
   // ---- 1 Oct -----------------------------------------------------------------------------------
   {
     at: "2026-10-01T15:01+05:30",
