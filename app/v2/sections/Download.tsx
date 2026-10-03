@@ -3,7 +3,7 @@ import { DOWNLOAD, INSTALL_CMD } from "../content";
 import CopyButton from "../CopyButton";
 import styles from "../v2.module.css";
 
-// Two ways in: the .dmg, or the one-line install (curl skips the "Open Anyway" step).
+// Two ways in: the .dmg, or the one-line install. Both open without a warning (Fork is notarized).
 export default function Download() {
   return (
     <div className={styles.dlRows}>

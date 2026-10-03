@@ -106,8 +106,8 @@ export const FAQ = [
     a: "Anonymous usage only: which features get used, with a random ID per install. Never your commands, paths, file names or output. You can turn it off from the start screen or Settings.",
   },
   {
-    q: "Why does my Mac warn me when I open it?",
-    a: "Fork isn’t notarized by Apple yet. Open System Settings → Privacy & Security and choose Open Anyway, or install with the one-line command below, which skips the warning.",
+    q: "Will my Mac warn me when I open it?",
+    a: "No. Fork is signed and notarized by Apple, so it opens like any other Mac app. The first time, macOS just checks you meant to open something you downloaded.",
   },
   {
     q: "Which Macs does it run on?",

@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "1.0.0", at: "2026-10-03T12:04+05:30" },
   { version: "0.4.0", at: "2026-10-01T15:17+05:30" },
   { version: "0.3.1", at: "2026-09-27T04:59+05:30" },
   { version: "0.3.0", at: "2026-09-27T04:45+05:30" },
@@ -33,6 +34,34 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 3 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-03T11:50+05:30",
+    title: "Fork updates itself",
+    what: "When a new Fork is out, it downloads quietly in the background. Once it’s ready, a Restart pill shows in the top bar: click it to update now, or keep working and it updates the next time you quit Fork. Your tabs come back either way.",
+    why: "Updating used to mean clicking the pill and waiting while Fork downloaded itself again. Now that Fork is signed, macOS can swap in a new version safely, so the waiting happens while you work.",
+    kind: "new",
+    where: "app",
+    version: "1.0.0",
+  },
+  {
+    at: "2026-10-03T11:10+05:30",
+    title: "Fork opens without Apple’s warning",
+    what: "Fork is now signed with an Apple Developer ID and checked (notarized) by Apple. Downloading Fork.dmg from this site no longer shows “Apple could not verify Fork”, so there’s no trip to System Settings to click Open Anyway.",
+    why: "That warning was the first thing a new person saw, and it made Fork look unsafe. Now that we have an Apple Developer account, Apple can vouch for every release.",
+    kind: "better",
+    where: "app",
+    version: "1.0.0",
+  },
+  {
+    at: "2026-10-03T10:45+05:30",
+    title: "Fork remembers it’s allowed into your Downloads folder",
+    what: "Terminals in Downloads, Desktop or Documents kept failing with “operation not permitted”, and macOS’s “allow access” question could freeze Fork with a spinning cursor. Now one Allow lasts through every update, Fork keeps responding while macOS asks, and What went wrong? explains it and opens the right page in System Settings.",
+    why: "macOS saw every new version of Fork as a brand-new app and forgot the permission. Fork was also checking your folders in a way that made it stop and wait for the answer.",
+    kind: "fixed",
+    where: "app",
+    version: "1.0.0",
+  },
   // ---- 2 Oct -----------------------------------------------------------------------------------
   {
     at: "2026-10-02T14:02+05:30",
@@ -49,6 +78,7 @@ export const ENTRIES: Entry[] = [
     why: "The notch used to grow down into a big black card every time something happened, which pulled your eyes away from what you were doing. Status should be there when you glance at it, not jump at you.",
     kind: "better",
     where: "app",
+    version: "1.0.0",
   },
   {
     at: "2026-10-02T02:42+05:30",
@@ -57,6 +87,7 @@ export const ENTRIES: Entry[] = [
     why: "Since the notch arrived, setting it up briefly hid all of Fork, Dock icon included, and it set itself up again every time the screen changed. That looked like windows opening on their own and the icon going missing.",
     kind: "fixed",
     where: "app",
+    version: "1.0.0",
   },
   // ---- 1 Oct -----------------------------------------------------------------------------------
   {
