@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "1.0.1", at: "2026-10-04T10:36+05:30" },
   { version: "1.0.0", at: "2026-10-03T12:04+05:30" },
   { version: "0.4.0", at: "2026-10-01T15:17+05:30" },
   { version: "0.3.1", at: "2026-09-27T04:59+05:30" },
@@ -34,6 +35,16 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 4 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-04T10:36+05:30",
+    title: "The notch is off until you turn it on",
+    what: "Fork no longer shows up in your notch on its own. If you’d like to see what your terminals are doing from any app, turn on “Show what’s happening in the notch” in Settings → Notifications. With it off, you get the usual Mac notifications instead.",
+    why: "The notch is prime space on your Mac, and not everyone wants an app living there. It should be your choice to switch it on, not something to hunt down and turn off.",
+    kind: "better",
+    where: "app",
+    version: "1.0.1",
+  },
   // ---- 3 Oct -----------------------------------------------------------------------------------
   {
     at: "2026-10-03T11:50+05:30",
@@ -63,6 +74,15 @@ export const ENTRIES: Entry[] = [
     version: "1.0.0",
   },
   // ---- 2 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-02T20:13+05:30",
+    title: "No stray black bar in Mission Control",
+    what: "When you swipe up to Mission Control, the notch no longer shows up as an empty Fork window with a black bar. Your real Fork windows still show as usual.",
+    why: "The notch is meant to blend into your Mac, not look like a broken window when you're switching between apps.",
+    kind: "fixed",
+    where: "app",
+    version: "1.0.0",
+  },
   {
     at: "2026-10-02T14:02+05:30",
     title: "A calmer landing page",
