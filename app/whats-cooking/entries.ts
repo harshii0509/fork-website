@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "1.0.2", at: "2026-10-04T11:06+05:30" },
   { version: "1.0.1", at: "2026-10-04T10:36+05:30" },
   { version: "1.0.0", at: "2026-10-03T12:04+05:30" },
   { version: "0.4.0", at: "2026-10-01T15:17+05:30" },
@@ -36,6 +37,15 @@ export const RELEASES: { version: string; at: string }[] = [
 
 export const ENTRIES: Entry[] = [
   // ---- 4 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-04T11:06+05:30",
+    title: "Check for Updates… in the Fork menu",
+    what: "The Fork menu now has Check for Updates…. It tells you straight away if you’re up to date, or shows the new version and what’s in it. The menu also says About Fork, Hide Fork and Quit Fork now, so Fork goes by its own name everywhere.",
+    why: "Fork checks for updates by itself every hour, but when you hear a new version is out you shouldn’t have to wait for it. Every Mac app has this item, so it’s where people look.",
+    kind: "new",
+    where: "app",
+    version: "1.0.2",
+  },
   {
     at: "2026-10-04T10:36+05:30",
     title: "The notch is off until you turn it on",
