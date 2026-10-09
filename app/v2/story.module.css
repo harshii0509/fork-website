@@ -1,1169 +1,244 @@
-/* The home page below the hero, in Linear's way: each section is a heading on the left and one short line on
- * the right with a mono index, then one wide figure. The figure is a hairline frame with a mono "FIG" label, a
- * mono list on the left that drives the product on the right, and the product cropped by the frame and fading
- * into it. Few words, hairlines not boxes, and colour only from the app itself. Light and dark follow the Mac.
- */
+/* The home page below the hero (direction A in Figma, "Tilted product"): a heading and one line per part, then a
+   real Fork screenshot, tilted, lit from behind and fading into the page. Tokens come from .v2. */
 
-.part {
-  max-width: var(--max);
+.below {
+  --glow: rgb(255 255 255 / 0.85);
+  max-width: 1240px;
   margin: 0 auto;
-  padding: clamp(112px, 12vw, 176px) var(--gutter) 0;
-  scroll-margin-top: 40px;
+  padding: 140px var(--gutter) 0;
 }
 
-.mono {
-  font: 500 12px/1.4 var(--font-plex), ui-monospace, monospace;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* ---- The header row --------------------------------------------------------------------- */
-
-.head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: start;
-  gap: 24px 64px;
-  margin-bottom: 56px;
+@media (prefers-color-scheme: dark) {
+  .below {
+    --glow: rgb(255 255 255 / 0.09);
+  }
 }
 
 .title {
-  max-width: 13em;
-  font-size: clamp(2.1rem, 1.5rem + 2.2vw, 3.25rem);
+  margin: 0;
+  font-size: 56px;
   font-weight: 500;
-  line-height: 1.06;
+  line-height: 60px;
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 .line {
-  max-width: 30em;
-  padding-top: 6px;
+  margin: 0;
   color: var(--muted);
-  font-size: clamp(16px, 0.9rem + 0.3vw, 18px);
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 28px;
   text-wrap: pretty;
 }
 
-.index {
-  margin-top: 20px;
-  color: var(--muted);
+/* ---- A part ---- */
+.feature + .feature {
+  margin-top: 168px;
 }
 
-/* ---- The figure ------------------------------------------------------------------------- */
-
-.fig {
-  position: relative;
+.head {
   display: grid;
-  grid-template-columns: 272px minmax(0, 1fr);
-  height: 560px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--ink) 2%, transparent);
-  box-shadow: inset 0 0 0 0.5px var(--line-strong);
-  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 40px;
+  align-items: start;
 }
 
-.figLabel {
-  position: absolute;
-  top: 20px;
-  left: 24px;
-  z-index: 2;
-  color: var(--muted);
-  opacity: 0.8;
+.head .line {
+  padding-top: 10px;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 72px 16px 24px;
-  list-style: none;
+.shot {
+  position: relative;
+  margin: 130px 40px 0;
 }
 
-.item {
+.shot.wide {
+  margin-inline: 0;
+}
+
+.shot picture,
+.shot img {
+  position: relative;
   display: block;
   width: 100%;
-  padding: 12px 12px;
-  border: 0;
-  border-radius: 8px;
-  background: none;
-  color: var(--muted);
-  text-align: left;
-  transition:
-    background-color 150ms ease,
-    color 150ms ease;
+  height: auto;
 }
 
-.item span {
-  display: block;
-  margin-top: 4px;
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  opacity: 0.85;
-}
-
-.item[aria-pressed="true"] {
-  background: color-mix(in srgb, var(--ink) 5%, transparent);
-  color: var(--ink);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .item:hover {
-    color: var(--ink);
-  }
-}
-
-.item:focus-visible,
-.key:focus-visible,
-.more:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-
-/* The product: placed from the top left, cropped by the frame on the right and bottom, and fading out. */
-.product {
-  position: relative;
-  min-width: 0;
-  padding: 64px 0 0 8px;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 98%);
-  mask-image: linear-gradient(to bottom, #000 72%, transparent 98%);
-}
-
-.bleed {
-  width: calc(100% + 64px);
-}
-
-.inset {
-  padding-right: 32px;
-}
-
-/* The pile has its own stage: set it in the middle of the space under the label. */
-.middle {
-  display: grid;
-  align-content: center;
-  height: calc(100% - 32px);
-}
-
-.swap {
-  animation: swap 200ms var(--ease-out) both;
-}
-
-@keyframes swap {
-  from {
-    opacity: 0;
-  }
-}
-
-/* ---- 2.0 Workspaces: a Fork window, cropped -------------------------------------------- */
-
-.states {
-  overflow: hidden;
-  border-radius: 12px 0 0 0;
-  background: var(--chrome);
-  box-shadow: 0 0 0 0.5px var(--card-line), var(--win-shadow);
-}
-
-.statesStrip {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 44px;
-  padding: 0 12px 0 76px;
-}
-
-.statesStrip > * {
-  width: 180px !important;
-}
-
-.lights {
+/* A soft light behind the window, then the window's bottom fades into the page. */
+.glow {
   position: absolute;
-  top: 16px;
-  left: 14px;
-  display: flex;
-  gap: 8px;
+  inset: 0 6% -10%;
+  background: radial-gradient(closest-side, var(--glow), transparent);
+  pointer-events: none;
 }
 
-.lights i {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--text-4);
-  opacity: 0.35;
-}
-
-.statesTerm {
-  height: 520px;
-  margin: 0 0 0 8px;
-  padding: 18px 20px;
-  border: 0.5px solid var(--card-line);
-  border-radius: 12px 0 0 0;
-  background: var(--card);
-  color: var(--text-1);
-  font: 500 14px/22px var(--ui-mono);
-  white-space: pre-wrap;
-}
-
-/* ---- 5.0 Two quiet cards, then numbers and a quote ------------------------------------- */
-
-.quiet {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  min-height: 360px;
-  padding: 32px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--ink) 2%, transparent);
-  box-shadow: inset 0 0 0 0.5px var(--line-strong);
-}
-
-.cardArt {
-  flex: 1;
-  display: grid;
-  place-items: center;
-  margin-bottom: 28px;
-}
-
-.card h3 {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-}
-
-.card p {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.keys {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 10px;
-  justify-content: center;
-}
-
-.key {
-  padding: 10px 16px;
-  border-radius: 10px;
-  background: var(--panel);
-  box-shadow:
-    inset 0 0 0 0.5px var(--line-strong),
-    0 1px 0 var(--line-strong);
-  color: var(--ink);
-  font: 500 14px/1 var(--font-plex), ui-monospace, monospace;
-  text-align: center;
-}
-
-.key:first-child {
-  color: var(--ink);
-}
-
-.more {
-  display: inline-block;
-  margin-top: 14px;
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.track {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
-  width: 100%;
-}
-
-.track::before {
+.shot::after {
   content: "";
   position: absolute;
-  top: 30px;
-  left: calc(50% / var(--n));
-  right: calc(50% / var(--n));
-  height: 0.5px;
-  background: var(--line-strong);
+  inset: auto -40px 0;
+  height: 19%;
+  background: linear-gradient(to bottom, transparent, var(--paper));
+  pointer-events: none;
 }
 
-.dot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font: 500 11px/1 var(--font-plex), ui-monospace, monospace !important;
-  transition: color 150ms ease;
-}
-
-.dot i {
-  width: 7px;
-  height: 7px;
-  margin-top: 1px;
-  border-radius: 50%;
-  background: var(--muted);
-  opacity: 0.5;
-  transition:
-    transform 150ms ease,
-    opacity 150ms ease;
-}
-
-.dot span {
-  min-height: 1em;
-  opacity: 0;
-  transition: opacity 150ms ease;
-}
-
-.dot span[data-major],
-.dot[aria-pressed="true"] span {
-  opacity: 1;
-}
-
-.dot[aria-pressed="true"] {
-  color: var(--ink);
-}
-
-.dot[aria-pressed="true"] i {
-  background: var(--ink);
-  opacity: 1;
-  transform: scale(1.5);
-}
-
-.dot:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-
-.shipped {
-  min-height: 3em;
-  margin-top: 24px;
-  color: var(--muted);
-  font-size: 14px;
-  text-align: center;
-}
-
-.shipped b {
-  color: var(--ink);
-  font-weight: 500;
-}
-
+/* ---- Numbers ---- */
 .numbers {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 2fr);
-  align-items: end;
-  gap: 32px;
-  margin-top: 96px;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 128px 0 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.num {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
 }
 
 .num b {
-  display: block;
-  font-size: clamp(2.6rem, 1.8rem + 2.6vw, 4rem);
+  font-size: 64px;
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.045em;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
 .num span {
-  display: block;
-  margin-top: 10px;
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 15px;
 }
 
-.num a {
-  text-decoration: underline !important;
-  text-decoration-color: var(--line-strong) !important;
-  text-underline-offset: 3px;
-}
-
-.quote {
-  padding: 28px 32px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--ink) 2%, transparent);
-  box-shadow: inset 0 0 0 0.5px var(--line-strong);
-}
-
-.quote p {
-  font-size: 18px;
-  line-height: 1.45;
-  letter-spacing: -0.015em;
-}
-
-.quote footer {
-  margin-top: 16px;
-  color: var(--muted);
-}
-
-/* ---- Questions and the close ------------------------------------------------------------ */
-
+/* ---- The close ---- */
 .close {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 640px;
-  margin: 0 auto;
+  gap: 16px;
+  margin-top: 200px;
+  padding-bottom: 120px;
   text-align: center;
-}
-
-.close .title {
-  max-width: none;
-}
-
-.close .line {
-  margin-top: 14px;
-  padding: 0;
 }
 
 .closeCtas {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  margin-top: 32px;
+  gap: 12px;
+  margin-top: 24px;
 }
 
-.micro {
-  margin-top: 16px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.install {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 100%;
-  margin-top: 32px;
-  padding: 6px 6px 6px 14px;
-  border-radius: 10px;
-  box-shadow: inset 0 0 0 0.5px var(--line-strong);
-  color: var(--body);
-  font: 500 13px/1.4 var(--font-plex), ui-monospace, monospace;
-  text-align: left;
-}
-
-.install code {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  font: inherit;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ---- The demos inside the figures ------------------------------------------------------- */
-
-.ask {
-  color: var(--needs);
-}
-
-.bad {
-  color: var(--failed);
-}
-
-.good {
-  color: var(--term-ok);
-}
-
-.mute {
-  color: var(--text-3);
-}
-
-.caret {
-  display: inline-block;
-  width: 0.62em;
-  height: 1.1em;
-  vertical-align: -0.2em;
-  background: var(--text-1);
-  animation: caret 1.1s steps(1) infinite;
-}
-
-@keyframes caret {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* 1.1 The pile of windows, which settles into Fork's tabs. */
-.stage {
-  position: relative;
-  aspect-ratio: 1080 / 430;
-  container-type: inline-size;
-  overflow: hidden;
-}
-
-/* One plain terminal window, like the Mac's own: a title bar and a few lines. */
-.scatter .win {
-  position: absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  width: 34%;
-  height: 21cqw;
-  display: flex;
-  flex-direction: column;
-  border-radius: 1cqw;
-  background: var(--card);
-  box-shadow: 0 0 0 0.5px var(--card-line), 0 1.6cqw 3cqw -1.6cqw rgb(0 0 0 / 0.3);
-  font: 500 1.12cqw/1.6 var(--ui-mono);
-  transform: rotate(calc(var(--r) * 1deg));
+/* ---- Reveals: text rises a little, the window rises further and slower ---- */
+.below [data-reveal] {
   transition:
-    transform 640ms var(--ease-in-out) calc(var(--i) * 50ms),
-    opacity 360ms var(--ease-out) calc(220ms + var(--i) * 50ms);
+    opacity 600ms var(--ease-out),
+    transform 600ms var(--ease-out);
 }
 
-.winBar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.6cqw;
-  border-bottom: 0.5px solid var(--card-line);
-  color: var(--text-3);
-  font: 500 1.05cqw/1 var(--ui);
+.below .shot[data-reveal] {
+  transition-duration: 900ms;
 }
 
-.winBar i {
-  position: absolute;
-  top: 50%;
-  width: 0.95cqw;
-  height: 0.95cqw;
-  margin-top: -0.475cqw;
-  border-radius: 50%;
-  background: var(--text-4);
-  opacity: 0.45;
-}
-
-.winBar i:nth-child(1) {
-  left: 1.1cqw;
-}
-
-.winBar i:nth-child(2) {
-  left: 2.5cqw;
-}
-
-.winBar i:nth-child(3) {
-  left: 3.9cqw;
-}
-
-.winBody {
-  flex: 1;
-  padding: 1.1cqw 1.4cqw;
-  overflow: hidden;
-  color: var(--text-1);
-  white-space: pre;
-}
-
-.ask {
-  color: var(--needs);
-}
-
-.bad {
-  color: var(--failed);
-}
-
-.good {
-  color: var(--term-ok);
-}
-
-.mute {
-  color: var(--text-3);
-}
-
-.caret {
-  display: inline-block;
-  width: 0.62em;
-  height: 1.1em;
-  vertical-align: -0.2em;
-  background: var(--text-1);
-  animation: caret 1.1s steps(1) infinite;
-}
-
-@keyframes caret {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Settled: each window shrinks towards its tab's place and goes, and the tabs rise in. */
-.scatter[data-state="tabs"] .win {
-  transform: translate(calc(var(--dx) * 1cqw), calc(var(--dy) * 1cqw)) scale(0.3);
+:global(html[data-reveals="on"]) .below [data-reveal]:not([data-shown]) {
   opacity: 0;
+  transform: translateY(16px);
 }
 
-.strip {
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  top: 50%;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.8cqw;
-  padding: 0.8cqw;
-  border-radius: 1.6cqw;
-  background: var(--chrome);
-  box-shadow: inset 0 0 0 0.5px var(--card-line);
-  transform: translateY(-50%);
-  pointer-events: none;
+:global(html[data-reveals="on"]) .below .shot[data-reveal]:not([data-shown]) {
+  transform: translateY(48px);
 }
 
-.scatter .strip > * {
-  width: auto !important;
-  min-width: 0 !important;
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 300ms var(--ease-out) 0ms,
-    transform 300ms var(--ease-out) 0ms;
-}
+@media (prefers-reduced-motion: reduce) {
+  .below [data-reveal],
+  .below .shot[data-reveal] {
+    transition: none;
+  }
 
-.scatter .strip {
-  opacity: 0;
-  transition: opacity 240ms var(--ease-out);
-}
-
-.scatter[data-state="tabs"] .strip {
-  opacity: 1;
-  transition-delay: 380ms;
-}
-
-.scatter[data-state="tabs"] .strip > * {
-  opacity: 1;
-  transform: none;
-  transition-delay: calc(460ms + var(--i) * 60ms);
-}
-
-
-/* 02 See: the panel, with tabs you can click and a line you can drag. */
-.see {
-  overflow: hidden;
-  border-radius: 14px;
-  background: var(--card);
-  box-shadow: 0 0 0 0.5px var(--card-line), var(--win-shadow);
-}
-
-.seeHead {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 48px;
-  padding: 0 12px;
-  border-bottom: 0.5px solid var(--card-line);
-}
-
-.seeTabs {
-  position: relative;
-  display: flex;
-  padding: 2px;
-  border-radius: 8px;
-  background: var(--hover);
-}
-
-.seeTabs button {
-  position: relative;
-  z-index: 1;
-  padding: 4px 12px;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  color: var(--text-3);
-  font: 450 13px/1.2 var(--ui) !important;
-  transition: color 150ms ease;
-}
-
-.seeTabs button[aria-selected="true"] {
-  color: var(--text-1);
-}
-
-.seePill {
-  position: absolute;
-  top: 2px;
-  bottom: 2px;
-  left: 0;
-  border-radius: 6px;
-  background: var(--card);
-  box-shadow: 0 1px 3px #0003;
-  transition:
-    transform 260ms var(--ease-in-out-cubic),
-    width 260ms var(--ease-in-out-cubic);
-}
-
-.seeName {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  color: var(--text-2);
-  font-size: 12px;
-  text-align: right;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.seeBody {
-  position: relative;
-  height: 400px;
-  padding: 12px;
-}
-
-.seeView {
-  position: absolute;
-  inset: 12px;
-  opacity: 0;
-  transform: translateY(-4px);
-  pointer-events: none;
-  transition:
-    opacity 140ms var(--ease-out-quart),
-    transform 140ms var(--ease-out-quart);
-}
-
-.seeView[data-on] {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  transition:
-    opacity 220ms var(--ease-out-quart) 60ms,
-    transform 220ms var(--ease-out-quart) 60ms;
-}
-
-.seeView > * {
-  height: 100%;
-}
-
-.seeView :global(*) {
-  transition-property: background-color, border-color, color;
-}
-
-.drag {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 6px;
-  outline: 0.5px solid var(--card-line);
-  cursor: ew-resize;
-  touch-action: pan-y;
-}
-
-.drag > div:first-child,
-.dragAfter > div {
-  height: 100%;
-}
-
-.dragAfter {
-  position: absolute;
-  inset: 0;
-}
-
-.drag[data-glide] .dragAfter {
-  transition: clip-path 1200ms var(--ease-in-out-cubic);
-}
-
-.drag[data-glide] .dragLine {
-  transition: transform 1200ms var(--ease-in-out-cubic);
-}
-
-.dragLine {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.dragLine::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 2px;
-  margin-left: -1px;
-  background: var(--accent);
-}
-
-/* The grip: a pill on the line, the one thing here that says "drag me". */
-.grip {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 40px;
-  margin: -20px 0 0 -14px;
-  border-radius: 14px;
-  background: var(--accent);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
-  color: var(--card);
-  font: 600 12px/1 var(--ui);
-  letter-spacing: -1px;
-  transition: transform 150ms ease;
-}
-
-.drag:focus-visible {
-  outline: 2px solid var(--text-1);
-  outline-offset: 2px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .drag:hover .grip {
-    transform: scale(1.08);
+  :global(html[data-reveals="on"]) .below [data-reveal]:not([data-shown]),
+  :global(html[data-reveals="on"]) .below .shot[data-reveal]:not([data-shown]) {
+    opacity: 1;
+    transform: none;
   }
 }
 
-.drag[data-dragging] .grip {
-  transform: scale(0.96);
-}
-
-.dragTag {
-  position: absolute;
-  top: 10px;
-  padding: 3px 7px;
-  border-radius: 4px;
-  background: var(--scrim);
-  color: #fff;
-  font: 500 11px/1.3 var(--ui);
-}
-
-.seeDesign {
-  overflow: auto;
-  scrollbar-width: none;
-}
-
-/* 03 Learn: a small terminal that fails, explains and fixes. */
-.help {
-  display: flex;
-  flex-direction: column;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 14px;
-  background: var(--card);
-  box-shadow: 0 0 0 0.5px var(--card-line), var(--win-shadow);
-}
-
-.helpBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 40px;
-  padding: 0 12px;
-  border-bottom: 0.5px solid var(--card-line);
-  color: var(--text-2);
-  font: 450 12px/1 var(--ui);
-}
-
-.helpBar span:last-child {
-  margin-left: auto;
-}
-
-.helpTerm {
-  flex: 1;
-  padding: 16px 18px;
-  overflow: hidden;
-  color: var(--text-1);
-  font: 500 13px/21px var(--ui-mono);
-  white-space: pre-wrap;
-}
-
-.ps {
-  color: var(--text-3);
-}
-
-.ln {
-  animation: line 200ms ease-out both;
-}
-
-@keyframes line {
-  from {
-    opacity: 0;
-  }
-}
-
-/* The note under the terminal: "That didn't work · What went wrong?", then the answer and the fix. */
-.oops {
-  margin: 4px 12px 12px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: var(--chrome);
-  box-shadow: inset 0 0 0 0.5px var(--card-line);
-  color: var(--text-1);
-  font: 450 13px/1.45 var(--ui);
-  animation: oops 260ms var(--ease-out-quart) both;
-}
-
-@keyframes oops {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-.oopsHead {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-2);
-}
-
-.oopsHead b {
-  margin-left: auto;
-  color: var(--text-1);
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: var(--text-4);
-  text-underline-offset: 3px;
-}
-
-.oopsDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--failed);
-}
-
-.oopsBody {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 0.5px solid var(--card-line);
-  animation: line 200ms ease-out both;
-}
-
-.fix {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  color: var(--text-2);
-  font-size: 12px;
-}
-
-.fix code {
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: var(--card);
-  box-shadow: inset 0 0 0 0.5px var(--card-line);
-  color: var(--text-1);
-  font: 500 12px/1.4 var(--ui-mono);
-}
-
-.fix kbd {
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: var(--kbd);
-  color: var(--text-1);
-  font: 500 11px/1.4 var(--ui);
-}
-
-.replay {
-  margin-top: 12px;
-  padding: 6px 12px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--sunk);
-  color: var(--ink);
-  font-size: 13px !important;
-  font-weight: 500;
-  transition: background-color 150ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .replay:hover {
-    background: var(--sunk-hover);
-  }
-}
-
-
-/* Under each tab once the pile has settled: what its square means, in words. */
-.said {
-  display: block;
-  margin-top: 0.9cqw;
-  color: var(--text-2);
-  font: 450 1.15cqw/1.2 var(--ui);
-  text-align: center;
-}
-
-.scatter .strip {
-  top: 46%;
-}
-
-/* The note sits in the terminal's flow, under the error it explains, and stays there. */
-.helpTerm .oops {
-  margin: 10px 0 12px;
-  white-space: normal;
-}
-
-
-/* Each tab fills its slot, however narrow the strip gets. */
-.scatter .strip > * > :first-child {
-  width: 100% !important;
-  min-width: 0 !important;
-}
-
-
-
-
-/* ---- Phones and narrow windows ---------------------------------------------------------- */
-
-@media (max-width: 1000px) {
+/* ---- Tablet and phone ---- */
+@media (max-width: 960px) {
   .head {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
     gap: 16px;
+    padding: 0;
   }
 
-  .fig {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    height: 600px;
+  .head .line {
+    padding-top: 0;
+    max-width: 520px;
   }
 
-  /* The list becomes a row of mono tabs above the product. */
-  .list {
-    flex-direction: row;
-    gap: 4px;
-    padding: 56px 12px 0;
-    overflow-x: auto;
-    scrollbar-width: none;
+  .shot,
+  .shot.wide {
+    margin: 64px 0 0;
   }
 
-  .item {
-    flex: none;
-    width: auto;
-    padding: 8px 12px;
-    white-space: nowrap;
-  }
-
-  .item span {
-    display: none;
-  }
-
-  .product {
-    padding-top: 20px;
-  }
-
-  .quiet,
   .numbers {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .quote {
-    grid-column: 1 / -1;
+    margin-inline: 0;
   }
 }
 
 @media (max-width: 760px) {
-  .fig {
-    height: 540px;
+  .below {
+    padding-top: 96px;
   }
 
-  .product {
-    padding-left: 12px;
+  .title {
+    font-size: 36px;
+    line-height: 40px;
   }
 
-  .quiet {
-    grid-template-columns: minmax(0, 1fr);
+  .line {
+    font-size: 17px;
+    line-height: 26px;
   }
 
-  .card {
-    min-height: 0;
-    padding: 24px;
+  .feature + .feature {
+    margin-top: 88px;
   }
 
-  .keys {
-    grid-template-columns: repeat(2, auto);
+  /* The window is shown larger than the screen and runs off its right edge, so it still reads. */
+  .below {
+    overflow-x: clip;
   }
 
-  .statesStrip > * {
-    width: 140px !important;
+  .shot.wide {
+    margin: 40px -16px 0 0;
   }
 
-
-  .stage {
-    aspect-ratio: 3 / 4;
-    border-radius: 20px;
+  .shot picture {
+    width: 165%;
+    max-width: none;
   }
 
-  /* Stacked down the stage, wider, so the lines can be read. */
-  .scatter .win {
-    left: calc(var(--px) * 1%);
-    top: calc(var(--py) * 1%);
-    width: 74%;
-    height: 44cqw;
-    border-radius: 2.4cqw;
-    font-size: 2.7cqw;
+  /* The panels sit on the window's right, so those two run off the left edge instead. */
+  .shot:not(.wide) {
+    margin: 40px 0 0 -16px;
   }
 
-  .winBar {
-    height: 6cqw;
-    font-size: 2.5cqw;
+  .shot:not(.wide) picture {
+    margin-left: -65%;
   }
 
-  .winBar i {
-    width: 2cqw;
-    height: 2cqw;
-    margin-top: -1cqw;
+  .numbers {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 96px;
   }
 
-  .winBar i:nth-child(1) {
-    left: 2.4cqw;
+  .num b {
+    font-size: 48px;
   }
 
-  .winBar i:nth-child(2) {
-    left: 5.4cqw;
-  }
-
-  .winBar i:nth-child(3) {
-    left: 8.4cqw;
-  }
-
-  .winBody {
-    padding: 2.4cqw 3cqw;
-  }
-
-  .scatter[data-state="tabs"] .win {
-    transform: scale(0.9);
-  }
-
-  .strip {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 6px;
-    left: 12%;
-    right: 12%;
-    padding: 8px;
-    border-radius: 14px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .item,
-  .dot,
-  .dot i,
-  .dot span,
-  .scatter .win,
-  .scatter .strip,
-  .scatter .strip > *,
-  .seeTabs button,
-  .seePill,
-  .seeView,
-  .seeView[data-on],
-  .drag[data-glide] .dragAfter,
-  .drag[data-glide] .dragLine,
-  .grip,
-  .replay {
-    transition: none;
-  }
-
-  .swap,
-  .caret,
-  .ln,
-  .oops,
-  .oopsBody {
-    animation: none;
+  .close {
+    margin-top: 128px;
+    padding-bottom: 96px;
   }
 }

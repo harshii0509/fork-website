@@ -206,76 +206,32 @@ export const SECTIONS: Record<string, Section> = {
   },
 };
 
-// ---- The home page below the hero (9 Oct), in Linear's way ----
-// Each section: a heading on the left, one short line on the right, a mono index, then one big figure whose
-// mono list drives the product beside it. Few words, no boxes inside boxes. (Mobbin: Linear's 1.0 Intake,
-// FIG 2.1, and its numbers-and-a-quote row.)
+// ---- The home page below the hero (9 Oct): direction A from Figma, "Tilted product" ----
+// Three parts, each a heading and one line, then a real Fork 1.2.0 screenshot, tilted, glowing and fading out.
+// The pictures live in public/shots, one for light and one for dark. Then three numbers and a short download.
 
-export type Part = { id: string; index: string; fig: string; title: string; line: string; items: readonly (readonly [string, string])[] };
+export type Feature = { id: string; title: string; line: string; shot: "turn" | "changes" | "design"; alt: string };
 
-export const PARTS: Record<"problem" | "workspaces" | "changes" | "breaks", Part> = {
-  problem: {
-    id: "problem",
-    index: "1.0 The problem",
-    fig: "FIG 1.1",
-    title: "Five agents. One of them is asking you something.",
-    line: "Each runs in a window of its own. You find out which one finished, failed or got stuck by clicking through them all.",
-    items: [
-      ["Today", "Five windows"],
-      ["In Fork", "Five tabs"],
-    ],
-  },
-  workspaces: {
+export const FEATURES: readonly Feature[] = [
+  {
     id: "workspaces",
-    index: "2.0 Workspaces",
-    fig: "FIG 2.1",
-    title: "Every project gets a tab.",
-    line: "A workspace is a folder: its terminals, files and changes stay together. The square on its tab tells you what’s happening there.",
-    items: [
-      ["Working", "The square ripples while an agent works."],
-      ["Needs you", "Yellow when it’s done or has a question, until you look."],
-      ["Failed", "Red when something didn’t work."],
-      ["Ready", "Its own colour. Nothing to see."],
-    ],
+    title: "Know which agent needs you.",
+    line: "Every project is a tab. Its square tells you if an agent is working, waiting on you, or stuck.",
+    shot: "turn",
+    alt: "Fork with four workspace tabs along the top, each with a coloured square, and an agent in the terminal making the portfolio's hero calmer.",
   },
-  changes: {
+  {
     id: "changes",
-    index: "3.0 Changes",
-    fig: "FIG 3.1",
     title: "See what the agent changed.",
-    line: "Your app, a picture from before and after every turn, and your design system, in a panel beside the terminal.",
-    items: [
-      ["App", "Your site at localhost, right there."],
-      ["Changes", "Before and after. Drag the line."],
-      ["Design", "Colours, type and spacing from your own files."],
-    ],
+    line: "A picture of your app from before and after every turn, right beside the terminal.",
+    shot: "changes",
+    alt: "Fork's Changes panel with a line dragged across the site: the loud yellow hero before, the calm one after.",
   },
-  breaks: {
-    id: "breaks",
-    index: "4.0 When it breaks",
-    fig: "FIG 4.1",
-    title: "Calm when something breaks.",
-    line: "Fork says what went wrong in plain words, types the fix for you to check, and keeps a net under the risky things.",
-    items: [
-      ["Plain-words errors", "Common ones explained on your Mac."],
-      ["Nothing runs until Enter", "Fork types. You decide."],
-      ["rm goes to the Trash", "And what can’t be undone asks first."],
-    ],
+  {
+    id: "design",
+    title: "Your design system, live.",
+    line: "Colours, type and spacing read from your own files, redrawn when an agent changes one.",
+    shot: "design",
+    alt: "Fork's Design panel listing the project's colour, spacing and radius tokens.",
   },
-};
-
-export const QUIET = {
-  agents: {
-    title: "Your agent, as it ships.",
-    line: "Fork runs each one exactly as it ships, in a real terminal. Same speed, your login, your plan.",
-    cmds: ["claude", "codex", "gemini", "opencode", "aider", "npm run dev"],
-  },
-  ships: {
-    title: "Shipped every few days.",
-    line: "Every change is written down, with why it was made.",
-    more: "What’s cooking →",
-  },
-  // The maker's own words, from his thank-you note.
-  quote: "I wanted a terminal that felt calmer when I’m juggling a dozen things, and a little more human when I’m figuring things out.",
-  by: ["Harshvardhan", "made Fork"],
-} as const;
+];

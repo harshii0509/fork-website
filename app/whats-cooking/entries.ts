@@ -40,10 +40,10 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
-    at: "2026-10-09T19:45+05:30",
-    title: "Below the top of the home page, quieter (preview)",
-    what: "Everything under the hero is rebuilt on a preview page, after Linear’s site: each part is a heading and one line, then one wide figure with a small list that drives it. Five terminal windows that settle into Fork’s tabs; a Fork window showing each square’s state; the panel with a before-and-after line you drag; a terminal that explains its own error. Then your agent as it ships, every release as a dot, three numbers, the maker’s words and a short download.",
-    why: "The first try read like a template: centred headings, boxes inside boxes, chips and a feature grid. This one says less and shows the app bigger, so the product does the talking.",
+    at: "2026-10-09T20:45+05:30",
+    title: "Below the top of the home page: the real app, tilted (preview)",
+    what: "Everything under the hero is rebuilt on a preview page from a design picked in Figma. Three parts, each a heading and one line over a real screenshot of Fork, tilted, lit from behind and fading into the page: the workspace tabs and their squares, the before and after in Changes, and the Design panel. Then three numbers and a short download. The pictures follow your Mac’s light or dark.",
+    why: "Two coded tries were turned down: the drawn demos looked cheap, there were too many words, and it looked flat. This time three directions were drawn in Figma first, and only the chosen one was built, using the real app instead of drawings.",
     kind: "better",
     where: "website",
   },

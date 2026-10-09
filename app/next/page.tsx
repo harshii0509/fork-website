@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import Image from "next/image";
 import DownloadButton from "../DownloadButton";
-import { DOWNLOAD, GITHUB } from "../v2/content";
+import { DOWNLOAD, FEATURES, GITHUB } from "../v2/content";
 import ForkWindow from "../v2/fork/ForkWindow";
 import Footer from "../v2/Footer";
 import HeroCover from "../v2/HeroCover";
@@ -10,15 +10,14 @@ import HeroSquare from "../v2/HeroSquare";
 import Nav from "../v2/Nav";
 import Reveals from "../v2/Reveals";
 import Close from "../v2/sections/Close";
-import Faq from "../v2/sections/Faq";
-import { BreaksPart, ChangesPart, ProblemPart, WorkspacesPart } from "../v2/sections/Parts";
-import Proof from "../v2/sections/Proof";
+import Numbers from "../v2/sections/Numbers";
+import Tilted from "../v2/sections/Tilted";
 import story from "../v2/story.module.css";
 import styles from "../v2/v2.module.css";
 
-// A preview of the home page with its new sections below the hero, in Linear's way (a heading and one line,
-// then a figure whose list drives the product), until it replaces /. The Fork home page: it explains what Fork does. Section order and jobs come from NARRATIVE in
-// v2/content.ts; the look is Fork's own greys, real pieces of the app, and Hairline line figures.
+// A preview of the home page with its new sections below the hero, until it replaces /. Below the hero is
+// direction A from Figma: three parts, each a heading and one line over a real, tilted Fork screenshot, then
+// three numbers and a short download. Copy lives in FEATURES in v2/content.ts.
 
 const plex = IBM_Plex_Mono({ weight: ["500", "600", "700"], subsets: ["latin"], variable: "--font-plex" });
 
@@ -59,24 +58,11 @@ export default function Next() {
         </div>
       </header>
 
-      <main>
-        {/* 1.0 to 4.0: Linear's shape. A heading and one line, then a figure whose list drives the product. */}
-        <ProblemPart />
-        <WorkspacesPart />
-        <ChangesPart />
-        <BreaksPart />
-
-        {/* 5.0 and 6.0: two quiet cards, then numbers and the maker's own words. */}
-        <Proof />
-
-        {/* Objections, right before the download. */}
-        <section id="faq" className={`${styles.section} ${styles.split}`} aria-labelledby="faq-h">
-          <h2 id="faq-h" className={story.title} data-reveal>
-            Questions
-          </h2>
-          <Faq />
-        </section>
-
+      <main className={story.below}>
+        {FEATURES.map((f) => (
+          <Tilted key={f.id} f={f} />
+        ))}
+        <Numbers />
         <Close />
       </main>
 
