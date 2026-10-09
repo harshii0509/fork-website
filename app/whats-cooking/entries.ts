@@ -40,6 +40,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-09T19:45+05:30",
+    title: "A new story below the top of the home page (preview)",
+    what: "Everything under the hero is rebuilt, on a preview page for now: five terminal windows in a pile that become Fork’s tabs, a row-by-row “the terminal today vs in Fork”, three numbered chapters you can play with (the tabs, a panel with a before-and-after line you drag, a terminal that explains its own error), the agents you already use, a bento of the small things with a real game of Snake, every release as a dot, then the note and a calm download.",
+    why: "The page listed features without saying why anyone should switch. Now it starts with the problem, shows Fork answering it with real pieces of the app, and proves it’s alive before asking you to download. The structure comes from studying how other product sites pitch.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-10-09T19:13+05:30",
     title: "The footer is Fork’s own folder",
     what: "The end of the page now lists its links as a folder of files, the way Fork’s Files tab shows them: download, install.sh (click to copy the install command), what’s cooking, the source and where to find me. Beside it, the latest version with Fork’s square and when it shipped. Under both, a little keyboard with four keys spelling FORK sits at the foot of the page; point at a key and it presses down.",

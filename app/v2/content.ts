@@ -205,3 +205,113 @@ export const SECTIONS: Record<string, Section> = {
     cmd: "whoami",
   },
 };
+
+// ---- The home page below the hero (9 Oct): problem, reframe, three chapters, agents, small things, proof ----
+// Structure from Mobbin research: name the pain first (Beside, Front), a row-by-row "today vs Fork" reframe
+// (Ploy, V7), numbered chapters that each zoom into one part of the window (Vercel), a mixed-size bento for the
+// smaller things (Attio), a maker's note, then a calm, centred download (Linear).
+
+export const PROBLEM = {
+  title: "You started five agents. Which one needs you?",
+  lede: "Each one works in a window of its own. One finished ten minutes ago, one is asking you a question, one failed, and you only find out by clicking through them all.",
+  before: "Five windows. One of them is asking you something.",
+  after: "In Fork each one is a tab, and its square tells you.",
+} as const;
+
+export const REFRAME = {
+  title: "A terminal, without the guesswork.",
+  lede: "What changes when your terminal is Fork.",
+  today: "The terminal today",
+  fork: "In Fork",
+  rows: [
+    {
+      id: "status",
+      today: "Clicking through windows to find the one that’s done.",
+      fork: "The square on each tab says it: working, needs you or failed.",
+    },
+    {
+      id: "changes",
+      today: "An agent changed your app, and you can’t see what.",
+      fork: "A picture from before and after every turn, side by side.",
+    },
+    {
+      id: "errors",
+      today: "A wall of red text you paste somewhere to understand.",
+      fork: "What went wrong, in plain words, with the fix typed for you to check.",
+    },
+    {
+      id: "trash",
+      today: "One wrong rm and a file is gone for good.",
+      fork: "Deleting moves files to the Trash. Commands that can’t be undone ask first.",
+    },
+    {
+      id: "words",
+      today: "Looking up a command you’ll use once.",
+      fork: "Say what you want in plain words, and Fork finds the command.",
+    },
+  ],
+} as const;
+
+export type Chapter = { n: string; label: string; title: string; lede: string; notes: readonly (readonly [string, string])[] };
+
+export const CHAPTERS: Record<"know" | "see" | "learn", Chapter> = {
+  know: {
+    n: "01",
+    label: "Know",
+    title: "See every project at a glance.",
+    lede: "Every project is a tab, and its square is the status. Work in one and still see the others.",
+    notes: [
+      ["Yellow until you look", "Finished, or asking you something. It stays yellow until you’ve seen it."],
+      ["Told, even in another app", "The notch, a Mac notification or the Dock badge says when something’s done."],
+      ["A workspace is a folder", "Its terminals, files, search and changes stay together in its tab."],
+    ],
+  },
+  see: {
+    n: "02",
+    label: "See",
+    title: "Watch your work change, not just the code.",
+    lede: "Your app, what each agent turn changed, and your design system, in a panel beside the terminal. Drag the line.",
+    notes: [
+      ["Before and after, every turn", "Fork takes the pictures on your Mac, from your app at localhost. They never leave it."],
+      ["Your design system, from your files", "Colours, type, spacing and radii from your CSS, Tailwind or tokens.json, light and dark side by side."],
+      ["Your app, right there", "When your app starts, its address shows in the sidebar. Click it to open the app in the panel."],
+    ],
+  },
+  learn: {
+    n: "03",
+    label: "Learn",
+    title: "Kind to people new to the terminal.",
+    lede: "Fork explains what went wrong, types the fix for you to check, and keeps a safety net under the risky things.",
+    notes: [
+      ["Errors in plain words", "Common errors are explained on your Mac, without sending anything anywhere."],
+      ["Nothing runs until you press Enter", "Fork types commands for you and waits. You stay in charge."],
+      ["A safety net", "rm moves files to the Trash, and commands that can’t be undone ask first."],
+    ],
+  },
+};
+
+export const AGENTS = {
+  title: "Bring the agent you already use.",
+  lede: "Fork runs each one exactly as it ships, in a real terminal. Same speed, your own login, your own plan, nothing in between.",
+  // Commands, not brands: what you'd type. The last line is the point: anything that runs in a terminal.
+  cmds: ["claude", "codex", "gemini", "opencode", "aider", "npm run dev"],
+  rest: "or anything else that runs in a terminal",
+} as const;
+
+export const SMALL = {
+  title: "And the small things.",
+  lede: "The bits that make a long afternoon with agents nicer.",
+  games: ["Games while you wait", "Snake, Stack and Space Run open in a split beside the terminal. When the agent is done, the game pauses and asks."],
+  read: ["Read beside it", "Open a PDF or EPUB in the panel. Fork keeps your place in every book."],
+  looks: ["Light, dark or your Mac", "Fork follows your Mac until you pick one. Try it here."],
+  files: ["Your files, right there", "Search every file, and preview code, Markdown and images beside the terminal."],
+  signed: ["Opens like any Mac app", "Signed and notarized by Apple. Updates bring your workspaces back."],
+  free: ["Free, and out in the open", "No account and no trial. The code is on GitHub."],
+} as const;
+
+export const PROOF = {
+  title: "Built in the open.",
+  // {n} releases in {days} days: filled in from RELEASES.
+  lede: (n: number, days: number) => `${n} releases in ${days} days, and every change written down with why it was made.`,
+  more: "See everything that’s cooking →",
+} as const;
