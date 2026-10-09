@@ -396,7 +396,9 @@
 .cookCard:focus-visible,
 .navLinks a:focus-visible,
 .navDownload:focus-visible,
-.brand:focus-visible {
+.brand:focus-visible,
+.treeRow:focus-visible,
+.status a:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
@@ -477,7 +479,7 @@
 .insightFigure,
 .figure,
 .moreFigure,
-.closingFigure {
+.footMarkStage {
   aspect-ratio: 5 / 4;
 }
 
@@ -1084,25 +1086,180 @@
   }
 }
 
-/* ---- Thanks, and a figure over the footer ------------------------------------------------ */
+/* ---- The footer: Fork's links as files, where Fork is at, and the word Fork in hairline ----- */
 
-/* The page ends in one panel, edge to edge: the letter, a figure, and the footer inside it. */
+/* The page ends in one panel, edge to edge. The wordmark at its foot runs off the bottom. */
 .closing {
   margin-top: clamp(96px, 12vw, 160px);
-  padding-bottom: 48px;
+  overflow: hidden;
   border-radius: 32px 32px 0 0;
   background: var(--panel);
   box-shadow: 0 -0.5px 0 var(--edge);
 }
 
-.thanks {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.footTop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
   max-width: var(--max);
   margin: 0 auto;
-  padding: clamp(64px, 8vw, 112px) var(--gutter) 0;
-  text-align: center;
+  padding: clamp(64px, 8vw, 104px) var(--gutter) 0;
+}
+
+/* The tree: rows as in Fork's Files tab. Its lines are borders, so they stay one crisp pixel. */
+.tree {
+  font-family: var(--font-plex), ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+.tree ul {
+  margin: 0;
+  padding: 0 0 0 15px;
+  list-style: none;
+}
+
+.tree li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.tree li::before,
+.tree li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  border: 0 solid var(--line-strong);
+}
+
+.tree li::before {
+  top: 0;
+  bottom: 0;
+  border-left-width: 1px;
+}
+
+.tree li:last-child::before {
+  bottom: auto;
+  height: 16px;
+}
+
+.tree li::after {
+  top: 16px;
+  width: 10px;
+  border-top-width: 1px;
+}
+
+.treeRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--body);
+  font: inherit;
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.treeRow svg {
+  flex: none;
+  color: var(--muted);
+}
+
+a.treeRow,
+button.treeRow {
+  cursor: pointer;
+}
+
+.treeRow[aria-current="page"] {
+  background: var(--sunk);
+  color: var(--ink);
+}
+
+.treeRow [data-note] {
+  color: var(--muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.treeRow:hover,
+  button.treeRow:hover {
+    background: var(--sunk);
+    color: var(--ink);
+  }
+
+  .status a:hover {
+    text-decoration-color: var(--ink);
+  }
+}
+
+/* Where Fork is at: the latest version beside the app's square, and what's still cooking. */
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 260px;
+  color: var(--body);
+  font-size: 15px;
+}
+
+.status p {
+  margin: 0;
+}
+
+.statusHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px !important;
+  color: var(--ink);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.status a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease;
+}
+
+.statusMuted {
+  color: var(--muted);
+}
+
+.signoff {
+  margin-top: 14px !important;
+  color: var(--ink);
+  font-family: var(--font-caveat), cursive;
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* The word Fork, as wide as the page: the figure's stage is wider than the band and slides up into it, so the
+ * letters fill it and the plate they stand on is cut off by the panel's edge. */
+.footMark {
+  position: relative;
+  width: min(100%, var(--max));
+  margin: clamp(8px, 2vw, 24px) auto 0;
+  aspect-ratio: 2.53;
+  overflow: hidden;
+}
+
+/* The word spans 304 of the stage's 400 units from x 48; the band shows y 85 (room for a lift) to 205. */
+.footMarkStage {
+  position: absolute;
+  top: -70.8%;
+  left: -15.8%;
+  width: 131.6%;
 }
 
 /* ---- The letter: a white sheet folded in three that opens once (Letter.tsx) ----------------
@@ -1269,54 +1426,6 @@
   background: var(--sunk);
 }
 
-.closingFigure {
-  width: min(100%, 440px);
-  margin-top: 40px;
-}
-
-/* The footer's doodles (wave, socials) are drawn in rose: ink here. */
-.footer img {
-  filter: brightness(0);
-  opacity: 0.85;
-}
-
-@media (prefers-color-scheme: dark) {
-  .footer img {
-    filter: brightness(0) invert(1);
-  }
-}
-
-.footer {
-  margin-top: 0;
-  border-top: 0.5px solid var(--edge);
-  padding-top: 40px;
-}
-
-/* The snowman is drawn in rose for the old page; here it's ink on the panel, like the figures. Its classes come
- * from the old page's stylesheet, so they're matched by name. */
-.thanks > button svg {
-  stroke: var(--ink);
-  stroke-width: 2.25;
-}
-
-.thanks [class*="paperFill"] {
-  fill: var(--panel);
-}
-
-.thanks [class*="inkFill"] {
-  fill: var(--ink);
-}
-
-.thanks [class*="flake"] {
-  stroke: var(--muted);
-}
-
-/* Snowman.tsx centres itself with a margin meant for the old page's column. */
-.thanks > button:first-child {
-  align-self: center;
-  margin: 0 auto !important;
-}
-
 /* ---- Scroll reveals (JS adds data-reveals="on"; without JS everything just shows) ----- */
 
 :global(html[data-reveals="on"]) .v2 [data-reveal]:not([data-shown]):not(svg) {
@@ -1374,6 +1483,11 @@
 
   .closing {
     border-radius: 24px 24px 0 0;
+  }
+
+  .footTop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
   }
 
   .letterPaper {
@@ -1475,6 +1589,11 @@
 /* ---- Reduced motion: no rising, no drawing, no blinking -------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .treeRow,
+  .status a {
+    transition: none;
+  }
+
   .letter[data-state] .fold {
     transition: none;
   }

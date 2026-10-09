@@ -9,6 +9,7 @@ import HL from "./kernel";
 import numerals from "./numerals";
 import swatchfan from "./swatchfan";
 import tabs from "./tabs";
+import wordmark from "./wordmark";
 
 // A Hairline line figure (@lucasmarkes/hairline, MIT): Fork's own (drawn with the hairline-create kit, in this
 // folder) or one of the package's. The first time it scrolls into view it plays its tour once, an unseen
@@ -24,10 +25,10 @@ type Own = {
 };
 type Running = { play(): void; destroy(): void };
 
-const OWN = { tabs, folders, beforeafter, swatchfan, numerals } as unknown as Record<string, Own>;
+const OWN = { tabs, folders, beforeafter, swatchfan, numerals, wordmark } as unknown as Record<string, Own>;
 const STOCK = { exploded, laptop, loupe, padlock, phosphor, query, riffle, terminal };
 
-export type FigureName = "tabs" | "folders" | "beforeafter" | "swatchfan" | "numerals" | keyof typeof STOCK;
+export type FigureName = "tabs" | "folders" | "beforeafter" | "swatchfan" | "numerals" | "wordmark" | keyof typeof STOCK;
 
 // The figure's own number for an intensity from 0 to 1, read on its range (as the kit's bench does).
 const valueOf = ([lo, mid, hi]: Own["range"], k: number) => (k <= 0.5 ? lo + (k / 0.5) * (mid - lo) : mid + ((k - 0.5) / 0.5) * (hi - mid));

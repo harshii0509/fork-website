@@ -40,6 +40,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-09T19:13+05:30",
+    title: "The footer is Fork’s own folder",
+    what: "The end of the page now lists its links as a folder of files, the way Fork’s Files tab shows them: download, install.sh (click to copy the install command), what’s cooking, the source and where to find me. Beside it, the latest version with Fork’s square and when it shipped. Under both, the word Fork in block letters runs off the bottom of the page; point at a letter and it lifts.",
+    why: "The old footer was a doodle and two icons, with no way to download or find the source from the bottom of the page. Now the last thing you see says what Fork is, where it’s at and where to go next.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-10-09T19:40+05:30",
     title: "The window at the top tells the whole story",
     what: "The Fork window on the home page now shows your site live while the agent works, reloading as each edit lands. When it finishes, the panel moves to Changes and wipes from before to after, then to Design, where the colour the agent changed eases to its new value. In dark mode the site is dark too.",

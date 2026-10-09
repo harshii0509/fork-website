@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import DownloadButton from "../DownloadButton";
-import Footer from "../Footer";
 import { DOWNLOAD } from "../v2/content";
+import Footer from "../v2/Footer";
 import Nav from "../v2/Nav";
 import Figure from "../v2/hairline/Figure";
 import v2 from "../v2/v2.module.css";
@@ -64,7 +64,7 @@ export default function WhatsCooking() {
         </div>
       </main>
 
-      <Footer className={v2.footer} />
+      <Footer at="cooking" />
     </div>
   );
 }

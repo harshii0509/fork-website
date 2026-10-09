@@ -3,12 +3,11 @@ import { IBM_Plex_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import DownloadButton from "./DownloadButton";
-import Footer from "./Footer";
-import Snowman from "./Snowman";
 import { ENTRIES, STICKER } from "./whats-cooking/entries";
 import { DOWNLOAD, GITHUB, MORE_HOME } from "./v2/content";
 import { DesignDemo, WorkspacesDemo } from "./v2/fork/Demos";
 import ForkWindow from "./v2/fork/ForkWindow";
+import Footer from "./v2/Footer";
 import Figure from "./v2/hairline/Figure";
 import HeroCover from "./v2/HeroCover";
 import HeroSquare from "./v2/HeroSquare";
@@ -16,7 +15,6 @@ import Nav from "./v2/Nav";
 import Reveals from "./v2/Reveals";
 import Download from "./v2/sections/Download";
 import Faq from "./v2/sections/Faq";
-import Letter from "./v2/sections/Letter";
 import styles from "./v2/v2.module.css";
 
 // The Fork home page: it explains what Fork does. Section order and jobs come from NARRATIVE in
@@ -202,15 +200,8 @@ export default function Home() {
         </section>
       </main>
 
-      {/* 9 · Who made this: the letter and the footer end the page in one block, edge to edge. */}
-      <div className={styles.closing}>
-        <section id="thanks" className={styles.thanks} aria-labelledby="thanks-h">
-          <Snowman />
-          <Letter />
-          <Figure name="laptop" className={styles.closingFigure} intensity={0.6} label="A thin laptop: point higher and the lid opens wider." />
-        </section>
-        <Footer className={styles.footer} cooking />
-      </div>
+      {/* 9 · The close: Fork's links as a folder of files, and the word Fork, cut off by the page's edge. */}
+      <Footer at="home" />
       <Reveals />
       <HeroCover />
     </div>
