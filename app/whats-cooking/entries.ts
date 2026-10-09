@@ -40,10 +40,10 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
-    at: "2026-10-09T20:45+05:30",
-    title: "Below the top of the home page: the real app, tilted (preview)",
-    what: "Everything under the hero is rebuilt on a preview page from a design picked in Figma. Three parts, each a heading and one line over a real screenshot of Fork, tilted, lit from behind and fading into the page: the workspace tabs and their squares, the before and after in Changes, and the Design panel. Then three numbers and a short download. The pictures follow your Mac’s light or dark.",
-    why: "Two coded tries were turned down: the drawn demos looked cheap, there were too many words, and it looked flat. This time three directions were drawn in Figma first, and only the chosen one was built, using the real app instead of drawings.",
+    at: "2026-10-09T21:15+05:30",
+    title: "A new home page, with little Mac windows (preview)",
+    what: "The whole home page is rebuilt on a preview page. The nav is a Mac menu bar; “Fork” sits in the middle with five little retro windows around it, each playing a real recording of Fork, and you can drag them around. Then a row for each thing Fork does, with a chat bubble and a bigger recording, a note from the maker, the latest changes from What’s cooking, questions and the download. Every window has a soft tinted title bar with shiny traffic lights.",
+    why: "The earlier tries looked like templates and were turned down. This one is playful and shows the real app moving instead of drawings of it.",
     kind: "better",
     where: "website",
   },

@@ -206,32 +206,82 @@ export const SECTIONS: Record<string, Section> = {
   },
 };
 
-// ---- The home page below the hero (9 Oct): direction A from Figma, "Tilted product" ----
-// Three parts, each a heading and one line, then a real Fork 1.2.0 screenshot, tilted, glowing and fading out.
-// The pictures live in public/shots, one for light and one for dark. Then three numbers and a short download.
+// ---- The home page (9 Oct), in heyclicky's way ----
+// A Mac menu bar for a nav, "Fork" in the middle with little retro windows around it, each playing a real
+// recording of Fork (public/clips, recorded from Fork 1.2.0), then a row per feature, a note from the maker,
+// what's been cooking, questions and the download. Lowercase and friendly; "Fork" always has its capital.
 
-export type Feature = { id: string; title: string; line: string; shot: "turn" | "changes" | "design"; alt: string };
+export type Tint = "green" | "blue" | "rose" | "sand" | "teal";
+export type Mini = { clip: string; file: string; tint: Tint; label: string };
+export type Row = { id: string; clip: string; tint: Tint; bubble: string; title: string; line: string; label: string };
 
-export const FEATURES: readonly Feature[] = [
-  {
-    id: "workspaces",
-    title: "Know which agent needs you.",
-    line: "Every project is a tab. Its square tells you if an agent is working, waiting on you, or stuck.",
-    shot: "turn",
-    alt: "Fork with four workspace tabs along the top, each with a coloured square, and an agent in the terminal making the portfolio's hero calmer.",
+export const LANDING = {
+  title: "Fork",
+  line: "the terminal that tells you when an agent needs you",
+  micro: "free. for macs with apple silicon",
+  minis: [
+    { clip: "mini-needs", file: "needs-you.mov", tint: "green", label: "A project's square ripples while its agent works, then turns yellow when it's done." },
+    { clip: "mini-changes", file: "before-after.mov", tint: "blue", label: "Dragging a line across the site, before and after the agent's turn." },
+    { clip: "mini-design", file: "design-live.mov", tint: "sand", label: "The Design panel redrawing as an agent changes the brand colour." },
+    { clip: "mini-oops", file: "what-went-wrong.mov", tint: "rose", label: "A failed command, explained in plain words, with the fix typed in." },
+    { clip: "mini-ask", file: "just-ask.mov", tint: "teal", label: "Asking for a new branch in plain words, and Fork running it." },
+  ] satisfies readonly Mini[],
+  rows: [
+    {
+      id: "needs-you",
+      clip: "row-needs",
+      tint: "green",
+      bubble: "is anyone waiting on me?",
+      title: "know who needs you",
+      line: "every project is a tab. its square ripples while an agent works and goes yellow when it's done or has a question.",
+      label: "Fork with four projects. Portfolio's agent works in the background, its square turns yellow, and a click shows what it did.",
+    },
+    {
+      id: "changes",
+      clip: "row-changes",
+      tint: "blue",
+      bubble: "make the hero calmer",
+      title: "see what changed",
+      line: "a picture of your app before and after every turn, right beside the terminal. drag the line.",
+      label: "Fork's Changes panel. A line is dragged across the site: the loud yellow hero before, the calm one after.",
+    },
+    {
+      id: "design",
+      clip: "row-design",
+      tint: "sand",
+      bubble: "use the brand teal",
+      title: "your design system, live",
+      line: "colours, spacing and corners read from your own files, redrawn the moment an agent edits one.",
+      label: "An agent edits tokens.css and Fork's Design panel turns the brand swatch teal and rounds the large corner.",
+    },
+    {
+      id: "help",
+      clip: "row-oops",
+      tint: "rose",
+      bubble: "why did that break?",
+      title: "stuck? just ask",
+      line: "errors explained in plain words, with the fix typed for you to read before you press enter.",
+      label: "npm run dev fails. Fork says Node isn't installed and types brew install node for you to check.",
+    },
+    {
+      id: "ask",
+      clip: "row-ask",
+      tint: "teal",
+      bubble: "make a new branch",
+      title: "say it in plain words",
+      line: "press ⌘K and say what you want. Fork finds the command, and you see it before it runs.",
+      label: "The ⌘K box: typing make a new branch finds git switch, and Fork runs it with the name you gave.",
+    },
+  ] satisfies readonly Row[],
+  // The maker's own words, from his thank-you note (Letter.tsx). The last line is new.
+  notes: {
+    lines: [
+      "I spend my days in terminals, and I wanted one that felt faster when I need it,",
+      "calmer when I'm juggling a dozen things,",
+      "and a little more human when I'm figuring things out. So I made Fork.",
+    ],
+    after: "it's early! try it and tell me what you think.",
+    name: "harshvardhan,",
+    role: "made Fork",
   },
-  {
-    id: "changes",
-    title: "See what the agent changed.",
-    line: "A picture of your app from before and after every turn, right beside the terminal.",
-    shot: "changes",
-    alt: "Fork's Changes panel with a line dragged across the site: the loud yellow hero before, the calm one after.",
-  },
-  {
-    id: "design",
-    title: "Your design system, live.",
-    line: "Colours, type and spacing read from your own files, redrawn when an agent changes one.",
-    shot: "design",
-    alt: "Fork's Design panel listing the project's colour, spacing and radius tokens.",
-  },
-];
+} as const;
