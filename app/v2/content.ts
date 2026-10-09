@@ -28,9 +28,7 @@ export const NARRATIVE: { id: string; step: string; force: Force; stage: Stage; 
   { id: "insight", step: "Insight", force: "push", stage: "acquisition", question: "Why is working with agents so hard to keep track of?" },
   { id: "workspaces", step: "Value", force: "pull", stage: "activation", question: "How do I know what each agent is doing?" },
   { id: "design", step: "Value", force: "pull", stage: "activation", question: "Can I see what my project looks like, as it changes?" },
-  { id: "more", step: "Value", force: "pull", stage: "activation", question: "What else is in it?" },
-  { id: "wait", step: "Value", force: "pull", stage: "retention", question: "What do I do while I wait?" },
-  { id: "yours", step: "Value", force: "pull", stage: "retention", question: "Will it feel like mine?" },
+  { id: "more", step: "Value", force: "pull", stage: "activation", question: "What else is in it? (games while you wait, reading, safety, light and dark)" },
   { id: "cooking", step: "Proof", force: "pull", stage: "referral", question: "Is anyone still working on this?" },
   { id: "faq", step: "Alternatives + objections", force: "habit + anxiety", stage: null, question: "Do I need AI? Is it safe?" },
   { id: "download", step: "Close", force: "pull", stage: "acquisition", question: "How do I get it?" },
@@ -62,6 +60,36 @@ export const MORE = [
     figure: "loupe",
     title: "Your files, right there",
     body: "Search every file with ⌘K. Preview code, Markdown and images beside the terminal, and put the lines you pick into it.",
+  },
+] as const;
+
+// The home page's "Also in Fork" has room for four more: what used to be its games and themes sections, plus
+// reading and the safety nets. (The Blueprint and Terminal drafts keep MORE as it is.)
+export const MORE_HOME = [
+  ...MORE,
+  {
+    id: "safe",
+    figure: "padlock",
+    title: "Safe while you learn",
+    body: "Fork waits for Enter before anything that changes things. Deleting moves files to the Trash, and commands that can’t be undone ask first.",
+  },
+  {
+    id: "wait",
+    figure: "phosphor",
+    title: "Games while you wait",
+    body: "Snake, Stack and Space Run open in a split beside the terminal, so waiting on an agent is less dull.",
+  },
+  {
+    id: "read",
+    figure: "riffle",
+    title: "Read beside it",
+    body: "Open a PDF or EPUB in the panel (⌘P). Fork keeps your place in every book, and says when the agent is done.",
+  },
+  {
+    id: "looks",
+    figure: "exploded",
+    title: "Light, dark or your Mac",
+    body: "Fork follows your Mac’s light or dark look until you pick one in Settings.",
   },
 ] as const;
 

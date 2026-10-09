@@ -6,7 +6,7 @@ import DownloadButton from "./DownloadButton";
 import Footer from "./Footer";
 import Snowman from "./Snowman";
 import { ENTRIES, STICKER } from "./whats-cooking/entries";
-import { DOWNLOAD, GITHUB, MORE } from "./v2/content";
+import { DOWNLOAD, GITHUB, MORE_HOME } from "./v2/content";
 import { DesignDemo, WorkspacesDemo } from "./v2/fork/Demos";
 import ForkWindow from "./v2/fork/ForkWindow";
 import Figure from "./v2/hairline/Figure";
@@ -17,8 +17,6 @@ import Reveals from "./v2/Reveals";
 import Download from "./v2/sections/Download";
 import Faq from "./v2/sections/Faq";
 import Letter from "./v2/sections/Letter";
-import Themes from "./v2/sections/Themes";
-import WhileYouWait from "./v2/sections/WhileYouWait";
 import styles from "./v2/v2.module.css";
 
 // The Fork home page: it explains what Fork does. Section order and jobs come from NARRATIVE in
@@ -41,15 +39,12 @@ export default function Home() {
       {/* 1 · Hook */}
       <header id="top" className={styles.hero} data-cover>
         <div className={styles.heroCopy} data-cover-copy>
-          <h1 className={styles.h1}>
-            <span className={styles.word}>Meet</span> <HeroSquare />{" "}
-            <span className={styles.word} style={{ animationDelay: "180ms" }}>
-              Fork
-            </span>
-          </h1>
+          <p className={`${styles.heroEyebrow} ${plex.className}`}>
+            Meet <HeroSquare /> Fork
+          </p>
+          <h1 className={`${styles.h1} ${styles.heroTitle}`}>The terminal that tells you when an agent needs&nbsp;you.</h1>
           <p className={styles.heroLede}>
-            A terminal for people who build things with agents. Every project gets a tab that tells you when it needs
-            you, with your app, its changes and its design system right beside it.
+            Every project gets its own tab, with your app, its changes and its design system right beside the terminal.
           </p>
           <div className={styles.ctas}>
             <DownloadButton href={DOWNLOAD} from="top" className={styles.btnPrimary} />
@@ -145,9 +140,10 @@ export default function Home() {
             <h2 id="more-h" className={styles.h2}>
               Also in Fork.
             </h2>
+            <p className={styles.lede}>The smaller things that make a terminal friendlier.</p>
           </div>
           <div className={styles.moreGrid}>
-            {MORE.map((m, i) => (
+            {MORE_HOME.map((m, i) => (
               <article key={m.id} className={styles.moreCard} data-reveal style={{ "--i": i } as React.CSSProperties}>
                 <Figure name={m.figure} className={styles.moreFigure} label={m.title} />
                 <h3 className={styles.h3}>{m.title}</h3>
@@ -157,32 +153,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6 · Value: retention */}
-        <section id="wait" className={styles.section} aria-labelledby="wait-h">
-          <div className={styles.head} data-reveal>
-            <h2 id="wait-h" className={styles.h2}>
-              Something to do while you wait.
-            </h2>
-            <p className={styles.lede}>
-              Snake, Stack and Space Run open in a split beside the terminal, so waiting on an agent is less dull. Try it:
-              this one’s real.
-            </p>
-          </div>
-          <WhileYouWait />
-        </section>
-
-        {/* 7 · Value: make it yours */}
-        <section id="yours" className={styles.section} aria-labelledby="yours-h">
-          <div className={styles.head} data-reveal>
-            <h2 id="yours-h" className={styles.h2}>
-              Light, dark, or follow your Mac.
-            </h2>
-            <p className={styles.lede}>Pick one and the window below takes it, the way Fork does.</p>
-          </div>
-          <Themes />
-        </section>
-
-        {/* 8 · Proof */}
+        {/* 6 · Proof */}
         <section id="cooking" className={styles.section} aria-labelledby="cooking-h">
           <div className={styles.head} data-reveal>
             <h2 id="cooking-h" className={styles.h2}>
@@ -211,7 +182,7 @@ export default function Home() {
           </p>
         </section>
 
-        {/* 9 · Objections */}
+        {/* 7 · Objections */}
         <section id="faq" className={`${styles.section} ${styles.split}`} aria-labelledby="faq-h">
           <h2 id="faq-h" className={styles.h2} data-reveal>
             Questions, before you download.
@@ -219,7 +190,7 @@ export default function Home() {
           <Faq />
         </section>
 
-        {/* 10 · Close */}
+        {/* 8 · Close */}
         <section id="download" className={`${styles.section} ${styles.split}`} aria-labelledby="download-h">
           <div data-reveal>
             <h2 id="download-h" className={styles.h2}>
@@ -231,7 +202,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* 11 · Who made this: the letter and the footer end the page in one block, edge to edge. */}
+      {/* 9 · Who made this: the letter and the footer end the page in one block, edge to edge. */}
       <div className={styles.closing}>
         <section id="thanks" className={styles.thanks} aria-labelledby="thanks-h">
           <Snowman />

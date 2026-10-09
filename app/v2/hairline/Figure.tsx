@@ -1,6 +1,6 @@
 "use client";
 
-import { laptop, loupe, query, terminal } from "@lucasmarkes/hairline";
+import { exploded, laptop, loupe, padlock, phosphor, query, riffle, terminal } from "@lucasmarkes/hairline";
 import { useEffect, useRef } from "react";
 import { useSeen } from "../hooks";
 import beforeafter from "./beforeafter";
@@ -25,7 +25,7 @@ type Own = {
 type Running = { play(): void; destroy(): void };
 
 const OWN = { tabs, folders, beforeafter, swatchfan, numerals } as unknown as Record<string, Own>;
-const STOCK = { laptop, loupe, query, terminal };
+const STOCK = { exploded, laptop, loupe, padlock, phosphor, query, riffle, terminal };
 
 export type FigureName = "tabs" | "folders" | "beforeafter" | "swatchfan" | "numerals" | keyof typeof STOCK;
 

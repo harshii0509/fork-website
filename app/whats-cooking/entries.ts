@@ -40,6 +40,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-09T18:29+05:30",
+    title: "A shorter home page that says what Fork does",
+    what: "The first line now says the job: the terminal that tells you when an agent needs you. The games and themes sections became cards in “Also in Fork”, next to new ones for reading beside the terminal and for the safety nets, so the page is about a screen shorter. What’s cooking moved into the same greys, with the latest version drawn in light lines.",
+    why: "“Meet Fork” didn’t tell a new visitor what Fork is, and the page took a long time to get to the point. What’s cooking still had the old cream and pink.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-10-09T15:08+05:30",
     title: "The home page shows the new Fork",
     what: "The home page now shows Fork as it is today: workspaces as tabs, the status squares, Workspace info, and the panel’s Changes and Design tabs, all in Fork’s own greys and in dark mode when your Mac is. The blob and the colour shaders are gone. Line drawings that answer your pointer take their place, and each plays once as you reach it.",

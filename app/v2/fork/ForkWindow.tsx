@@ -41,7 +41,7 @@ export default function ForkWindow({ play = false, mode, className = "", label =
   useEffect(() => {
     if (!started || still) return;
     const at = (ms: number, f: () => void) => setTimeout(f, ms);
-    const t0 = 700 + PROMPT.length * 55;
+    const t0 = 300 + PROMPT.length * 55;
     const timers = [
       at(t0, () => setPhase(1)),
       ...EDITS.map((_, i) => at(t0 + 700 + i * 900, () => setEdits(i + 1))),
