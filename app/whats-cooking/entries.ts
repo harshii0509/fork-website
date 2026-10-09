@@ -24,6 +24,7 @@ export type Entry = {
 
 // Each Fork release, newest first. The page puts a "served" line above the newest entry it shipped.
 export const RELEASES: { version: string; at: string }[] = [
+  { version: "1.2.0", at: "2026-10-09T14:27+05:30" },
   { version: "1.1.0", at: "2026-10-09T01:30+05:30" },
   { version: "1.0.2", at: "2026-10-04T11:06+05:30" },
   { version: "1.0.1", at: "2026-10-04T10:36+05:30" },
@@ -38,6 +39,33 @@ export const RELEASES: { version: string; at: string }[] = [
 
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
+  {
+    at: "2026-10-09T14:08+05:30",
+    title: "A new way to start a workspace",
+    what: "⌘N opens a quick search box: type a name to make a folder, paste a GitHub link to get a project, or pick one you’ve used (a project you already have comes first, so you don’t make it twice). With no workspace open, three cards show the ways to start, each with a little line picture that moves when you point at it.",
+    why: "Starting something was a long list to read. Most of the time you already know what you want, so one box you can type into is quicker; the first time, pictures explain the choices better than words.",
+    kind: "new",
+    where: "app",
+    version: "1.2.0",
+  },
+  {
+    at: "2026-10-09T11:45+05:30",
+    title: "Name your workspaces and terminals",
+    what: "Double-click a workspace tab, or press ⌘R, to rename it. Terminals take the name of the task your AI tool is working on, like “Fix login bug”, and keep it after it finishes; double-click one, or press ⌥⌘R, to name it yourself. Esc now cancels a rename instead of saving it.",
+    why: "With a few workspaces and terminals open, “Terminal 2” and a folder name didn’t say which was which. The task is the name you’d have given it anyway.",
+    kind: "new",
+    where: "app",
+    version: "1.2.0",
+  },
+  {
+    at: "2026-10-09T11:41+05:30",
+    title: "Your app’s address lives in Workspace info",
+    what: "The “Your app is running · Show it” bar under the terminal is gone. The address in Workspace info is now a link: click it to see your app.",
+    why: "The bar said the same thing as Workspace info and took space from the terminal every time a dev server started.",
+    kind: "better",
+    where: "app",
+    version: "1.2.0",
+  },
   {
     at: "2026-10-09T00:04+05:30",
     title: "See what your AI tool changed: Changes",
