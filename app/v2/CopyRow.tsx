@@ -2,8 +2,8 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 
-// The footer's install.sh row: a click copies the install command, and the row says so for a moment.
-export default function CopyRow({ className, text, icon, name }: { className: string; text: string; icon: ReactNode; name: string }) {
+// A footer button that copies a line (the install command), and says "copied" for a moment.
+export default function CopyRow({ className, text, track, children }: { className: string; text: string; track: Record<string, string>; children: ReactNode }) {
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     if (!copied) return;
@@ -15,12 +15,11 @@ export default function CopyRow({ className, text, icon, name }: { className: st
       type="button"
       className={className}
       title={text}
-      data-track="install_copied"
-      data-from="footer"
+      data-cmd="install"
+      {...track}
       onClick={() => navigator.clipboard?.writeText(text).then(() => setCopied(true), () => {})}
     >
-      {icon}
-      <span>{name}</span>
+      {children}
       <span aria-live="polite" data-note>
         {copied ? "copied" : ""}
       </span>
