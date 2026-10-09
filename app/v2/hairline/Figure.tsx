@@ -6,6 +6,7 @@ import { useSeen } from "../hooks";
 import beforeafter from "./beforeafter";
 import folders from "./folders";
 import HL from "./kernel";
+import numerals from "./numerals";
 import swatchfan from "./swatchfan";
 import tabs from "./tabs";
 
@@ -23,10 +24,10 @@ type Own = {
 };
 type Running = { play(): void; destroy(): void };
 
-const OWN = { tabs, folders, beforeafter, swatchfan } as unknown as Record<string, Own>;
+const OWN = { tabs, folders, beforeafter, swatchfan, numerals } as unknown as Record<string, Own>;
 const STOCK = { laptop, loupe, query, terminal };
 
-export type FigureName = "tabs" | "folders" | "beforeafter" | "swatchfan" | keyof typeof STOCK;
+export type FigureName = "tabs" | "folders" | "beforeafter" | "swatchfan" | "numerals" | keyof typeof STOCK;
 
 // The figure's own number for an intensity from 0 to 1, read on its range (as the kit's bench does).
 const valueOf = ([lo, mid, hi]: Own["range"], k: number) => (k <= 0.5 ? lo + (k / 0.5) * (mid - lo) : mid + ((k - 0.5) / 0.5) * (hi - mid));
@@ -88,7 +89,7 @@ function mountStock(el: HTMLElement, name: keyof typeof STOCK, intensity: number
   };
 }
 
-export default function Figure({ name, label, intensity = 0.5, className }: { name: FigureName; label: string; intensity?: number; className?: string }) {
+export default function Figure({ name, label, intensity = 0.5, className, digits }: { name: FigureName; label: string; intensity?: number; className?: string; digits?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const fig = useRef<Running | null>(null);
   const seen = useSeen(ref, "0px 0px -25% 0px");
@@ -104,7 +105,7 @@ export default function Figure({ name, label, intensity = 0.5, className }: { na
       fig.current?.destroy();
       fig.current = null;
     };
-  }, [name, intensity, label]);
+  }, [name, intensity, label, digits]);
 
   useEffect(() => {
     if (!seen || played.current) return;
@@ -116,6 +117,7 @@ export default function Figure({ name, label, intensity = 0.5, className }: { na
     <div
       ref={ref}
       className={className}
+      data-digits={digits}
       onPointerUp={(e) => {
         if (e.pointerType === "touch") fig.current?.play();
       }}

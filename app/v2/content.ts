@@ -95,3 +95,85 @@ export const FAQ = [
     a: "No, that’s a different app (fork.dev). This Fork is a terminal.",
   },
 ] as const;
+
+// The home page's sections, in NARRATIVE's order, as both new directions show them (app/blueprint, app/terminal).
+// `title` is split round the one phrase each direction emphasises (Blueprint sets it in italic, Terminal in
+// colour). `cmd` is how the Terminal direction opens the section: as a command you could type.
+export type Section = {
+  id: string;
+  eyebrow: string;
+  title: [string, string, string];
+  lede?: string;
+  cmd: string;
+};
+
+export const SECTIONS: Record<string, Section> = {
+  top: {
+    id: "top",
+    eyebrow: "Fork for Mac",
+    title: ["A terminal that ", "tells you", " when an agent is done."],
+    lede: "Every project in its own tab, a square that says what’s happening there, and your app, its changes and its design system right beside the terminal.",
+    cmd: "fork",
+  },
+  insight: {
+    id: "insight",
+    eyebrow: "The problem",
+    title: ["You started three agents. Which one is ", "waiting on you", "?"],
+    lede: "Agents work in terminals you can’t see. One finished ten minutes ago, one is stuck on a question, and you only find out by clicking through every window. Fork gives every project its own tab, and the tab tells you.",
+    cmd: "fork --why",
+  },
+  workspaces: {
+    id: "workspaces",
+    eyebrow: "Workspaces",
+    title: ["One tab per project. ", "One square", " that tells you."],
+    lede: "A workspace is a folder: its terminals, files, search and changes stay together. The square on its tab is the status, so you can work in one project and still see the others.",
+    cmd: "fork --workspaces",
+  },
+  design: {
+    id: "design",
+    eyebrow: "Design tab",
+    title: ["Your design system, ", "live", " beside the terminal."],
+    lede: "The Design tab reads colours, type, spacing and radii from your project’s own files, light and dark side by side, and redraws when an agent changes one. Click a token to copy it.",
+    cmd: "fork --design",
+  },
+  more: {
+    id: "more",
+    eyebrow: "Also in Fork",
+    title: ["And the things that make a terminal ", "kind", "."],
+    cmd: "fork --more",
+  },
+  yours: {
+    id: "yours",
+    eyebrow: "Appearance",
+    title: ["Light, dark, or ", "follow your Mac", "."],
+    lede: "Pick one and the window takes it, the way Fork does.",
+    cmd: "fork --appearance",
+  },
+  cooking: {
+    id: "cooking",
+    eyebrow: "Changelog",
+    title: ["Cooked ", "in the open", "."],
+    lede: "Every change to Fork is written down, with why it was made.",
+    cmd: "fork changelog --latest",
+  },
+  faq: {
+    id: "faq",
+    eyebrow: "Questions",
+    title: ["Before you ", "download", "."],
+    cmd: "fork --help",
+  },
+  download: {
+    id: "download",
+    eyebrow: "Download",
+    title: ["Free, for Macs with ", "Apple Silicon", "."],
+    lede: "Signed and notarized. Your workspaces come back after every update.",
+    cmd: "fork install",
+  },
+  thanks: {
+    id: "thanks",
+    eyebrow: "Made by",
+    title: ["Made by Harshvardhan, ", "for people who build things", "."],
+    lede: "I spend my days in terminals, and I wanted one that felt calmer when I’m juggling a dozen things and a little more human when I’m figuring things out. So I made Fork.",
+    cmd: "whoami",
+  },
+};

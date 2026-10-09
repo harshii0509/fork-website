@@ -1,0 +1,1301 @@
+/* Direction A, "Blueprint": the page as a technical drawing. Drafting paper with its grid drawn as hairlines,
+ * numbered cells, mono notes and serif headlines; in dark mode, a real blueprint. One spacing scale
+ * (8 / 16 / 24 / 48 / 96) and two radii (0 for the drawing, 12 for pieces of the app). Colour comes only from the
+ * blueprint blue (notes and measurements) and from the app itself.
+ */
+
+.bp {
+  --paper: #f5f4ef;
+  --line: #dedbd2;
+  --line-2: #c8c4b8;
+  --ink: #1b1b19;
+  --ink-2: #45443f;
+  --muted: #6f6d65; /* 4.7:1 on paper */
+  --blue: #2340e8;
+  --fill: #1b1b19;
+  --on-fill: #f5f4ef;
+  --max: 1200px;
+  --side: 200px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  /* Hairline figures: ink on the paper they sit on. */
+  --hairline-plate: var(--paper);
+  --hairline-hi: var(--ink);
+  --hairline-edge: #8f8c82;
+  --hairline-mid: #bdb9ad;
+  --hairline-lo: #dedbd2;
+  --hairline-stroke: 1;
+
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dark: a real blueprint. */
+@media (prefers-color-scheme: dark) {
+  .bp {
+    --paper: #0d1c3d;
+    --line: rgb(150 180 255 / 0.16);
+    --line-2: rgb(150 180 255 / 0.32);
+    --ink: #eef3ff;
+    --ink-2: #c6d3f2;
+    --muted: #93a7d4;
+    --blue: #9db8ff;
+    --fill: #eef3ff;
+    --on-fill: #0d1c3d;
+    --hairline-edge: #9db0dc;
+    --hairline-mid: #4d6499;
+    --hairline-lo: #24386a;
+    color-scheme: dark;
+  }
+
+  /* The white Apple mark on a light button. */
+  .btn img,
+  .btnBig img {
+    filter: invert(1);
+  }
+}
+
+:global(html):has(.bp),
+:global(body):has(.bp) {
+  background: #f5f4ef;
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(html):has(.bp),
+  :global(body):has(.bp) {
+    background: #0d1c3d;
+  }
+}
+
+.bp ::selection {
+  background: color-mix(in srgb, var(--blue) 24%, transparent);
+}
+
+.bp a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bp button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Everything sits in one frame: the drawing's left and right edges run the full height of the page. */
+.nav,
+.hero,
+.cell,
+.titleBlock {
+  position: relative;
+  max-width: var(--max);
+  margin-inline: auto;
+  border-inline: 1px solid var(--line);
+}
+
+/* ---- Type --------------------------------------------------------------------------------- */
+
+.h1,
+.h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.h1 {
+  max-width: 13ch;
+  font-size: clamp(52px, 7.6vw, 112px);
+  line-height: 0.95;
+}
+
+.h2 {
+  max-width: 18ch;
+  font-size: clamp(36px, 4.4vw, 60px);
+  line-height: 1.02;
+}
+
+.h1 em,
+.h2 em {
+  font-style: italic;
+}
+
+.h3 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.lede {
+  max-width: 34em;
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 18px;
+  text-wrap: pretty;
+}
+
+.eyebrow,
+.label,
+.figNo,
+.noteMeta,
+.bp figcaption,
+.credit {
+  font-family: var(--font-plex), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin-bottom: 24px;
+  color: var(--blue);
+}
+
+/* ---- Nav ---------------------------------------------------------------------------------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 16px/1 var(--font-plex), monospace;
+  letter-spacing: -0.01em;
+}
+
+/* Fork's mark in this direction: a workspace's square, as nine tiles. */
+.mark {
+  width: 14px;
+  height: 14px;
+  background:
+    conic-gradient(from 90deg at 2px 2px, var(--paper) 25%, transparent 0) 0 0 / 5px 5px,
+    var(--ink);
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  margin: 0 auto;
+}
+
+.links a {
+  padding: 6px 10px;
+  color: var(--ink-2);
+  font: 500 13px/1 var(--font-plex), monospace;
+  letter-spacing: 0.02em;
+  transition: color 150ms ease;
+}
+
+.navCta {
+  padding: 9px 14px;
+  background: var(--fill);
+  color: var(--on-fill) !important;
+  font: 500 13px/1 var(--font-plex), monospace;
+  letter-spacing: 0.02em;
+  transition: transform 160ms var(--ease-out);
+}
+
+.navCta:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .links a:hover {
+    color: var(--blue);
+  }
+}
+
+/* ---- Hero --------------------------------------------------------------------------------- */
+
+/* The hero shows the drawing's column grid, faintly: twelve columns, as hairlines. */
+.hero {
+  background-image: repeating-linear-gradient(90deg, transparent 0 calc(100% / 12 - 1px), color-mix(in srgb, var(--line) 55%, transparent) calc(100% / 12 - 1px) calc(100% / 12));
+}
+
+.heroCopy {
+  padding: 96px 48px 48px;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.btn,
+.btnBig {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 20px;
+  background: var(--fill);
+  color: var(--on-fill) !important;
+  font: 500 14px/1 var(--font-plex), monospace;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: transform 160ms var(--ease-out);
+}
+
+.btnBig {
+  height: 64px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+
+.btn:active,
+.btnBig:active {
+  transform: scale(0.97);
+}
+
+/* The one-line install, as a command on the drawing. */
+.cmd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  height: 48px;
+  padding: 0 6px 0 14px;
+  border: 1px solid var(--line-2);
+  background: var(--paper);
+}
+
+.cmd code {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink-2);
+  font: 400 13px/1 var(--font-plex), monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmd code::before {
+  content: "$ ";
+  color: var(--blue);
+}
+
+.copy {
+  flex: none;
+  padding: 7px 10px;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  font: 500 12px/1 var(--font-plex), monospace !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background-color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copy:hover {
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+}
+
+.heroFig {
+  position: relative;
+  margin: 0;
+  padding: 72px 72px 32px 48px;
+}
+
+/* Dimension lines: the window's real size, in the blueprint blue. */
+.dims,
+.dimsV {
+  position: absolute;
+  color: var(--blue);
+  font: 500 11px/1 var(--font-plex), monospace;
+}
+
+.dims {
+  top: 40px;
+  left: 48px;
+  right: 72px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.dimsV {
+  top: 72px;
+  right: 40px;
+  width: 1px;
+  bottom: 76px;
+  background: var(--blue);
+}
+
+.dims::before,
+.dims::after,
+.dimsV::before,
+.dimsV::after {
+  content: "";
+  position: absolute;
+  background: var(--blue);
+}
+
+.dims::before,
+.dims::after {
+  top: -5px;
+  width: 1px;
+  height: 11px;
+}
+
+.dims::before {
+  left: 0;
+}
+
+.dims::after {
+  right: 0;
+}
+
+.dimsV::before,
+.dimsV::after {
+  left: -5px;
+  width: 11px;
+  height: 1px;
+}
+
+.dimsV::before {
+  top: 0;
+}
+
+.dimsV::after {
+  bottom: 0;
+}
+
+.dims span,
+.dimsV span {
+  position: absolute;
+  padding: 2px 8px;
+  background: var(--paper);
+}
+
+.dims span {
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dimsV span {
+  top: 50%;
+  left: -16px;
+  padding: 8px 2px;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%);
+}
+
+.bp figcaption {
+  margin-top: 16px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.bp figcaption b {
+  margin-right: 8px;
+  color: var(--blue);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ---- Cells -------------------------------------------------------------------------------- */
+
+/* A numbered cell: its number on the left, its drawing on the right. The rule above it draws itself in from the
+ * left when the cell's number comes into view, and a + marks each corner where the lines cross. */
+.cell {
+  display: grid;
+  grid-template-columns: var(--side) minmax(0, 1fr);
+}
+
+.cell::before,
+.cell::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--blue), var(--blue)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--blue), var(--blue)) 0 50% / 100% 1px no-repeat;
+  z-index: 1;
+}
+
+.cell::before {
+  left: -5px;
+}
+
+.cell::after {
+  right: -5px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 48px 24px;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.label::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line-2);
+  transform-origin: 0 50%;
+  transition: transform 900ms var(--ease-out);
+}
+
+.label span {
+  color: var(--blue);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.split,
+.stack {
+  min-width: 0;
+  padding: 48px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.intro .lede {
+  max-width: 40em;
+}
+
+/* Two drawings side by side, framed and captioned. */
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.flip {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+}
+
+.plate,
+.fig {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--line-2);
+}
+
+.plate {
+  justify-content: center;
+  padding: 32px;
+  background: color-mix(in srgb, var(--ink) 2.5%, var(--paper));
+}
+
+.plate figcaption,
+.fig figcaption {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.fig {
+  padding: 8px 24px 24px;
+}
+
+.figure {
+  aspect-ratio: 5 / 4;
+}
+
+/* ---- Also in Fork: four drawings in a row, ruled apart ------------------------------------ */
+
+.four {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+}
+
+.four article {
+  padding: 8px 24px 32px;
+  border-left: 1px solid var(--line);
+}
+
+.four article:first-child {
+  border-left: 0;
+}
+
+.four article p:last-child {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 15px;
+  text-wrap: pretty;
+}
+
+.figNo {
+  margin-bottom: 8px;
+  color: var(--blue);
+}
+
+/* ---- Appearance --------------------------------------------------------------------------- */
+
+.looks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.looks > :last-child {
+  align-self: stretch;
+}
+
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--line-2);
+}
+
+.seg button {
+  padding: 10px 16px;
+  border: 0;
+  border-left: 1px solid var(--line-2);
+  background: transparent;
+  font: 500 12px/1 var(--font-plex), monospace !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.seg button:first-child {
+  border-left: 0;
+}
+
+.seg button[aria-checked="true"] {
+  background: var(--fill);
+  color: var(--on-fill);
+}
+
+/* ---- Changelog, latest ------------------------------------------------------------------------ */
+
+.notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-2);
+}
+
+.notes li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.notes b {
+  font-weight: 500;
+}
+
+.noteMeta {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.more {
+  display: inline-block;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--blue);
+  color: var(--blue) !important;
+  font: 500 13px/1.6 var(--font-plex), monospace;
+}
+
+/* ---- Questions ------------------------------------------------------------------------------ */
+
+.faq {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-2);
+}
+
+.faq li {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq button {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 14px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 18px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
+
+.qn {
+  color: var(--blue);
+  font: 500 12px/1 var(--font-plex), monospace;
+}
+
+.plus {
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+.plus::before,
+.plus::after {
+  content: "";
+  position: absolute;
+  top: 6.5px;
+  left: 0;
+  width: 14px;
+  height: 1px;
+  background: var(--ink);
+  transition: transform 300ms var(--ease-in-out);
+}
+
+.plus::after {
+  transform: rotate(90deg);
+}
+
+.faq li[data-open] .plus::after {
+  transform: rotate(0deg);
+}
+
+.answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease-in-out);
+}
+
+.faq li[data-open] .answer {
+  grid-template-rows: 1fr;
+}
+
+.answer > div {
+  overflow: hidden;
+}
+
+.answer p {
+  max-width: 36em;
+  padding: 0 0 20px 48px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ---- Download and thanks ---------------------------------------------------------------------- */
+
+.dl {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.dl .cmd {
+  width: 100%;
+}
+
+.credit {
+  margin-top: 24px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.credit a {
+  border-bottom: 1px solid var(--line-2);
+}
+
+/* ---- The changelog: one sheet per release, a rail of versions beside them -------------------- */
+
+.logHero .heroCopy {
+  padding-bottom: 64px;
+}
+
+.logFrame {
+  display: grid;
+  grid-template-columns: var(--side) minmax(0, 1fr);
+  max-width: var(--max);
+  margin-inline: auto;
+  border-inline: 1px solid var(--line);
+  border-top: 1px solid var(--line-2);
+}
+
+.rail {
+  border-right: 1px solid var(--line);
+}
+
+.rail ol {
+  position: sticky;
+  top: 56px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 32px 0;
+  list-style: none;
+}
+
+.rail a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 24px;
+  color: var(--ink-2);
+  font: 500 15px/1.2 var(--font-plex), monospace;
+  transition: color 150ms ease, box-shadow 150ms ease;
+}
+
+.rail small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.rail a[aria-current] {
+  color: var(--blue);
+  box-shadow: inset 2px 0 var(--blue);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rail a:hover {
+    color: var(--blue);
+  }
+}
+
+.sheets {
+  min-width: 0;
+}
+
+.sheet {
+  position: relative;
+  border-bottom: 1px solid var(--line-2);
+  scroll-margin-top: 56px;
+}
+
+.sheet:last-child {
+  border-bottom: 0;
+}
+
+/* A + where the sheet's top edge meets the rail. */
+.sheet::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--blue), var(--blue)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--blue), var(--blue)) 0 50% / 100% 1px no-repeat;
+  z-index: 1;
+}
+
+.sheet:first-child::before {
+  display: none;
+}
+
+.sheetHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--line);
+}
+
+.drawing {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 16px 32px 24px;
+  border-right: 1px solid var(--line);
+}
+
+.drawing .figure {
+  aspect-ratio: 16 / 10;
+}
+
+.drawing figcaption {
+  margin-top: 0;
+}
+
+/* The next release has no number yet: its drawing is a dashed space to come. */
+.pending {
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 280px;
+  padding: 48px;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 11px, color-mix(in srgb, var(--line) 70%, transparent) 11px 12px);
+}
+
+.pending p {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(36px, 4.4vw, 56px);
+  font-style: italic;
+  line-height: 1;
+}
+
+.pending small {
+  max-width: 28em;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* The sheet's title block: a little table, ruled like the one at the foot of the page. */
+.block {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  margin: 0;
+}
+
+.block > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 24px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.block > div:nth-child(odd):not(:first-child) {
+  border-left: 1px solid var(--line);
+}
+
+.blockWide {
+  grid-column: 1 / -1;
+}
+
+.block > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.block dt {
+  color: var(--muted);
+  font: 500 11px/1.4 var(--font-plex), monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.block dd {
+  margin: 0;
+  font: 500 14px/1.4 var(--font-plex), monospace;
+}
+
+.block .blockWide:first-child dd {
+  font: 400 32px/1.1 var(--font-serif), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* The changes, as the drawing's numbered notes. */
+.sheetNotes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheetNotes li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 16px;
+  padding: 32px 48px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheetNotes li:last-child {
+  border-bottom: 0;
+}
+
+.sheetNotes li > div {
+  max-width: 720px;
+}
+
+.noteNo {
+  color: var(--blue);
+  font: 500 20px/1.3 var(--font-plex), monospace;
+  letter-spacing: -0.02em;
+}
+
+.noteMeta span[data-kind] {
+  color: var(--blue);
+}
+
+.noteTitle {
+  margin-top: 6px;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.noteWhat {
+  margin-top: 12px;
+  color: var(--ink-2);
+  font-size: 16px;
+  text-wrap: pretty;
+}
+
+/* Why opens in place, as a note in the margin. */
+.why {
+  margin-top: 12px;
+}
+
+.why summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--blue);
+  font: 500 12px/1 var(--font-plex), monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+
+.why summary::-webkit-details-marker {
+  display: none;
+}
+
+.why summary::after {
+  content: "+";
+  font-size: 14px;
+}
+
+.why[open] summary::after {
+  content: "−";
+}
+
+.why p {
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 1px solid var(--blue);
+  color: var(--ink-2);
+  font-size: 16px;
+  text-wrap: pretty;
+}
+
+.why[open] p {
+  animation: whyIn 200ms var(--ease-out);
+}
+
+@keyframes whyIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ---- The title block: the drawing's corner table, which ends every sheet ----------------------- */
+
+.titleBlock {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-bottom: 48px;
+  border-block: 1px solid var(--line-2);
+}
+
+.titleBlock > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 24px 20px;
+  border-left: 1px solid var(--line);
+  font: 500 13px/1.4 var(--font-plex), monospace;
+  overflow-wrap: anywhere;
+}
+
+.titleBlock > div:first-child {
+  border-left: 0;
+}
+
+.titleBlock small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.titleBlock a {
+  align-self: flex-start;
+  border-bottom: 1px solid var(--line-2);
+}
+
+/* ---- Arriving --------------------------------------------------------------------------------
+ * On load the hero's copy rises; as each cell's number scrolls in, its rule draws across and its contents rise,
+ * staggered. Without JS everything is simply there (Reveals sets data-reveals="on"). */
+
+:global(html[data-reveals="on"]) .bp [data-reveal]:not([data-shown]) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+:global(html[data-reveals="on"]) .bp .label:not([data-shown])::before {
+  transform: scaleX(0);
+}
+
+.bp [data-reveal] {
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* ---- Tablet and phone ------------------------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .four article:nth-child(3) {
+    border-left: 0;
+  }
+
+  .four article:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .titleBlock {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .titleBlock > div:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .titleBlock > div:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 760px) {
+  .links {
+    display: none;
+  }
+
+  .nav {
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+
+  .heroCopy {
+    padding: 56px 16px 24px;
+  }
+
+  .heroFig {
+    padding: 16px 16px 24px;
+  }
+
+  .dims,
+  .dimsV {
+    display: none;
+  }
+
+  .cell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .label {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+    padding: 24px 16px 0;
+    border-right: 0;
+  }
+
+  .label span {
+    font-size: 20px;
+  }
+
+  .split,
+  .stack {
+    padding: 24px 16px 48px;
+  }
+
+  .split,
+  .pair,
+  .flip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .split {
+    gap: 32px;
+  }
+
+  .plate {
+    padding: 16px;
+  }
+
+  .four {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .four article,
+  .four article:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-inline: 0;
+  }
+
+  .four article:first-child {
+    border-top: 0;
+  }
+
+  .cmd {
+    width: 100%;
+  }
+
+  .logFrame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rail {
+    position: sticky;
+    top: 56px;
+    z-index: 5;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .rail ol {
+    position: static;
+    flex-direction: row;
+    padding: 0 8px;
+  }
+
+  .rail a {
+    padding: 12px;
+    white-space: nowrap;
+  }
+
+  .rail small {
+    display: none;
+  }
+
+  .rail a[aria-current] {
+    box-shadow: inset 0 -2px var(--blue);
+  }
+
+  .sheet {
+    scroll-margin-top: 100px;
+  }
+
+  .sheet::before {
+    display: none;
+  }
+
+  .sheetHead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .drawing {
+    padding: 8px 16px 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pending {
+    min-height: 200px;
+    padding: 32px 16px;
+  }
+
+  .block > div {
+    padding: 12px 16px 14px;
+  }
+
+  .sheetNotes li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 24px 16px;
+  }
+
+  .noteTitle {
+    font-size: 26px;
+  }
+
+  .titleBlock {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .titleBlock > div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .titleBlock > div:first-child {
+    border-top: 0;
+  }
+}
+
+/* ---- Reduced motion: nothing rises or draws ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .bp [data-reveal],
+  :global(html[data-reveals="on"]) .bp [data-reveal]:not([data-shown]) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .label::before,
+  :global(html[data-reveals="on"]) .bp .label:not([data-shown])::before {
+    transform: none;
+    transition: none;
+  }
+
+  .why[open] p {
+    animation: none;
+  }
+
+  .rail a,
+  .answer,
+  .plus::before,
+  .plus::after,
+  .navCta,
+  .btn,
+  .btnBig,
+  .seg button,
+  .copy,
+  .links a {
+    transition: none;
+  }
+}

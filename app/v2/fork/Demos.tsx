@@ -18,13 +18,13 @@ const AFTERNOON: { s: [SqState, SqState, SqState]; say: string }[] = [
 ];
 const AFTERNOON_MS = [3400, 3400, 3400, 3400];
 
-export function WorkspacesDemo({ className = "" }: { className?: string }) {
+export function WorkspacesDemo({ className = "", mode }: { className?: string; mode?: "light" | "dark" }) {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, "-10% 0px");
   const step = useLoop(AFTERNOON_MS, on);
   const now = AFTERNOON[step];
   return (
-    <div ref={ref} className={`${styles.fork} ${className}`}>
+    <div ref={ref} className={`${styles.fork} ${className}`} data-mode={mode}>
       <div className={styles.demoStrip} aria-hidden>
         <Tab name="notes" color="var(--text-4)" s="idle" on />
         <Tab name="portfolio" color="var(--ws-1)" s={now.s[0]} />
@@ -66,7 +66,7 @@ const BRANDS = [
 ] as const;
 const BRAND_MS = [3200, 3200, 3200];
 
-export function DesignDemo({ className = "" }: { className?: string }) {
+export function DesignDemo({ className = "", mode }: { className?: string; mode?: "light" | "dark" }) {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, "-10% 0px");
   const step = useLoop(BRAND_MS, on);
@@ -81,7 +81,7 @@ export function DesignDemo({ className = "" }: { className?: string }) {
   ];
 
   return (
-    <div ref={ref} className={`${styles.fork} ${className}`} aria-hidden>
+    <div ref={ref} className={`${styles.fork} ${className}`} data-mode={mode} aria-hidden>
       <div className={styles.demoTerm}>
         <span className={styles.dim}>● </span>
         <span key={step} className={styles.in}>

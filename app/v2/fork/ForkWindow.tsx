@@ -95,36 +95,81 @@ export default function ForkWindow({ play = false, mode, className = "", label =
                 <span>{shown === 0 ? "Terminal 1" : PROMPT}</span>
                 <Icon name="x" size={12} />
               </div>
-              <div className={styles.out}>
-                <div className={styles.dim}>~/portfolio on main</div>
-                <div className={styles.box}>
-                  &gt; {prompt}
-                  {shown === 0 && <span className={styles.cursor} />}
-                </div>
-                {EDITS.slice(0, n).map(([verb, file, diff]) => (
-                  <div key={verb + file} className={styles.in}>
-                    <span className={styles.dim}>● </span>
-                    {verb} {file} {diff && <span className={styles.dim}>{diff}</span>}
-                  </div>
-                ))}
-                {shown === 1 && <div className={`${styles.dim} ${styles.in}`}>  Working…</div>}
-                {shown === 2 && (
-                  <div className={styles.in}>
-                    <br />
-                    <span className={styles.ok}>✓ </span>Calmer hero: softer colours, one button, more room.
-                    <br />
-                    <br />
-                    <span className={styles.dim}>&gt; </span>
-                    <span className={styles.cursor} />
-                  </div>
-                )}
-              </div>
+              <Transcript shown={shown} prompt={prompt} n={n} />
             </div>
 
             <Changes after={shown === 2} fresh={play && shown === 2} />
           </div>
         </div>
       </div>
+
+      {/* On a phone the whole window would be too small to read: the strip, the terminal and the Changes slider
+          instead, at their real size. */}
+      <div className={styles.phone} aria-hidden>
+        <div className={styles.phoneStrip}>
+          <Tab name="portfolio" color="var(--ws-1)" s={sq} on />
+          <Tab name="design-system" color="var(--ws-2)" s="needs" />
+        </div>
+        <div className={styles.phoneCard}>
+          <div className={styles.chip}>
+            <Icon name="terminal" />
+            <span>{shown === 0 ? "Terminal 1" : PROMPT}</span>
+          </div>
+          <Transcript shown={shown} prompt={prompt} n={n} short />
+          <div className={styles.phoneChanges}>
+            <p className={styles.cap}>{shown === 2 ? "Before and after" : "Before"}</p>
+            <Wipe at={shown === 2 ? 46 : 100} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// The terminal's output: an earlier turn (so the window is lived in), then this one.
+function Transcript({ shown, prompt, n, short = false }: { shown: number; prompt: string; n: number; short?: boolean }) {
+  return (
+    <div className={styles.out}>
+      {!short && (
+        <>
+          <div className={styles.dim}>~/portfolio on main</div>
+          <div className={styles.box}>&gt; Add a dark mode toggle to the nav</div>
+          <div>
+            <span className={styles.dim}>● </span>Editing src/Nav.tsx <span className={styles.dim}>+14 −2</span>
+          </div>
+          <div>
+            <span className={styles.dim}>● </span>Editing src/styles/theme.css <span className={styles.dim}>+22</span>
+          </div>
+          <div>
+            <span className={styles.ok}>✓ </span>The toggle follows the Mac until you pick one.
+          </div>
+          <br />
+        </>
+      )}
+      <div className={styles.box}>
+        &gt; {prompt}
+        {shown === 0 && <span className={styles.cursor} />}
+      </div>
+      {EDITS.slice(0, n).map(([verb, file, diff]) => (
+        <div key={verb + file} className={styles.in}>
+          <span className={styles.dim}>● </span>
+          {verb} {file} {diff && <span className={styles.dim}>{diff}</span>}
+        </div>
+      ))}
+      {shown === 1 && <div className={`${styles.dim} ${styles.in}`}>  Working…</div>}
+      {shown === 2 && (
+        <div className={styles.in}>
+          <span className={styles.ok}>✓ </span>Calmer hero: softer colours, one button, more room.
+          {!short && (
+            <>
+              <br />
+              <br />
+              <span className={styles.dim}>&gt; </span>
+              <span className={styles.cursor} />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -234,6 +279,19 @@ function Changes({ after, fresh }: { after: boolean; fresh: boolean }) {
             </>
           )}
         </div>
+        <div className={styles.changed}>
+          <p className={styles.cap}>Earlier turns</p>
+          <div className={styles.turns}>
+            {["12 min ago", "40 min ago", "1 h ago"].map((t, i) => (
+              <span key={t}>
+                <span className={styles.thumb} data-i={i}>
+                  <Site />
+                </span>
+                <small>{t}</small>
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -257,7 +315,7 @@ export function Wipe({ at, before = <Site loud />, after = <Site /> }: { at: num
   );
 }
 
-// A small made-up page: loud before, calm after.
+// A small made-up page: crowded and shouting before, calm after. Greys only, so the colour on the page stays the app's.
 export function Site({ loud = false }: { loud?: boolean }) {
   return (
     <div className={styles.site}>
@@ -268,7 +326,7 @@ export function Site({ loud = false }: { loud?: boolean }) {
         <i />
       </div>
       <div className={`${styles.siteHero} ${loud ? styles.loud : styles.calm}`}>
-        <b>{loud ? "BUILD THINGS!!" : "Build things."}</b>
+        <b>{loud ? "BUILD THINGS!!!" : "Build things."}</b>
         <i style={{ width: "80%" }} />
         <i style={{ width: "56%" }} />
         <span>{loud ? "Start now →" : "Get started"}</span>

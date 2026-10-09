@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 
-const X = "https://x.com/harshii04";
-const LINKEDIN = "https://www.linkedin.com/in/harshui/";
+export const X = "https://x.com/harshii04";
+export const LINKEDIN = "https://www.linkedin.com/in/harshui/";
 
 // The sign-off at the bottom of every page. The home page also points to What's cooking.
 export default function Footer({ className = "", cooking = false }: { className?: string; cooking?: boolean }) {

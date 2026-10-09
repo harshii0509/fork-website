@@ -731,13 +731,15 @@
 }
 
 .loud {
-  background: #ff3b6b;
+  background: #1d1d1f;
   color: #fff;
+  letter-spacing: 0.02em;
 }
 
 .loud span {
-  background: #ffe14d;
+  background: #fff;
   color: #1d1d1f;
+  box-shadow: 3px 3px 0 #8b8b89;
 }
 
 .calm {
@@ -748,6 +750,100 @@
 .calm span {
   background: #1d1d1f;
   color: #fff;
+}
+
+/* The strip of earlier turns: each one's after picture, small. */
+.turns {
+  display: flex;
+  gap: 8px;
+}
+
+.turns > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 120px;
+  color: var(--text-4);
+  font: 450 11px/1.2 var(--ui);
+}
+
+.thumb {
+  display: block;
+  height: 68px;
+  overflow: hidden;
+  border-radius: 4px;
+  outline: 0.5px solid var(--card-line);
+}
+
+.thumb > * {
+  width: 452px;
+  transform: scale(0.265);
+  transform-origin: 0 0;
+}
+
+.thumb[data-i="0"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---- The phone composition (shown under 760px instead of the scaled window) --------------- */
+
+.phone {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .frame {
+    display: none;
+  }
+
+  .phone {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--chrome);
+    box-shadow: 0 0 0 0.5px var(--card-line), 0 24px 48px -28px rgb(0 0 0 / 0.4);
+  }
+
+  .phoneStrip {
+    display: flex;
+    gap: 4px;
+    padding: 6px 8px;
+  }
+
+  .phoneStrip .tab {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  .phoneCard {
+    margin: 0 6px 6px;
+    padding: 8px;
+    border: 0.5px solid var(--card-line);
+    border-radius: 10px;
+    background: var(--card);
+  }
+
+  .phoneCard .chip {
+    width: auto;
+  }
+
+  .phoneCard .out {
+    padding: 12px 2px 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .phoneChanges {
+    margin-top: 16px;
+  }
+
+  .phoneChanges .site {
+    height: 220px;
+    padding: 28px 14px 14px;
+  }
 }
 
 /* ---- Design (the panel's Design view) ---------------------------------------------------- */
@@ -931,11 +1027,12 @@
   border-radius: 12px;
   background: var(--chrome);
   box-shadow: inset 0 0 0 0.5px var(--card-line);
-  zoom: 1.35;
+  zoom: 1.2;
 }
 
 .demoStrip .tab {
-  width: 150px;
+  flex: 1 1 0;
+  width: auto;
   min-width: 0;
 }
 

@@ -5,7 +5,7 @@ import { track } from "../track";
 import styles from "./v2.module.css";
 
 // Copies a command and says "Copied" for a moment. Used by the install row and the letter's P.S.
-export default function CopyButton({ text, event, label }: { text: string; event: string; label?: string }) {
+export default function CopyButton({ text, event, label, className = styles.copy }: { text: string; event: string; label?: string; className?: string }) {
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     if (!copied) return;
@@ -24,7 +24,7 @@ export default function CopyButton({ text, event, label }: { text: string; event
   };
 
   return (
-    <button className={styles.copy} onClick={copy} aria-live="polite" aria-label={copied ? "Copied" : label}>
+    <button className={className} onClick={copy} aria-live="polite" aria-label={copied ? "Copied" : label}>
       {copied ? "Copied" : "Copy"}
     </button>
   );
