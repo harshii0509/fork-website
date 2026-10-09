@@ -32,6 +32,23 @@ export function useInView(ref: RefObject<Element | null>, margin = "0px") {
   return on;
 }
 
+// True from the first time the element comes on screen, and stays true: for things that happen once.
+export function useSeen(ref: RefObject<Element | null>, margin = "0px") {
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let stop: (() => void) | undefined = undefined;
+    stop = observe(el, margin, (on) => {
+      if (!on) return;
+      setSeen(true);
+      stop?.();
+    });
+    return () => stop?.();
+  }, [ref, margin]);
+  return seen;
+}
+
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (cb: () => void) => {
   const m = matchMedia(motionQuery);
@@ -65,4 +82,24 @@ export function useLoop(durations: readonly number[], active: boolean) {
     return () => clearTimeout(t);
   }, [run, step, durations]);
   return still ? durations.length - 1 : step;
+}
+
+// Types `text` out, a character at a time, while `run` is true; shows all of it with reduced motion.
+export function useTyped(text: string, run: boolean, perChar = 45) {
+  const still = useReducedMotion();
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!run || still) return;
+    let i = 0;
+    const t = setInterval(() => {
+      i++;
+      setN(i);
+      if (i >= text.length) clearInterval(t);
+    }, perChar);
+    return () => {
+      clearInterval(t);
+      setN(0);
+    };
+  }, [run, still, text, perChar]);
+  return still ? text : text.slice(0, n);
 }

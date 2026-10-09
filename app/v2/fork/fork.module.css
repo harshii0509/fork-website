@@ -1,0 +1,1050 @@
+/* Pieces of the real Fork window, for the home page. Sizes, colours and timings are copied from the app
+ * (designer-terminal index.html and colors.css), so everything here is in app pixels; ForkWindow scales the
+ * whole window down to fit. A snippet follows the page's light or dark, or holds one with data-mode.
+ */
+
+.fork {
+  /* Light (index.html :root[data-mode="light"]). */
+  --chrome: #f1f1f0;
+  --card: #ffffff;
+  --card-line: #dddddd;
+  --field: #f5f5f5;
+  --field-line: #dddddd;
+  --chip: #eeeeee;
+  --kbd: #e6e6e6;
+  --text-1: #1d1d1f;
+  --text-2: #6f6f6f;
+  --text-3: #858585;
+  --text-4: #9e9e9e;
+  --plus: #19c332;
+  --minus: #eb5757;
+  --ws-1: #628ca9;
+  --ws-2: #b6764d;
+  --ws-3: #a6a6f8;
+  --needs: #f0bf00;
+  --failed: #eb5757;
+  --accent: #0561e2;
+  --term-ok: #19a332;
+  --hover: color-mix(in srgb, var(--text-1) 6%, transparent);
+  --scrim: #0000008c;
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ui: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  --ui-mono: var(--font-plex), ui-monospace, monospace;
+
+  color: var(--text-1);
+  font: 450 13px/1.4 var(--ui);
+  letter-spacing: 0;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Dark (colors.css, the redesign's greys). */
+.fork[data-mode="dark"] {
+  --chrome: #111110;
+  --card: #171716;
+  --card-line: #2c2c2a;
+  --field: #1d1d1b;
+  --field-line: #2c2c2a;
+  --chip: #242422;
+  --kbd: #2c2c2a;
+  --text-1: #f8f8f7;
+  --text-2: #8b8b89;
+  --text-3: #737371;
+  --text-4: #5b5b59;
+  --plus: #62976e;
+  --minus: #b96359;
+  --ws-1: #3d5f74;
+  --ws-2: #744a32;
+  --ws-3: #5e4a69;
+  --needs: #febc2e;
+  --failed: #eb5757;
+  --accent: #f8f8f7;
+  --term-ok: #56d364;
+  --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .fork:not([data-mode="light"]) {
+    --chrome: #111110;
+    --card: #171716;
+    --card-line: #2c2c2a;
+    --field: #1d1d1b;
+    --field-line: #2c2c2a;
+    --chip: #242422;
+    --kbd: #2c2c2a;
+    --text-1: #f8f8f7;
+    --text-2: #8b8b89;
+    --text-3: #737371;
+    --text-4: #5b5b59;
+    --plus: #62976e;
+    --minus: #b96359;
+    --ws-1: #3d5f74;
+    --ws-2: #744a32;
+    --ws-3: #5e4a69;
+    --needs: #febc2e;
+    --failed: #eb5757;
+    --accent: #f8f8f7;
+    --term-ok: #56d364;
+    --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
+  }
+}
+
+/* A theme switch eases the window over, like the app's own. */
+.fork,
+.fork * {
+  transition-property: background-color, border-color, color;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+}
+
+/* ---- The status square ------------------------------------------------------------------
+ * Nine 3px tiles that touch, in a 12px spot. Working: they part into a 3×3 lattice and a wave runs
+ * through them from the top left (2.1s, each column 233ms behind, each row 117ms). Needs you / failed:
+ * yellow or red, and a copy of the square grows and fades behind it three times, then holds still.
+ */
+.sq {
+  --sq: var(--tab-c, var(--ws-1));
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+}
+
+.sq[data-s="needs"] {
+  --sq: var(--needs);
+}
+
+.sq[data-s="failed"] {
+  --sq: var(--failed);
+}
+
+.cubes {
+  position: relative;
+  display: grid;
+  grid-template: repeat(3, 3px) / repeat(3, 3px);
+}
+
+.cubes i {
+  background: var(--sq);
+  transition: transform 250ms var(--ease-in-out-cubic), background-color 150ms ease;
+}
+
+.sq[data-s="working"] .cubes i {
+  transform: scale(0.75);
+  animation: lattice 2.1s ease-in-out infinite;
+  animation-delay: calc(var(--c) * 233ms + var(--r) * 117ms);
+}
+
+@keyframes lattice {
+  0%,
+  50%,
+  100% {
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 1;
+  }
+}
+
+.sq[data-s="needs"]::before,
+.sq[data-s="failed"]::before {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  background: var(--sq);
+  animation: pulse 2s var(--ease-out-quart) 3 forwards;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ---- The window -------------------------------------------------------------------------- */
+
+/* The box on the page: the window's shape at whatever width it gets. */
+.frame {
+  position: relative;
+  aspect-ratio: 1280 / 800;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 1.1% / 1.76%;
+  box-shadow: 0 0 0 0.5px var(--card-line), 0 30px 60px -30px rgb(0 0 0 / 0.35);
+}
+
+/* The window itself, at the app's real 1280 × 800, scaled to the frame's width. */
+.win {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template: 36px 1fr / 1fr;
+  width: 1280px;
+  height: 800px;
+  background: var(--chrome);
+  transform-origin: 0 0;
+  transform: scale(0.9);
+  transform: scale(tan(atan2(100cqw, 1280px)));
+}
+
+/* The top strip: traffic lights, the workspaces as tabs, then split and panel. */
+.strip {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 12px 0 74px;
+}
+
+.lights {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  display: flex;
+  gap: 8px;
+}
+
+.lights i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12);
+}
+
+.lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.lights i:nth-child(3) {
+  background: #28c840;
+}
+
+.tabs {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 12px;
+}
+
+.tab {
+  position: relative;
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 200px;
+  min-width: 96px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.tab[data-on] {
+  background: var(--field);
+}
+
+.tname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-3);
+  font: 450 13px/1.2 var(--ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab[data-on] .tname {
+  color: var(--text-1);
+}
+
+.tbtn {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: var(--text-4);
+}
+
+.tnew {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+}
+
+.flipX svg {
+  transform: scaleX(-1);
+}
+
+.turn svg {
+  transform: rotate(-90deg) scaleY(-1);
+}
+
+/* The card: the sidebar, the terminal and the panel. */
+.stage {
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr) var(--pvw, 0px);
+  min-width: 0;
+  min-height: 0;
+  margin: 0 8px 8px;
+  overflow: hidden;
+  border: 0.5px solid var(--card-line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.withPanel {
+  --pvw: 452px;
+}
+
+/* ---- Sidebar ----------------------------------------------------------------------------- */
+
+.side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 0.5px solid var(--card-line);
+}
+
+.sideTop {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 10px;
+}
+
+.brand {
+  color: var(--text-1);
+  font: 500 18px/1 var(--ui-mono);
+  letter-spacing: -0.36px;
+}
+
+.sideBody {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px 0;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px;
+  border: 0.5px solid var(--field-line);
+  border-radius: 8px;
+  background: var(--field);
+  color: var(--text-4);
+  font: 450 12px/1.2 var(--ui);
+}
+
+.search span {
+  flex: 1;
+}
+
+.search kbd {
+  padding: 2px;
+  border-radius: 4px;
+  background: var(--kbd);
+  color: var(--text-4);
+  font: 450 10px/1 var(--ui);
+}
+
+.h3 {
+  margin: 20px 0 12px;
+  color: var(--text-4);
+  font: 600 12px/1.2 var(--ui-mono);
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-2);
+  font: 450 13px/1.2 var(--ui);
+  white-space: nowrap;
+}
+
+.line svg {
+  flex: none;
+}
+
+.plus {
+  color: var(--plus);
+}
+
+.minus {
+  color: var(--minus);
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding-left: calc(4px + var(--depth, 0) * 14px);
+  color: var(--text-2);
+  font: 450 13px/1 var(--ui);
+}
+
+.file svg {
+  flex: none;
+  color: var(--text-4);
+}
+
+.file b {
+  flex: 1;
+  font-weight: 450;
+}
+
+.badge {
+  margin-right: 4px;
+  font: 500 11px/1 var(--ui-mono);
+}
+
+.badge[data-g="M"] {
+  color: var(--needs);
+}
+
+.badge[data-g="A"] {
+  color: var(--plus);
+}
+
+/* ---- The terminal ------------------------------------------------------------------------ */
+
+.term {
+  position: relative;
+  min-width: 0;
+  padding: 8px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 220px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--chip);
+  color: var(--text-1);
+  font: 500 13px/1.2 var(--ui);
+  letter-spacing: -0.13px;
+}
+
+.chip span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.out {
+  padding: 18px 4px 0;
+  color: var(--text-1);
+  font: 500 13px/20px var(--ui-mono);
+  white-space: pre-wrap;
+}
+
+.dim {
+  color: var(--text-3);
+}
+
+.ok {
+  color: var(--term-ok);
+}
+
+.box {
+  margin: 4px 0 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--card-line);
+  border-radius: 6px;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  margin-left: 1px;
+  vertical-align: -3px;
+  background: var(--text-1);
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* New lines arrive the way a terminal prints them: at once, with no slide. Only the opacity eases. */
+.in {
+  animation: in 200ms ease-out both;
+}
+
+@keyframes in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---- The panel (⌘P) ---------------------------------------------------------------------- */
+
+.pv {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-left: 0.5px solid var(--card-line);
+}
+
+.pvHead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 48px;
+  padding: 0 8px 0 10px;
+  border-bottom: 0.5px solid var(--card-line);
+}
+
+.seg {
+  display: flex;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--hover);
+}
+
+.seg span {
+  position: relative;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.seg span[data-on] {
+  background: var(--card);
+  color: var(--text-1);
+  box-shadow: 0 1px 3px #0003;
+}
+
+/* A new before-and-after you haven't looked at. */
+.seg span[data-new]::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 5px;
+  border-radius: 50%;
+  background: var(--needs);
+  vertical-align: 2px;
+}
+
+.pvName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pvName small {
+  margin-left: 6px;
+  color: var(--text-4);
+}
+
+.pvBody {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.cap {
+  margin: 0 0 6px;
+  color: var(--text-4);
+  font: 600 11px/1.2 var(--ui-mono);
+  letter-spacing: 0.44px;
+  text-transform: uppercase;
+}
+
+/* Changes: one over the other, wiped by the slider. */
+.slide {
+  --at: 50%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  outline: 0.5px solid var(--card-line);
+}
+
+.after {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 var(--at));
+}
+
+.handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--at);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--accent);
+}
+
+.handle::after {
+  content: "";
+  position: absolute;
+  top: 42%;
+  left: -6px;
+  width: 14px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--accent);
+  box-shadow: 0 1px 4px #0003;
+}
+
+.tag {
+  position: absolute;
+  top: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--scrim);
+  color: #fff;
+  font: 500 11px/1.3 var(--ui);
+}
+
+.tagL {
+  left: 8px;
+}
+
+.tagR {
+  right: 8px;
+}
+
+.changed {
+  margin-top: 16px;
+}
+
+.changed .file {
+  padding-left: 0;
+}
+
+/* The project's page, drawn small: the same layout before and after, only calmer after. */
+.site {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 300px;
+  padding: 36px 20px 18px;
+  background: #fff;
+  color: #1d1d1f;
+}
+
+.siteNav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.siteNav i {
+  width: 34px;
+  height: 6px;
+  border-radius: 3px;
+  background: #d9d9dd;
+}
+
+.siteNav i:first-child {
+  width: 18px;
+  height: 18px;
+  margin-right: auto;
+  border-radius: 5px;
+  background: #1d1d1f;
+}
+
+.siteHero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.siteHero b {
+  font: 700 22px/1.1 var(--ui);
+  letter-spacing: -0.02em;
+}
+
+.siteHero i {
+  height: 6px;
+  border-radius: 3px;
+  background: currentColor;
+  opacity: 0.25;
+}
+
+.siteHero span {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font: 600 11px/1 var(--ui);
+}
+
+.siteCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.siteCards i {
+  height: 54px;
+  border-radius: 8px;
+  background: #f1f1f3;
+}
+
+.loud {
+  background: #ff3b6b;
+  color: #fff;
+}
+
+.loud span {
+  background: #ffe14d;
+  color: #1d1d1f;
+}
+
+.calm {
+  background: #f4f1ec;
+  color: #1d1d1f;
+}
+
+.calm span {
+  background: #1d1d1f;
+  color: #fff;
+}
+
+/* ---- Design (the panel's Design view) ---------------------------------------------------- */
+
+.ds {
+  padding: 4px 12px 16px;
+}
+
+.dsGroup {
+  margin-top: 16px;
+}
+
+.dsGroup .cap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dsGroup .cap small {
+  color: var(--text-4);
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.themes {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  font: 450 11px/1 var(--ui);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.themes span {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--hover);
+  color: var(--text-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 -6px;
+}
+
+.tok {
+  min-width: 0;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.tok[data-hot] {
+  background: var(--hover);
+}
+
+.sw {
+  display: flex;
+  height: 44px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  border-radius: 6px;
+  outline: 0.5px solid var(--card-line);
+  outline-offset: -0.5px;
+}
+
+.sw i {
+  flex: 1;
+  transition: background-color 600ms var(--ease-in-out-cubic);
+}
+
+.name,
+.val {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.name {
+  color: var(--text-1);
+  font: 450 12px/1.3 var(--ui-mono);
+}
+
+.val {
+  color: var(--text-4);
+  font: 450 11px/1.3 var(--ui-mono);
+}
+
+.list {
+  display: grid;
+  margin: 0 -6px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 6px;
+}
+
+.row .val {
+  text-align: right;
+}
+
+.sample {
+  overflow: hidden;
+  color: var(--text-1);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.bar {
+  height: 8px;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ws-1);
+}
+
+.corner {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 6px;
+  border: 1.5px solid var(--text-3);
+  background: var(--hover);
+}
+
+.track {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--hover);
+}
+
+/* The dot rides a box one dot narrower than the track, so moving the box its own width lands the dot at the end. */
+.track b {
+  position: absolute;
+  inset: 1px 9px 1px 1px;
+  transition: transform 600ms var(--e, ease);
+}
+
+.track i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ws-1);
+}
+
+.track[data-go] b {
+  transform: translateX(100%);
+}
+
+/* "updated just now": the panel head ticks when a file changes. */
+.fresh {
+  animation: fresh 1.2s var(--ease-out-quart);
+}
+
+@keyframes fresh {
+  from {
+    color: var(--text-1);
+  }
+}
+
+/* ---- The feature demos (Demos.tsx), shown a little larger than life --------------------- */
+
+.demoStrip {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  background: var(--chrome);
+  box-shadow: inset 0 0 0 0.5px var(--card-line);
+  zoom: 1.35;
+}
+
+.demoStrip .tab {
+  width: 150px;
+  min-width: 0;
+}
+
+.say {
+  min-height: 3em;
+  margin-top: 20px;
+  color: var(--text-1);
+  font: 450 15px/1.45 var(--ui);
+}
+
+.legend {
+  display: grid;
+  gap: 2px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: grid;
+  grid-template-columns: 28px 92px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 0.5px solid var(--card-line);
+  color: var(--text-2);
+  font: 450 14px/1.3 var(--ui);
+}
+
+.legend b {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+/* The legend's squares, at 1.6×: zoom, not scale, so the tiles stay crisp and the row lays out round them. */
+.big {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  zoom: 1.6;
+}
+
+.demoTerm {
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 0.5px var(--card-line);
+  color: var(--text-1);
+  font: 500 13px/20px var(--ui-mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.demoPanel {
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 0.5px var(--card-line);
+}
+
+@media (max-width: 760px) {
+  .demoStrip {
+    zoom: 1;
+  }
+
+  .demoStrip .tab {
+    flex: 1 1 0;
+    width: auto;
+  }
+
+  .legend li {
+    grid-template-columns: 28px 84px minmax(0, 1fr);
+    font-size: 13px;
+  }
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: var(--text-3);
+  font: 450 13px/1.3 var(--ui);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fork,
+  .fork *,
+  .cubes i,
+  .sw i,
+  .track b {
+    transition: none;
+  }
+
+  .sq[data-s="working"] .cubes i,
+  .cursor,
+  .in,
+  .fresh {
+    animation: none;
+  }
+
+  .sq[data-s="working"] .cubes i {
+    opacity: 1;
+  }
+
+  .sq[data-s]::before {
+    display: none;
+  }
+}

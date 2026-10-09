@@ -39,6 +39,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-09T15:08+05:30",
+    title: "The home page shows the new Fork",
+    what: "The home page now shows Fork as it is today: workspaces as tabs, the status squares, Workspace info, and the panel’s Changes and Design tabs, all in Fork’s own greys and in dark mode when your Mac is. The blob and the colour shaders are gone. Line drawings that answer your pointer take their place, and each plays once as you reach it.",
+    why: "The redesign changed how Fork looks and what it’s best at, so the page should show the real thing. The drawings match the pictures inside Fork itself.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-10-09T00:04+05:30",
     title: "See what your AI tool changed: Changes",
     what: "When your AI tool finishes while your app is running, Fork takes a picture of your app before and after. Open Changes (⌘P) to compare them side by side or with a slider, and see which files changed. You can turn it off in Settings → General.",

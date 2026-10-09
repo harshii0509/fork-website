@@ -1,35 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import ForkApp from "../../ForkApp";
-import { THEMES, themeVars } from "../content";
+import ForkWindow from "../fork/ForkWindow";
 import styles from "../v2.module.css";
 
-// Pick a theme and the Fork window below takes it, the way the whole app does.
+// Light, Dark or System, as in Fork's Settings → Appearance: the window below takes the one you pick.
+const LOOKS = [
+  ["light", "Light"],
+  ["dark", "Dark"],
+  ["system", "System"],
+] as const;
+
 export default function Themes() {
-  const [name, setName] = useState<string>(THEMES[0].name);
-  const theme = THEMES.find((t) => t.name === name)!;
+  const [look, setLook] = useState<(typeof LOOKS)[number][0]>("system");
   return (
     <>
-      <div className={styles.swatches} role="radiogroup" aria-label="Try a theme" data-reveal>
-        {THEMES.map((t) => (
+      <div className={styles.swatches} role="radiogroup" aria-label="Try Fork in light or dark" data-reveal>
+        {LOOKS.map(([key, name]) => (
           <button
-            key={t.name}
+            key={key}
             role="radio"
-            aria-checked={t.name === name}
+            aria-checked={key === look}
             className={styles.swatch}
-            onClick={() => setName(t.name)}
+            onClick={() => setLook(key)}
             data-track="theme_tried"
-            data-item={t.name}
+            data-item={name}
             data-from="yours"
           >
-            <span className={styles.swatchDot} style={{ background: t.bg, color: t.accent }} />
-            {t.name}
+            <span className={styles.swatchDot} data-look={key} />
+            {name}
           </button>
         ))}
       </div>
       <div className={styles.themeWindow} data-reveal>
-        <ForkApp className={styles.themeApp} style={themeVars(theme)} />
+        <ForkWindow mode={look === "system" ? undefined : look} label={`The Fork window in ${look === "system" ? "your Mac’s" : look} mode`} />
       </div>
     </>
   );

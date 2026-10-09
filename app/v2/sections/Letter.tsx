@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { track } from "../../track";
-import { PAPER, PAPER_CMD } from "../content";
+import { HAIRLINE, HAIRLINE_CMD } from "../content";
 import CopyButton from "../CopyButton";
 import styles from "../v2.module.css";
 
@@ -83,16 +83,16 @@ function Sheet({ real = false }: { real?: boolean }) {
         I’m juggling a dozen things, and a little more human when I’m figuring things out. So I made Fork.
       </p>
       <p className={styles.ps}>
-        <span className={styles.psMark}>P.S.</span> The soft colours moving around this page are Paper Shaders, made by
-        the people at{" "}
-        <a href={PAPER} target="_blank" rel="noopener noreferrer" data-track="paper_clicked" data-from="thanks">
-          Paper
+        <span className={styles.psMark}>P.S.</span> The line drawings on this page, and in Fork, are{" "}
+        <a href={HAIRLINE} target="_blank" rel="noopener noreferrer" data-track="hairline_clicked" data-from="thanks">
+          Hairline
         </a>
-        . They’re free and open source. If you’d like some on your own site:
+        , by Lucas Marques. Point at one and it answers. They’re free and open source. If you’d like some on your own
+        site:
       </p>
       <div className={styles.psCmd}>
-        <code>{PAPER_CMD}</code>
-        <CopyButton text={PAPER_CMD} event="shaders_copied" label="Copy the Paper Shaders install command" />
+        <code>{HAIRLINE_CMD}</code>
+        <CopyButton text={HAIRLINE_CMD} event="hairline_copied" label="Copy the Hairline install command" />
       </div>
     </>
   );

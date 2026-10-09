@@ -8,24 +8,27 @@
 //   3. AARRR is how each section is measured, never the story. Clicks carry data-from=<id>.
 //
 // Copy rules: no em dashes, plain words, only claims the app backs (each checked against
-// designer-terminal: 35 errors in errors.mjs, 27 themes in themes.js, 30 ⌘K commands).
+// designer-terminal docs/IA.md: workspaces, status squares, the panel's Changes and Design tabs).
+// Platform-neutral: "an agent", not one AI tool, except where a feature depends on it.
 
 export const DOWNLOAD = "https://github.com/harshii0509/Fork/releases/latest/download/Fork.dmg";
 export const GITHUB = "https://github.com/harshii0509/Fork";
 export const INSTALL_CMD = "curl -fsSL https://raw.githubusercontent.com/harshii0509/Fork/main/install.sh | bash";
 // Where the home page lives: links from other pages (What's cooking) point here.
 export const HOME = "/";
-// The shaders behind the panels (Apache-2.0), credited in the thanks letter.
-export const PAPER = "https://shaders.paper.design";
-export const PAPER_CMD = "npm i @paper-design/shaders-react";
+// The line drawings (MIT), credited in the thanks letter.
+export const HAIRLINE = "https://hairline.lucasmarkes.com";
+export const HAIRLINE_CMD = "npm i @lucasmarkes/hairline";
 
 type Force = "push" | "pull" | "push + pull" | "habit + anxiety";
 type Stage = "acquisition" | "activation" | "retention" | "referral" | "revenue" | null;
 
 export const NARRATIVE: { id: string; step: string; force: Force; stage: Stage; question: string }[] = [
   { id: "top", step: "Hook", force: "push + pull", stage: "acquisition", question: "What is this, and is it for me?" },
-  { id: "insight", step: "Insight", force: "push", stage: "acquisition", question: "Why is the terminal so hard?" },
-  { id: "features", step: "Value", force: "pull", stage: "activation", question: "What does Fork do for me?" },
+  { id: "insight", step: "Insight", force: "push", stage: "acquisition", question: "Why is working with agents so hard to keep track of?" },
+  { id: "workspaces", step: "Value", force: "pull", stage: "activation", question: "How do I know what each agent is doing?" },
+  { id: "design", step: "Value", force: "pull", stage: "activation", question: "Can I see what my project looks like, as it changes?" },
+  { id: "more", step: "Value", force: "pull", stage: "activation", question: "What else is in it?" },
   { id: "wait", step: "Value", force: "pull", stage: "retention", question: "What do I do while I wait?" },
   { id: "yours", step: "Value", force: "pull", stage: "retention", question: "Will it feel like mine?" },
   { id: "cooking", step: "Proof", force: "pull", stage: "referral", question: "Is anyone still working on this?" },
@@ -34,68 +37,38 @@ export const NARRATIVE: { id: string; step: string; force: Force; stage: Stage; 
   { id: "thanks", step: "Close", force: "pull", stage: "referral", question: "Who made this?" },
 ];
 
-// The blob on every tab, and what each look means (designer-terminal/renderer.js LOOKS).
-export const BLOB_LOOKS = [
-  { key: "ready", label: "Ready", state: "idle", expression: null, bad: false },
-  { key: "running", label: "Running", state: "thinking", expression: null, bad: false },
-  { key: "failed", label: "Last command failed", state: "idle", expression: "sad", bad: true },
-  { key: "done", label: "Finished while you were away", state: "notify", expression: null, bad: false },
-  { key: "dozing", label: "Dozing", state: "sleep", expression: null, bad: false },
-] as const;
-
-export const FEATURES = [
+// "Also in Fork": smaller things, each a line figure and two lines of words. No demos.
+export const MORE = [
   {
-    id: "cmdk",
-    title: "Say it in plain words",
-    body: "Press ⌘K and type what you want, like “take me up one folder”. Fork finds the right command, shows what it does, and waits for you to run it.",
+    id: "changes",
+    figure: "beforeafter",
+    title: "Before and after",
+    body: "Each time an agent finishes, Fork takes a picture of your app from before and after. Compare them side by side or with a slider.",
   },
   {
     id: "oops",
+    figure: "query",
     title: "Know what went wrong",
-    body: "When a command fails, one click explains it in plain words and types the fix for you to check. 35 common errors are answered offline, no AI needed.",
+    body: "When a command fails, one click explains it in plain words and types the fix for you to check. Common errors are answered offline.",
   },
   {
-    id: "nudge",
-    title: "Next steps, with safety nets",
-    body: "Suggestions for the folder you’re in, like Start the app or See what changed. rm moves things to the Trash, and anything that can’t be undone asks first.",
+    id: "words",
+    figure: "terminal",
+    title: "Say it in plain words",
+    body: "Press ⌘⇧K and type what you want, like “take me up one folder”. Fork finds the command and waits for you to run it.",
   },
   {
-    id: "see",
-    title: "See your work beside it",
-    body: "Preview images, Markdown and code next to the terminal. When your app starts, Fork offers to show it right there.",
+    id: "files",
+    figure: "loupe",
+    title: "Your files, right there",
+    body: "Search every file with ⌘K. Preview code, Markdown and images beside the terminal, and put the lines you pick into it.",
   },
 ] as const;
-
-// A few of the app's 27 themes (designer-terminal/themes.js), as the variables ForkApp reads.
-export const THEMES = [
-  { name: "Designer", bg: "#141416", text: "#ececf1", accent: "#7c6cff", dark: true },
-  { name: "Rosé Pine", bg: "#191724", text: "#e0def4", accent: "#c4a7e7", dark: true },
-  { name: "Tokyo Night", bg: "#1a1b26", text: "#c0caf5", accent: "#7aa2f7", dark: true },
-  { name: "Gruvbox Dark", bg: "#282828", text: "#ebdbb2", accent: "#fabd2f", dark: true },
-  { name: "Vesper", bg: "#101010", text: "#ffffff", accent: "#e6b99d", dark: true },
-  { name: "Catppuccin Latte", bg: "#eff1f5", text: "#4c4f69", accent: "#1e66f5", dark: false },
-  { name: "Rosé Pine Dawn", bg: "#faf4ed", text: "#575279", accent: "#907aa9", dark: false },
-  { name: "Gruvbox Light", bg: "#fbf1c7", text: "#3c3836", accent: "#458588", dark: false },
-] as const;
-
-export type Theme = (typeof THEMES)[number];
-
-// ForkApp's --t-* variables for a theme. The sidebar stands in for the app's frosted glass.
-export function themeVars(t: Theme): React.CSSProperties {
-  return {
-    "--t-bg": t.bg,
-    "--t-text": t.text,
-    "--t-accent": t.accent,
-    "--t-accent-text": t.accent,
-    "--t-dim": `color-mix(in srgb, ${t.text} 58%, ${t.bg})`,
-    "--t-side": t.dark ? `color-mix(in srgb, ${t.text} 9%, ${t.bg})` : `color-mix(in srgb, ${t.text} 7%, ${t.bg})`,
-  } as React.CSSProperties;
-}
 
 export const FAQ = [
   {
     q: "Do I need AI to use Fork?",
-    a: "No. ⌘K’s built-in commands, the suggestions and the error library all work without AI, and you can run any tool you like in it. If you use Claude Code, Ask AI and the unusual-error explainer use it, with your own login.",
+    a: "No. It’s a terminal first: search, the panel, the command palette and the error library all work without AI, and you can run any tool you like in it. If you use Claude Code, Ask AI and the unusual-error explainer use it, with your own login.",
   },
   {
     q: "I’m new to the terminal. Is it safe?",
@@ -111,7 +84,11 @@ export const FAQ = [
   },
   {
     q: "Which Macs does it run on?",
-    a: "Macs with Apple Silicon (M1 and newer). It’s free. When a new version is out, a small pill in the top bar says so, and Update and restart brings your tabs back afterwards.",
+    a: "Macs with Apple Silicon (M1 and newer). It’s free. When a new version is out, a small pill in the top strip says so, and restarting into it brings your workspaces back.",
+  },
+  {
+    q: "Do the before and after pictures leave my Mac?",
+    a: "No. Fork takes them on your Mac from your own app at localhost, keeps the last 20 per workspace, and never uploads them. You can turn them off in Settings.",
   },
   {
     q: "Is this the Git app called Fork?",

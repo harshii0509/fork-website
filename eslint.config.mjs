@@ -12,8 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Built third-party code (the Bloub mascot, copied from designer-terminal).
-    "public/vendor/**",
+    // Third-party code: Hairline's kernel and the figures drawn in its kit's own format.
+    "app/v2/hairline/*.js",
   ]),
 ]);
 

@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { track } from "../track";
 import styles from "./v2.module.css";
 
-// A small Snake, the same idea as Fork's (designer-terminal/games.js): Nokia-style pixels in the
-// Designer theme's colours. Arrows or WASD, or swipe on a phone. About half a minute in, "Claude"
-// finishes and the game pauses the way the app's does: back to it, or keep playing.
+// A small Snake, the same idea as Fork's (designer-terminal/games.js): Nokia-style pixels in Fork's
+// greys, read from the board's CSS (--snake-*), so it follows light and dark. Arrows or WASD, or
+// swipe on a phone. About half a minute in, "the agent" finishes and the game pauses the way the
+// app's does: back to it, or keep playing.
 
 const W = 22, H = 14, CELL = 12, TICK = 110;
 const DONE_AFTER = 30_000;
-const BG = "#141416", SNAKE = "#7c6cff", FOOD = "#ffb454", GRID = "#1c1c20";
 
 type P = { x: number; y: number };
 type Mode = "start" | "play" | "over" | "done";
@@ -35,13 +35,15 @@ export default function Snake({ onDone }: { onDone?: (done: boolean) => void }) 
   const [mode, setMode] = useState<Mode>("start");
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
-  const [interrupted, setInterrupted] = useState(false); // "Claude" only finishes once
+  const [interrupted, setInterrupted] = useState(false); // the agent only finishes once
   const game = useRef({ snake: [] as P[], dir: { x: 1, y: 0 }, next: { x: 1, y: 0 }, food: { x: 15, y: 7 }, startedAt: 0 });
   const played = useRef(false);
 
   const draw = useCallback(() => {
     const ctx = canvas.current?.getContext("2d");
-    if (!ctx) return;
+    if (!ctx || !canvas.current) return;
+    const css = getComputedStyle(canvas.current);
+    const [BG, SNAKE, FOOD, GRID] = ["bg", "body", "food", "grid"].map((k) => css.getPropertyValue(`--snake-${k}`).trim() || "#888");
     const g = game.current;
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, W * CELL, H * CELL);
@@ -78,6 +80,13 @@ export default function Snake({ onDone }: { onDone?: (done: boolean) => void }) 
   }, []);
 
   // The game loop, only while playing.
+  // Light or dark changed: paint the board in the new colours.
+  useEffect(() => {
+    const m = matchMedia("(prefers-color-scheme: dark)");
+    m.addEventListener("change", draw);
+    return () => m.removeEventListener("change", draw);
+  }, [draw]);
+
   useEffect(() => {
     draw();
     if (mode !== "play") return;
@@ -172,7 +181,7 @@ export default function Snake({ onDone }: { onDone?: (done: boolean) => void }) 
           <div className={styles.snakeCard}>
             {mode === "done" ? (
               <>
-                <b>Claude’s done</b>
+                <b>The agent’s done</b>
                 <span>Back to it, or finish your game first?</span>
                 <div>
                   <button onClick={back}>

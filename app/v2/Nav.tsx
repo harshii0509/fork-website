@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { DOWNLOAD, GITHUB, HOME } from "./content";
 import styles from "./v2.module.css";
 
-// Once the page has scrolled a little, a cream bar fades in behind the links. On the home page the
+// Once the page has scrolled a little, a frosted bar fades in behind the links. On the home page the
 // links jump to its sections; on other pages (`away`) they lead back to them.
 export default function Nav({ brandClass, away = false }: { brandClass: string; away?: boolean }) {
   const at = away ? HOME : "";
@@ -25,7 +25,7 @@ export default function Nav({ brandClass, away = false }: { brandClass: string; 
         Fork
       </a>
       <div className={styles.navLinks}>
-        <a href={`${at}#features`} data-track="nav_clicked" data-item="features">
+        <a href={`${at}#workspaces`} data-track="nav_clicked" data-item="features">
           Features
         </a>
         <Link href="/whats-cooking" data-track="cooking_clicked" data-from="nav">

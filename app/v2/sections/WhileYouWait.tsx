@@ -1,58 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import Bloub from "../Bloub";
-import { ClaudeBox, Line } from "../Mini";
+import { Tab } from "../fork/ForkWindow";
+import forkStyles from "../fork/fork.module.css";
 import Snake from "../Snake";
 import styles from "../v2.module.css";
 
-// Fork's games open in a split beside the terminal. Here the "terminal" half shows Claude at work,
-// and the game half is a real game of Snake.
+// Fork's games open in a split beside the terminal. Here the terminal half shows an agent at work, and the game
+// half is a real game of Snake. When the agent finishes, its workspace's square turns yellow, the way the app's does.
 export default function WhileYouWait() {
   const [done, setDone] = useState(false);
   return (
     <div className={styles.waitGrid}>
-      <div className={styles.waitWin} data-reveal>
-        <div className={styles.waitTerm} aria-hidden>
-          <ClaudeBox>
-            <Line>
-              &gt; Rebuild the gallery page
-            </Line>
-          </ClaudeBox>
-          <Line />
-          {done ? (
-            <>
-              <Line>
-                <span className={styles.tone_accent}>● </span>Rebuilt the gallery page.
-              </Line>
-              <Line tone="dim">  └ Updated 4 files</Line>
-            </>
-          ) : (
-            <Line tone="accent">✻ Working…</Line>
-          )}
-          <div className={styles.waitBar}>
+      <div className={`${forkStyles.fork} ${styles.waitWin}`} data-reveal>
+        <div className={styles.waitStrip} aria-hidden>
+          <Tab name="gallery" color="var(--ws-2)" s={done ? "needs" : "working"} />
+          <Tab name="Snake" color="var(--ws-1)" s="idle" on />
+        </div>
+        <div className={styles.waitBody}>
+          <div className={styles.waitTerm} aria-hidden>
+            <div className={forkStyles.box}>&gt; Rebuild the gallery page</div>
             {done ? (
               <>
-                <Bloub size={18} state="notify" />
-                <span>Finished while you were away</span>
+                <div>
+                  <span className={forkStyles.ok}>✓ </span>Rebuilt the gallery page.
+                </div>
+                <div className={forkStyles.dim}>  Updated 4 files</div>
               </>
             ) : (
-              <>
-                <Bloub size={18} state="thinking" />
-                <span>Claude is working.</span>
-              </>
+              <div className={forkStyles.dim}>● Working…</div>
             )}
           </div>
+          <Snake onDone={setDone} />
         </div>
-        <Snake onDone={setDone} />
       </div>
 
       <aside className={styles.stove} data-reveal>
-        <span className={styles.sticker}>On the stove</span>
-        <h3 className={styles.h3}>Read a book beside the terminal</h3>
+        <span className={styles.sticker} data-kind="new">
+          In the panel
+        </span>
+        <h3 className={styles.h3}>Or read a book beside it</h3>
         <p>
-          Open a PDF or EPUB next to your terminal. Fork remembers your place in every book. Coming in the next
-          release.
+          Open a PDF or EPUB in the panel (⌘P). Fork keeps your place in every book, and says when the agent is done.
         </p>
       </aside>
     </div>
