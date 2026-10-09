@@ -9,10 +9,11 @@ import { Site } from "./ForkWindow";
 
 // The panel beside the terminal, to play with: App shows the project's page, Changes puts the page from before
 // the agent's turn over the one after (drag the line, or use the arrow keys), and Design shows the tokens the
-// agent changed. It opens on Changes; the first time it's on screen the line glides in from the right once.
+// agent changed. It opens on Changes (or shows `view`, when its section drives it); the first time it's on screen
+// the line glides in from the right once.
 
-const VIEWS = ["App", "Changes", "Design"] as const;
-type View = (typeof VIEWS)[number];
+export const VIEWS = ["App", "Changes", "Design"] as const;
+export type View = (typeof VIEWS)[number];
 const BRAND = "#12a594";
 const CAPTION: Record<View, string> = {
   App: "localhost:3000",
@@ -20,11 +21,13 @@ const CAPTION: Record<View, string> = {
   Design: "14 tokens · updated just now",
 };
 
-export default function SeeDemo() {
+export default function SeeDemo({ view: shown, onView }: { view?: View; onView?: (v: View) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useSeen(ref, "0px 0px -20% 0px");
   const still = useReducedMotion();
-  const [view, setView] = useState<View>("Changes");
+  const [own, setOwn] = useState<View>("Changes");
+  const view = shown ?? own;
+  const setView = (v: View) => (onView ? onView(v) : setOwn(v));
   // Where the line is: off to the right until it's first seen, then the middle, then wherever you put it.
   const [put, setAt] = useState<number | null>(null);
   const at = put ?? (seen ? 48 : 92);

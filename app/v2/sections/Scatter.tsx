@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { PROBLEM } from "../content";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { Tab } from "../fork/ForkWindow";
 import f from "../fork/fork.module.css";
 import type { SqState } from "../fork/Square";
@@ -10,7 +9,8 @@ import s from "../story.module.css";
 
 // The problem, shown: five plain terminal windows in a pile, one quietly asking a question. The first time the
 // pile is on screen it waits a beat, then each window shrinks towards its own tab and Fork's tab strip rises in
-// its place, every square saying what that window was hiding. The switch below plays it either way.
+// its place, every square saying what that window was hiding. Its section's list (Today, In Fork) plays it either
+// way; once someone has picked, it never tidies by itself again.
 
 type Win = { name: string; s: SqState; said: string; color: string; x: number; y: number; r: number; px: number; py: number; body: ReactNode };
 
@@ -79,24 +79,19 @@ const toSlot = (w: Win) => {
   return { dx: 4 + 18.4 * (slot + 0.5) - (w.x + 17), dy: 19.9 - (w.y * 0.398 + 10.5) };
 };
 
-export default function Scatter() {
+export type Pile = "pile" | "tabs";
+
+export default function Scatter({ state, onTidy, touched }: { state: Pile; onTidy: () => void; touched: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useSeen(ref, "0px 0px -25% 0px");
   const still = useReducedMotion();
-  const [state, setState] = useState<"pile" | "tabs">("pile");
-  const touched = useRef(false);
 
   // Once, the first time it's well on screen: let the mess register, then tidy it.
   useEffect(() => {
-    if (!seen || touched.current) return;
-    const t = setTimeout(() => !touched.current && setState("tabs"), still ? 0 : 1400);
+    if (!seen || touched) return;
+    const t = setTimeout(onTidy, still ? 0 : 1400);
     return () => clearTimeout(t);
-  }, [seen, still]);
-
-  const pick = (next: "pile" | "tabs") => {
-    touched.current = true;
-    setState(next);
-  };
+  }, [seen, still, touched, onTidy]);
 
   return (
     <div ref={ref} className={s.scatter} data-state={state}>
@@ -130,20 +125,6 @@ export default function Scatter() {
               </span>
             );
           })}
-        </div>
-      </div>
-      <div className={s.scatterFoot}>
-        <p className={s.scatterSay} aria-live="polite">
-          {state === "pile" ? PROBLEM.before : PROBLEM.after}
-        </p>
-        <div className={s.switch} role="group" aria-label="Show" data-on={state === "tabs" ? 1 : 0}>
-          <span className={s.switchPill} aria-hidden />
-          <button aria-pressed={state === "pile"} onClick={() => pick("pile")} data-track="problem_switched" data-item="today" data-from="problem">
-            Today
-          </button>
-          <button aria-pressed={state === "tabs"} onClick={() => pick("tabs")} data-track="problem_switched" data-item="fork" data-from="problem">
-            In Fork
-          </button>
         </div>
       </div>
     </div>
