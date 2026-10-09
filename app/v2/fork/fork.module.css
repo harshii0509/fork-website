@@ -31,6 +31,17 @@
   --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ui: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
   --ui-mono: var(--font-plex), ui-monospace, monospace;
+  /* The made-up site in the panel (Site), light. */
+  --site-bg: #ffffff;
+  --site-ink: #1d1d1f;
+  --site-line: #d9d9dd;
+  --site-card: #f1f1f3;
+  --loud-bg: #1d1d1f;
+  --loud-ink: #ffffff;
+  --loud-btn: #ffffff;
+  --loud-btn-ink: #1d1d1f;
+  --loud-shadow: #8b8b89;
+  --calm-bg: #f4f1ec;
 
   color: var(--text-1);
   font: 450 13px/1.4 var(--ui);
@@ -63,6 +74,17 @@
   --accent: #f8f8f7;
   --term-ok: #56d364;
   --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
+  /* The made-up site, dark: before is a bright slab shouting on the dark page; after, a soft dark surface. */
+  --site-bg: #141413;
+  --site-ink: #f2f2f0;
+  --site-line: #2c2c2a;
+  --site-card: #1f1f1d;
+  --loud-bg: #f2f2f0;
+  --loud-ink: #141413;
+  --loud-btn: #141413;
+  --loud-btn-ink: #f2f2f0;
+  --loud-shadow: #5b5b59;
+  --calm-bg: #23211e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -88,6 +110,17 @@
     --accent: #f8f8f7;
     --term-ok: #56d364;
     --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
+    /* The made-up site, dark: before is a bright slab shouting on the dark page; after, a soft dark surface. */
+    --site-bg: #141413;
+    --site-ink: #f2f2f0;
+    --site-line: #2c2c2a;
+    --site-card: #1f1f1d;
+    --loud-bg: #f2f2f0;
+    --loud-ink: #141413;
+    --loud-btn: #141413;
+    --loud-btn-ink: #f2f2f0;
+    --loud-shadow: #5b5b59;
+    --calm-bg: #23211e;
   }
 }
 
@@ -533,6 +566,7 @@
 }
 
 .seg {
+  position: relative;
   display: flex;
   padding: 2px;
   border-radius: 8px;
@@ -545,6 +579,27 @@
   border-radius: 6px;
   color: var(--text-3);
   font-size: 12px;
+  transition: color 150ms ease;
+}
+
+/* The hero window's tabs: one pill behind the names slides to the current one (on screen and moving, so
+ * ease-in-out), and the name under it lights up. No slide on the first paint (data-ready comes after). */
+.segPill {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: 0 1px 3px #0003;
+}
+
+.segPill[data-ready] {
+  transition: transform 260ms var(--ease-in-out-cubic), width 260ms var(--ease-in-out-cubic);
+}
+
+.seg span[data-cur] {
+  color: var(--text-1);
 }
 
 .seg span[data-on] {
@@ -581,10 +636,80 @@
 }
 
 .pvBody {
+  position: relative;
   flex: 1;
   min-height: 0;
   overflow: hidden;
+}
+
+/* App, Changes and Design share the body. The one leaving fades and lifts 4px (140ms); the one arriving rises
+ * 6px into place a beat later (220ms after 60ms). Transform and opacity only, so nothing reflows. */
+.view {
+  position: absolute;
+  inset: 0;
   padding: 12px;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 140ms var(--ease-out-quart), transform 140ms var(--ease-out-quart);
+}
+
+.view[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+.pv[data-animate] .view[data-on] {
+  animation: view-in 220ms var(--ease-out-quart) 60ms both;
+}
+
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.designView {
+  padding: 0;
+}
+
+/* App: your site, filling the panel the way it does in Fork. */
+.appFrame {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  outline: 0.5px solid var(--card-line);
+}
+
+.appFrame .site {
+  height: 100%;
+}
+
+/* A reload after each edit: a thin line runs across the top (linear: it stands for time passing), then fades. */
+.reload {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  animation: reload 520ms linear both;
+}
+
+@keyframes reload {
+  from {
+    transform: scaleX(0);
+  }
+  75% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 0;
+  }
 }
 
 .cap {
@@ -665,8 +790,8 @@
   gap: 14px;
   height: 300px;
   padding: 36px 20px 18px;
-  background: #fff;
-  color: #1d1d1f;
+  background: var(--site-bg);
+  color: var(--site-ink);
 }
 
 .siteNav {
@@ -679,7 +804,7 @@
   width: 34px;
   height: 6px;
   border-radius: 3px;
-  background: #d9d9dd;
+  background: var(--site-line);
 }
 
 .siteNav i:first-child {
@@ -687,7 +812,7 @@
   height: 18px;
   margin-right: auto;
   border-radius: 5px;
-  background: #1d1d1f;
+  background: var(--site-ink);
 }
 
 .siteHero {
@@ -696,6 +821,7 @@
   gap: 8px;
   padding: 18px;
   border-radius: 10px;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 .siteHero b {
@@ -716,6 +842,7 @@
   padding: 6px 12px;
   border-radius: 999px;
   font: 600 11px/1 var(--ui);
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 .siteCards {
@@ -727,28 +854,56 @@
 .siteCards i {
   height: 54px;
   border-radius: 8px;
-  background: #f1f1f3;
+  background: var(--site-card);
+}
+
+.siteText {
+  display: grid;
+  gap: 8px;
+  padding: 6px 2px 0;
+}
+
+.siteText i {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--site-line);
+}
+
+.siteText i:first-child {
+  height: 10px;
+  margin-bottom: 4px;
+  background: var(--site-ink);
+  opacity: 0.8;
+}
+
+.siteWide {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.siteWide i {
+  height: 96px;
 }
 
 .loud {
-  background: #1d1d1f;
-  color: #fff;
+  background: var(--loud-bg);
+  color: var(--loud-ink);
   letter-spacing: 0.02em;
 }
 
 .loud span {
-  background: #fff;
-  color: #1d1d1f;
-  box-shadow: 3px 3px 0 #8b8b89;
+  background: var(--loud-btn);
+  color: var(--loud-btn-ink);
+  box-shadow: 3px 3px 0 var(--loud-shadow);
 }
 
 .calm {
-  background: #f4f1ec;
-  color: #1d1d1f;
+  background: var(--calm-bg);
+  color: var(--site-ink);
 }
 
+/* The calm button wears the project's brand colour, so a token edit shows on the page. */
 .calm span {
-  background: #1d1d1f;
+  background: var(--brand, var(--site-ink));
   color: #fff;
 }
 
@@ -1133,8 +1288,13 @@
   .sq[data-s="working"] .cubes i,
   .cursor,
   .in,
-  .fresh {
+  .fresh,
+  .pv[data-animate] .view[data-on] {
     animation: none;
+  }
+
+  .reload {
+    display: none;
   }
 
   .sq[data-s="working"] .cubes i {

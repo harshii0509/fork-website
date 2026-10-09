@@ -40,6 +40,14 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
+    at: "2026-10-09T19:40+05:30",
+    title: "The window at the top tells the whole story",
+    what: "The Fork window on the home page now shows your site live while the agent works, reloading as each edit lands. When it finishes, the panel moves to Changes and wipes from before to after, then to Design, where the colour the agent changed eases to its new value. In dark mode the site is dark too.",
+    why: "The window only showed the before and after, in white even on a dark page. Seeing the app, the change and the design system one after another shows what the panel is for.",
+    kind: "better",
+    where: "website",
+  },
+  {
     at: "2026-10-09T18:29+05:30",
     title: "A shorter home page that says what Fork does",
     what: "The first line now says the job: the terminal that tells you when an agent needs you. The games and themes sections became cards in “Also in Fork”, next to new ones for reading beside the terminal and for the safety nets, so the page is about a screen shorter. What’s cooking moved into the same greys, with the latest version drawn in light lines.",

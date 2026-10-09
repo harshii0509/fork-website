@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion, useSeen, useTyped } from "../hooks";
+import { DesignTokens } from "./Demos";
 import styles from "./fork.module.css";
 import Icon from "./Icon";
 import Square, { type SqState } from "./Square";
@@ -10,18 +11,24 @@ import Square, { type SqState } from "./Square";
 // info and files, a terminal, and the panel showing Changes. Built at the app's real 1280 × 800 from its own
 // sizes and colours, then scaled to fit.
 //
-// With `play`, it acts out one agent turn the first time it's on screen, once:
-//   0  you type "Make the hero calmer" to an agent
-//   1  the workspace's square ripples (working) and the terminal takes the task's name; edits come in
-//   2  done: the square settles, Changes gets a new pair, and the slider wipes from before to after
-// Without `play`, or with reduced motion, it shows the end of that turn.
+// With `play`, it acts out one agent turn the first time it's on screen, once, and the panel follows it:
+//   0  you type "Make the hero calmer" to an agent; the panel's App view shows your site
+//   1  the square ripples (working) and edits come in; the site reloads after each, calmer, then in the new brand
+//   2  done: the square settles, the pill slides to Changes, and the slider wipes from before to after
+//   3  the pill slides to Design, where the brand token the agent edited
+//   4  eases from the old colour to the new one, and "updated just now" ticks. Then it rests.
+// Without `play`, or with reduced motion, it shows the end: Design, with the new brand.
 
 const PROMPT = "Make the hero calmer";
 const EDITS = [
   ["Reading", "src/styles/hero.css", ""],
   ["Editing", "src/styles/hero.css", "+8 −6"],
+  ["Editing", "src/tokens.css", "--brand"],
   ["Editing", "src/Hero.tsx", "+2 −1"],
 ] as const;
+const BRAND_WAS = "#e5484d"; // the loud red the site started with
+const BRAND = "#12a594"; // the calmer teal the agent chose
+const END = 4;
 
 type Mode = "light" | "dark";
 
@@ -29,14 +36,14 @@ export default function ForkWindow({ play = false, mode, className = "", label =
   const ref = useRef<HTMLDivElement>(null);
   const seen = useSeen(ref, "0px 0px -15% 0px");
   const still = useReducedMotion();
-  const [phase, setPhase] = useState(play ? 0 : 2);
+  const [phase, setPhase] = useState(play ? 0 : END);
   const [edits, setEdits] = useState(play ? 0 : EDITS.length);
 
   // Starts once, the first time it's seen; it doesn't loop.
   const started = play && seen;
 
   const typed = useTyped(PROMPT, started && phase === 0, 55);
-  const shown = !play || still ? 2 : phase;
+  const shown = !play || still ? END : phase;
 
   useEffect(() => {
     if (!started || still) return;
@@ -46,11 +53,13 @@ export default function ForkWindow({ play = false, mode, className = "", label =
       at(t0, () => setPhase(1)),
       ...EDITS.map((_, i) => at(t0 + 700 + i * 900, () => setEdits(i + 1))),
       at(t0 + 700 + EDITS.length * 900 + 600, () => setPhase(2)),
+      at(t0 + 700 + EDITS.length * 900 + 3400, () => setPhase(3)),
+      at(t0 + 700 + EDITS.length * 900 + 4100, () => setPhase(4)),
     ];
     return () => timers.forEach(clearTimeout);
   }, [started, still]);
 
-  const n = shown === 2 ? EDITS.length : edits;
+  const n = shown >= 2 ? EDITS.length : edits;
   const prompt = shown === 0 ? typed : PROMPT;
   const sq: SqState = shown === 1 ? "working" : "idle";
 
@@ -87,7 +96,7 @@ export default function ForkWindow({ play = false, mode, className = "", label =
           </div>
 
           <div className={`${styles.stage} ${styles.withPanel}`}>
-            <Sidebar changed={n > 1} />
+            <Sidebar n={n} />
 
             <div className={styles.term}>
               <div className={styles.chip}>
@@ -98,7 +107,7 @@ export default function ForkWindow({ play = false, mode, className = "", label =
               <Transcript shown={shown} prompt={prompt} n={n} />
             </div>
 
-            <Changes after={shown === 2} fresh={play && shown === 2} />
+            <Panel shown={shown} n={n} animate={play && !still} />
           </div>
         </div>
       </div>
@@ -117,8 +126,8 @@ export default function ForkWindow({ play = false, mode, className = "", label =
           </div>
           <Transcript shown={shown} prompt={prompt} n={n} short />
           <div className={styles.phoneChanges}>
-            <p className={styles.cap}>{shown === 2 ? "Before and after" : "Before"}</p>
-            <Wipe at={shown === 2 ? 46 : 100} />
+            <p className={styles.cap}>{shown >= 2 ? "Before and after" : "Before"}</p>
+            <Wipe at={shown >= 2 ? 46 : 100} after={<Site brand={BRAND} />} />
           </div>
         </div>
       </div>
@@ -157,7 +166,7 @@ function Transcript({ shown, prompt, n, short = false }: { shown: number; prompt
         </div>
       ))}
       {shown === 1 && <div className={`${styles.dim} ${styles.in}`}>  Working…</div>}
-      {shown === 2 && (
+      {shown >= 2 && (
         <div className={styles.in}>
           <span className={styles.ok}>✓ </span>Calmer hero: softer colours, one button, more room.
           {!short && (
@@ -183,7 +192,11 @@ export function Tab({ name, color, s, on = false }: { name: string; color: strin
   );
 }
 
-function Sidebar({ changed }: { changed: boolean }) {
+// What the turn has changed so far, after each edit lands (hero.css, then tokens.css, then Hero.tsx).
+const DIFF: Record<number, [number, number]> = { 2: [8, 6], 3: [9, 6], 4: [11, 7] };
+
+function Sidebar({ n }: { n: number }) {
+  const changed = n > 1;
   return (
     <div className={styles.side}>
       <div className={styles.sideTop}>
@@ -205,7 +218,8 @@ function Sidebar({ changed }: { changed: boolean }) {
             <div className={`${styles.line} ${styles.in}`}>
               <Icon name="plus-minus" />
               <span>
-                <span className={styles.plus}>+10</span> <span className={styles.minus}>−7</span> · 2 files changed
+                <span className={styles.plus}>+{DIFF[n][0]}</span> <span className={styles.minus}>−{DIFF[n][1]}</span> · {n - 1}{" "}
+                {n === 2 ? "file" : "files"} changed
               </span>
             </div>
           )}
@@ -219,7 +233,8 @@ function Sidebar({ changed }: { changed: boolean }) {
           <File name="src" folder open />
           <File name="styles" folder open depth={1} />
           <File name="hero.css" depth={2} g={changed ? "M" : undefined} />
-          <File name="Hero.tsx" depth={1} g={changed ? "M" : undefined} />
+          <File name="tokens.css" depth={1} g={n > 2 ? "M" : undefined} />
+          <File name="Hero.tsx" depth={1} g={n > 3 ? "M" : undefined} />
           <File name="App.tsx" depth={1} />
           <File name="public" folder />
           <File name="package.json" />
@@ -245,52 +260,89 @@ function File({ name, folder, open, depth = 0, g, md }: { name: string; folder?:
   );
 }
 
-// The panel's Changes view: the page before the turn and after it, one over the other, and a slider between.
-function Changes({ after, fresh }: { after: boolean; fresh: boolean }) {
+// The panel, following the turn: App (your site, live), then Changes (before and after), then Design (the
+// tokens). One pill slides behind the tab names; the views cross-fade in a body of fixed height.
+const TABS = ["File", "App", "Changes", "Design", "Read"] as const;
+
+function Panel({ shown, n, animate }: { shown: number; n: number; animate: boolean }) {
+  const view = shown < 2 ? "App" : shown === 2 ? "Changes" : "Design";
+  // The site as the agent leaves it after each edit: loud, then calm (hero.css), then in the new brand (tokens.css).
+  const look = n < 2 ? 0 : n < 3 ? 1 : 2;
+
+  // The pill: measured from the current tab's label, so it fits each word. No slide on the first paint.
+  const seg = useRef<HTMLSpanElement>(null);
+  const [pill, setPill] = useState<{ x: number; w: number; ready: boolean } | null>(null);
+  useLayoutEffect(() => {
+    const el = seg.current?.querySelector<HTMLElement>(`[data-tab="${view}"]`);
+    if (!el) return;
+    setPill((p) => ({ x: el.offsetLeft, w: el.offsetWidth, ready: p !== null }));
+  }, [view]);
+
   return (
-    <div className={styles.pv}>
+    <div className={styles.pv} data-animate={animate || undefined}>
       <div className={styles.pvHead}>
-        <span className={styles.seg}>
-          <span>File</span>
-          <span>App</span>
-          <span data-on data-new={fresh || undefined}>
-            Changes
-          </span>
-          <span>Design</span>
-          <span>Read</span>
+        <span ref={seg} className={styles.seg}>
+          {pill && (
+            <i
+              className={styles.segPill}
+              data-ready={pill.ready || undefined}
+              style={{ width: pill.w, transform: `translateX(${pill.x - 2}px)` }}
+            />
+          )}
+          {TABS.map((t) => (
+            <span key={t} data-tab={t} data-cur={t === view || undefined} data-new={(t === "Changes" && shown === 2) || undefined}>
+              {t}
+            </span>
+          ))}
         </span>
-        <span className={styles.pvName}>
-          {after && (
+        <span key={view} className={`${styles.pvName} ${styles.in}`}>
+          {view === "Design" ? (
+            <>
+              14 tokens{shown >= 4 && <small className={styles.fresh}>updated just now</small>}
+            </>
+          ) : view === "Changes" ? (
             <>
               localhost:3000<small>just now</small>
             </>
+          ) : (
+            "localhost:3000"
           )}
         </span>
       </div>
       <div className={styles.pvBody}>
-        <p className={styles.cap}>Before and after</p>
-        <Wipe at={after ? 46 : 100} />
-        <div className={styles.changed}>
-          <p className={styles.cap}>{after ? "Changed 2 files" : "Waiting for the turn to end"}</p>
-          {after && (
-            <>
-              <File name="hero.css" />
-              <File name="Hero.tsx" />
-            </>
-          )}
-        </div>
-        <div className={styles.changed}>
-          <p className={styles.cap}>Earlier turns</p>
-          <div className={styles.turns}>
-            {["12 min ago", "40 min ago", "1 h ago"].map((t, i) => (
-              <span key={t}>
-                <span className={styles.thumb} data-i={i}>
-                  <Site />
-                </span>
-                <small>{t}</small>
-              </span>
-            ))}
+        <div className={`${styles.view} ${styles.appView}`} data-on={view === "App" || undefined}>
+          <div className={styles.appFrame}>
+            {animate && n > 0 && <span key={n} className={styles.reload} />}
+            <Site loud={look === 0} brand={look === 2 ? BRAND : BRAND_WAS} full />
           </div>
+        </div>
+
+        <div className={styles.view} data-on={view === "Changes" || undefined}>
+          <p className={styles.cap}>Before and after</p>
+          <Wipe at={shown >= 2 ? 46 : 100} after={<Site brand={BRAND} />} />
+          <div className={styles.changed}>
+            <p className={styles.cap}>Changed 3 files</p>
+            <File name="hero.css" />
+            <File name="tokens.css" />
+            <File name="Hero.tsx" />
+          </div>
+          <div className={styles.changed}>
+            <p className={styles.cap}>Earlier turns</p>
+            <div className={styles.turns}>
+              {["12 min ago", "40 min ago", "1 h ago"].map((t, i) => (
+                <span key={t}>
+                  <span className={styles.thumb} data-i={i}>
+                    <Site brand={BRAND_WAS} />
+                  </span>
+                  <small>{t}</small>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={`${styles.view} ${styles.designView}`} data-on={view === "Design" || undefined}>
+          <DesignTokens brand={shown >= 4 ? BRAND : BRAND_WAS} />
         </div>
       </div>
     </div>
@@ -315,10 +367,11 @@ export function Wipe({ at, before = <Site loud />, after = <Site /> }: { at: num
   );
 }
 
-// A small made-up page: crowded and shouting before, calm after. Greys only, so the colour on the page stays the app's.
-export function Site({ loud = false }: { loud?: boolean }) {
+// A small made-up page: crowded and shouting before, calm after. Greys, plus the project's --brand on the calm
+// button. It follows the window's light or dark.
+export function Site({ loud = false, brand, full = false }: { loud?: boolean; brand?: string; full?: boolean }) {
   return (
-    <div className={styles.site}>
+    <div className={styles.site} style={brand ? ({ "--brand": brand } as CSSProperties) : undefined}>
       <div className={styles.siteNav}>
         <i />
         <i />
@@ -326,7 +379,9 @@ export function Site({ loud = false }: { loud?: boolean }) {
         <i />
       </div>
       <div className={`${styles.siteHero} ${loud ? styles.loud : styles.calm}`}>
-        <b>{loud ? "BUILD THINGS!!!" : "Build things."}</b>
+        <b key={String(loud)} className={styles.in}>
+          {loud ? "BUILD THINGS!!!" : "Build things."}
+        </b>
         <i style={{ width: "80%" }} />
         <i style={{ width: "56%" }} />
         <span>{loud ? "Start now →" : "Get started"}</span>
@@ -337,6 +392,26 @@ export function Site({ loud = false }: { loud?: boolean }) {
         <i />
         <i />
       </div>
+      {/* In the App view the page fills the panel, so it goes on a little further down. */}
+      {full && (
+        <>
+          <div className={styles.siteText}>
+            <i style={{ width: "38%" }} />
+            <i style={{ width: "92%" }} />
+            <i style={{ width: "84%" }} />
+            <i style={{ width: "66%" }} />
+          </div>
+          <div className={`${styles.siteCards} ${styles.siteWide}`}>
+            <i />
+            <i />
+          </div>
+          <div className={styles.siteText}>
+            <i style={{ width: "30%" }} />
+            <i style={{ width: "88%" }} />
+            <i style={{ width: "72%" }} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

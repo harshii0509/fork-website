@@ -73,13 +73,6 @@ export function DesignDemo({ className = "", mode }: { className?: string; mode?
   const [brand] = BRANDS[step];
   const [was] = BRANDS[(step + BRANDS.length - 1) % BRANDS.length];
 
-  const colours: [string, string, string][] = [
-    ["--brand", brand, `color-mix(in oklab, ${brand} 72%, white)`],
-    ["--surface", "#ffffff", "#18181b"],
-    ["--text", "#18181b", "#fafafa"],
-    ["--muted", "#71717a", "#a1a1aa"],
-  ];
-
   return (
     <div ref={ref} className={`${styles.fork} ${className}`} data-mode={mode} aria-hidden>
       <div className={styles.demoTerm}>
@@ -104,108 +97,122 @@ export function DesignDemo({ className = "", mode }: { className?: string; mode?
             </small>
           </span>
         </div>
-        <div className={styles.ds}>
-          <section className={styles.dsGroup}>
-            <p className={styles.cap}>
-              Colours<small>4</small>
-              <span className={styles.themes}>
-                <span>Default</span>
-                <span>Dark</span>
-              </span>
-            </p>
-            <div className={styles.grid}>
-              {colours.map(([name, light, dark]) => (
-                <div key={name} className={styles.tok} data-hot={(name === "--brand") || undefined}>
-                  <div className={styles.sw}>
-                    <i style={{ background: light }} />
-                    <i style={{ background: dark }} />
-                  </div>
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.val}>{light}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-          <section className={styles.dsGroup}>
-            <p className={styles.cap}>
-              Type<small>3</small>
-            </p>
-            <div className={styles.list}>
-              {(
-                [
-                  ["--text-2xl", "24px", 24],
-                  ["--text-base", "16px", 16],
-                  ["--text-sm", "14px", 14],
-                ] as const
-              ).map(([name, val, px]) => (
-                <div key={name} className={styles.row}>
-                  <span className={styles.sample} style={{ fontSize: px }}>
-                    Aa
-                  </span>
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.val}>{val}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-          <section className={styles.dsGroup}>
-            <p className={styles.cap}>
-              Spacing<small>3</small>
-            </p>
-            <div className={styles.list}>
-              {(
-                [
-                  ["--space-2", 8],
-                  ["--space-4", 16],
-                  ["--space-8", 32],
-                ] as const
-              ).map(([name, px]) => (
-                <div key={name} className={styles.row}>
-                  <span className={styles.bar}>
-                    <i style={{ width: px * 2, background: brand }} />
-                  </span>
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.val}>{px}px</span>
-                </div>
-              ))}
-            </div>
-          </section>
-          <section className={styles.dsGroup}>
-            <p className={styles.cap}>
-              Radius and motion<small>4</small>
-            </p>
-            <div className={styles.grid}>
-              {(
-                [
-                  ["--radius-sm", 4],
-                  ["--radius-md", 8],
-                  ["--radius-lg", 16],
-                ] as const
-              ).map(([name, r]) => (
-                <div key={name} className={styles.tok}>
-                  <span className={styles.corner} style={{ borderRadius: `${r}px 0 0 0` }} />
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.val}>{r}px</span>
-                </div>
-              ))}
-              <div className={styles.tok}>
-                <span className={styles.track} data-go={step % 2 === 1 || undefined} style={{ "--e": "cubic-bezier(.23,1,.32,1)" } as CSSProperties}>
-                  <b>
-                    <i style={{ background: brand }} />
-                  </b>
-                </span>
-                <span className={styles.name} style={{ marginTop: 40 }}>
-                  --ease-out
-                </span>
-                <span className={styles.val}>.23, 1, .32, 1</span>
-              </div>
-            </div>
-          </section>
-        </div>
+        <DesignTokens brand={brand} go={step % 2 === 1} />
       </div>
       <span className={styles.hint}>
         <Icon name="file-code" size={14} /> Read from your project’s own CSS, Tailwind or tokens.json
       </span>
+    </div>
+  );
+}
+
+// The Design view's token groups, for the Design demo and the hero window's panel. `brand` is the value an
+// agent just changed; the swatch eases to it.
+export function DesignTokens({ brand, go = false }: { brand: string; go?: boolean }) {
+  const colours: [string, string, string][] = [
+    ["--brand", brand, `color-mix(in oklab, ${brand} 72%, white)`],
+    ["--surface", "#ffffff", "#18181b"],
+    ["--text", "#18181b", "#fafafa"],
+    ["--muted", "#71717a", "#a1a1aa"],
+  ];
+  return (
+    <div className={styles.ds}>
+      <section className={styles.dsGroup}>
+        <p className={styles.cap}>
+          Colours<small>4</small>
+          <span className={styles.themes}>
+            <span>Default</span>
+            <span>Dark</span>
+          </span>
+        </p>
+        <div className={styles.grid}>
+          {colours.map(([name, light, dark]) => (
+            <div key={name} className={styles.tok} data-hot={(name === "--brand") || undefined}>
+              <div className={styles.sw}>
+                <i style={{ background: light }} />
+                <i style={{ background: dark }} />
+              </div>
+              <span className={styles.name}>{name}</span>
+              <span className={styles.val}>{light}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className={styles.dsGroup}>
+        <p className={styles.cap}>
+          Type<small>3</small>
+        </p>
+        <div className={styles.list}>
+          {(
+            [
+              ["--text-2xl", "24px", 24],
+              ["--text-base", "16px", 16],
+              ["--text-sm", "14px", 14],
+            ] as const
+          ).map(([name, val, px]) => (
+            <div key={name} className={styles.row}>
+              <span className={styles.sample} style={{ fontSize: px }}>
+                Aa
+              </span>
+              <span className={styles.name}>{name}</span>
+              <span className={styles.val}>{val}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className={styles.dsGroup}>
+        <p className={styles.cap}>
+          Spacing<small>3</small>
+        </p>
+        <div className={styles.list}>
+          {(
+            [
+              ["--space-2", 8],
+              ["--space-4", 16],
+              ["--space-8", 32],
+            ] as const
+          ).map(([name, px]) => (
+            <div key={name} className={styles.row}>
+              <span className={styles.bar}>
+                <i style={{ width: px * 2, background: brand }} />
+              </span>
+              <span className={styles.name}>{name}</span>
+              <span className={styles.val}>{px}px</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className={styles.dsGroup}>
+        <p className={styles.cap}>
+          Radius and motion<small>4</small>
+        </p>
+        <div className={styles.grid}>
+          {(
+            [
+              ["--radius-sm", 4],
+              ["--radius-md", 8],
+              ["--radius-lg", 16],
+            ] as const
+          ).map(([name, r]) => (
+            <div key={name} className={styles.tok}>
+              <span className={styles.corner} style={{ borderRadius: `${r}px 0 0 0` }} />
+              <span className={styles.name}>{name}</span>
+              <span className={styles.val}>{r}px</span>
+            </div>
+          ))}
+          <div className={styles.tok}>
+            <span className={styles.track} data-go={go || undefined} style={{ "--e": "cubic-bezier(.23,1,.32,1)" } as CSSProperties}>
+              <b>
+                <i style={{ background: brand }} />
+              </b>
+            </span>
+            <span className={styles.name} style={{ marginTop: 40 }}>
+              --ease-out
+            </span>
+            <span className={styles.val}>.23, 1, .32, 1</span>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
