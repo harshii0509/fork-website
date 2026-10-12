@@ -40,10 +40,10 @@ export const RELEASES: { version: string; at: string }[] = [
 export const ENTRIES: Entry[] = [
   // ---- 13 Oct ----------------------------------------------------------------------------------
   {
-    at: "2026-10-13T00:59+05:30",
-    title: "The new home page is live",
-    what: "The home page with little Mac windows, previewed on 9 Oct, is now the page you land on. Old preview links take you here.",
-    why: "It shows the real app moving instead of describing it, so it replaces the old page.",
+    at: "2026-10-13T01:35+05:30",
+    title: "The home page shows Fork as it is now",
+    what: "The home page is back to the Fork window that slides up over the opening words as you scroll, and the window now looks like Fork 1.2: F0RK at the top of the sidebar, Workspace info, the Files buttons, What’s new, settings and help at the bottom, and the prompt in the terminal. The page with little Mac windows stays a preview.",
+    why: "The window still showed the app from before the redesign in a few places. Now what you see on the site is what you get when you download it.",
     kind: "better",
     where: "website",
   },

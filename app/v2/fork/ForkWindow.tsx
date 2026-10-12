@@ -16,7 +16,7 @@ import Square, { type SqState } from "./Square";
 //   1  the square ripples (working) and edits come in; the site reloads after each, calmer, then in the new brand
 //   2  done: the square settles, the pill slides to Changes, and the slider wipes from before to after
 //   3  the pill slides to Design, where the brand token the agent edited
-//   4  eases from the old colour to the new one, and "updated just now" ticks. Then it rests.
+//   4  eases from the old colour to the new one, and "just now" ticks. Then it rests.
 // Without `play`, or with reduced motion, it shows the end: Design, with the new brand.
 
 const PROMPT = "Make the hero calmer";
@@ -72,9 +72,6 @@ export default function ForkWindow({ play = false, mode, className = "", label =
               <i />
               <i />
               <i />
-            </span>
-            <span className={styles.tbtn}>
-              <Icon name="sidebar-simple" />
             </span>
             <div className={styles.tabs}>
               <Tab name="portfolio" color="var(--ws-1)" s={sq} on />
@@ -141,7 +138,9 @@ function Transcript({ shown, prompt, n, short = false }: { shown: number; prompt
     <div className={styles.out}>
       {!short && (
         <>
-          <div className={styles.dim}>~/portfolio on main</div>
+          <div>
+            <span className={styles.ps}>portfolio</span> <span className={styles.dim}>$</span> claude
+          </div>
           <div className={styles.box}>&gt; Add a dark mode toggle to the nav</div>
           <div>
             <span className={styles.dim}>● </span>Editing src/Nav.tsx <span className={styles.dim}>+14 −2</span>
@@ -200,15 +199,18 @@ function Sidebar({ n }: { n: number }) {
   return (
     <div className={styles.side}>
       <div className={styles.sideTop}>
-        <span className={styles.brand}>portfolio</span>
+        <span className={styles.brand}>F0RK</span>
+        <span className={styles.tbtn}>
+          <Icon name="sidebar-simple" />
+        </span>
       </div>
       <div className={styles.sideBody}>
         <div className={styles.search}>
           <Icon name="magnifying-glass" size={14} />
-          <span>Search</span>
+          <span>Search...</span>
           <kbd>⌘K</kbd>
         </div>
-        <h3 className={styles.h3}>Workspace</h3>
+        <h3 className={styles.h3}>Workspace info</h3>
         <div className={styles.info}>
           <div className={styles.line}>
             <Icon name="git-branch" />
@@ -228,7 +230,13 @@ function Sidebar({ n }: { n: number }) {
             <span>localhost:3000</span>
           </div>
         </div>
-        <h3 className={styles.h3}>Files</h3>
+        <h3 className={`${styles.h3} ${styles.h3Row}`}>
+          Files
+          <span>
+            <Icon name="arrows-in-line-vertical" size={14} />
+            <Icon name="plus" size={14} />
+          </span>
+        </h3>
         <div className={styles.files}>
           <File name="src" folder open />
           <File name="styles" folder open depth={1} />
@@ -240,6 +248,13 @@ function Sidebar({ n }: { n: number }) {
           <File name="package.json" />
           <File name="README.md" md />
         </div>
+      </div>
+      <div className={styles.sideFoot}>
+        <Icon name="gift" size={14} />
+        <span>
+          <Icon name="gear" size={14} />
+          <Icon name="question" size={14} />
+        </span>
       </div>
     </div>
   );
@@ -298,7 +313,7 @@ function Panel({ shown, n, animate }: { shown: number; n: number; animate: boole
         <span key={view} className={`${styles.pvName} ${styles.in}`}>
           {view === "Design" ? (
             <>
-              14 tokens{shown >= 4 && <small className={styles.fresh}>updated just now</small>}
+              14 tokens{shown >= 4 && <small className={styles.fresh}>just now</small>}
             </>
           ) : view === "Changes" ? (
             <>
@@ -307,6 +322,9 @@ function Panel({ shown, n, animate }: { shown: number; n: number; animate: boole
           ) : (
             "localhost:3000"
           )}
+        </span>
+        <span className={styles.tbtn}>
+          <Icon name="x" size={14} />
         </span>
       </div>
       <div className={styles.pvBody}>

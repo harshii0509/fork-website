@@ -5,6 +5,7 @@
 
 import { IconBranch } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconBranch";
 import { IconChanges } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconChanges";
+import { IconChevronGrabberVerticalToward } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconChevronGrabberVerticalToward";
 import { IconChevronDownSmall } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconChevronDownSmall";
 import { IconChevronRightSmall } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconChevronRightSmall";
 import { IconCode } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconCode";
@@ -36,6 +37,7 @@ const ICONS = {
   "file-md": IconMarkdown,
   "caret-right": IconChevronRightSmall,
   "caret-down": IconChevronDownSmall,
+  "arrows-in-line-vertical": IconChevronGrabberVerticalToward,
   x: IconCrossSmall,
   plus: IconPlusSmall,
   gear: IconSettingsGear2,

@@ -25,6 +25,7 @@
   --failed: #eb5757;
   --accent: #0561e2;
   --term-ok: #19a332;
+  --term-ps: #26b5ce;
   --hover: color-mix(in srgb, var(--text-1) 6%, transparent);
   --scrim: #0000008c;
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -73,6 +74,7 @@
   --failed: #eb5757;
   --accent: #f8f8f7;
   --term-ok: #56d364;
+  --term-ps: #56d4dd;
   --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
   /* The made-up site, dark: before is a bright slab shouting on the dark page; after, a soft dark surface. */
   --site-bg: #141413;
@@ -109,6 +111,7 @@
     --failed: #eb5757;
     --accent: #f8f8f7;
     --term-ok: #56d364;
+    --term-ps: #56d4dd;
     --hover: color-mix(in srgb, var(--text-1) 8%, transparent);
     /* The made-up site, dark: before is a bright slab shouting on the dark page; after, a soft dark surface. */
     --site-bg: #141413;
@@ -356,6 +359,7 @@
 .sideTop {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 48px;
   padding: 0 10px;
 }
@@ -404,6 +408,18 @@
   text-transform: uppercase;
 }
 
+/* FILES, with collapse-all and new file on the right. */
+.h3Row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.h3Row span {
+  display: flex;
+  gap: 8px;
+}
+
 .info {
   display: flex;
   flex-direction: column;
@@ -435,6 +451,22 @@
 .files {
   display: flex;
   flex-direction: column;
+}
+
+/* What's new on the left; settings and help on the right. */
+.sideFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  margin-top: auto;
+  padding: 0 14px;
+  color: var(--text-4);
+}
+
+.sideFoot span {
+  display: flex;
+  gap: 10px;
 }
 
 .file {
@@ -511,6 +543,11 @@
 
 .ok {
   color: var(--term-ok);
+}
+
+/* The shell prompt's directory, in the theme's cyan. */
+.ps {
+  color: var(--term-ps);
 }
 
 .box {
