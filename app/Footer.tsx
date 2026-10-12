@@ -1,3 +1,5 @@
+import { IconLinkedin } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconLinkedin";
+import { IconTwitter } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconTwitter";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
@@ -13,10 +15,10 @@ export default function Footer({ className = "", cooking = false }: { className?
       <p className={styles.signoff}>Built by Harshvardhan :), reach out to me here</p>
       <nav className={styles.socials} aria-label="Harshvardhan elsewhere">
         <a href={X} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="x" aria-label="Harshvardhan on X (Twitter)">
-          <Image src="/art/TwitterIcon.svg" width={28} height={24} alt="" />
+          <IconTwitter size={24} mode="raw" />
         </a>
         <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" data-track="social_clicked" data-network="linkedin" aria-label="Harshvardhan on LinkedIn">
-          <Image src="/art/LinkedInIcon.svg" width={24} height={24} alt="" />
+          <IconLinkedin size={24} mode="raw" />
         </a>
       </nav>
       {cooking && (

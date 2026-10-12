@@ -76,13 +76,6 @@
   :global(body):has(.v2) {
     background: #111110;
   }
-
-  /* The black GitHub mark on a dark button, and the white Apple on a light one. */
-  .ghIcon,
-  .btnPrimary img,
-  .dlMain .dlApple {
-    filter: invert(1);
-  }
 }
 
 .v2 ::selection {

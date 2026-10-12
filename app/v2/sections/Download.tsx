@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { IconApple } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconApple";
 import { DOWNLOAD, INSTALL_CMD } from "../content";
 import CopyButton from "../CopyButton";
 import styles from "../v2.module.css";
@@ -8,7 +8,7 @@ export default function Download() {
   return (
     <div className={styles.dlRows}>
       <a className={`${styles.dlRow} ${styles.dlMain}`} href={DOWNLOAD} data-track="download_clicked" data-from="download">
-        <Image src="/art/apple.svg" width={20} height={20} alt="" aria-hidden className={styles.dlApple} />
+        <IconApple size={20} mode="raw" className={styles.dlApple} />
         <span className={styles.dlText}>
           <b>Download for Mac</b>
           <small>Fork.dmg · Apple Silicon</small>

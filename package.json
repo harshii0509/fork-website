@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@central-icons-react/round-outlined-radius-2-stroke-1.5": "1.2.3",
     "@lucasmarkes/hairline": "0.5.0",
     "@paper-design/shaders-react": "0.0.81",
     "agentation": "^3.1.2",

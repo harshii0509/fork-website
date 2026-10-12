@@ -1,6 +1,6 @@
+import { IconGithub } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconGithub";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
-import Image from "next/image";
 import Link from "next/link";
 import DownloadButton from "./DownloadButton";
 import { ENTRIES, STICKER } from "./whats-cooking/entries";
@@ -47,7 +47,7 @@ export default function Home() {
           <div className={styles.ctas}>
             <DownloadButton href={DOWNLOAD} from="top" className={styles.btnPrimary} />
             <a className={styles.btnSoft} href={GITHUB} target="_blank" rel="noopener noreferrer" data-track="github_clicked" data-from="top">
-              <Image src="/art/github.svg" width={18} height={18} alt="" aria-hidden className={styles.ghIcon} />
+              <IconGithub size={18} mode="raw" className={styles.ghIcon} />
               View on GitHub
             </a>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { IconApple } from "@central-icons-react/round-outlined-radius-2-stroke-1.5/IconApple";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
@@ -17,7 +17,7 @@ export default function DownloadButton({ href, className = styles.download, from
 
   return (
     <a className={className} href={href} onClick={() => setStarted(true)} data-track="download_clicked" data-from={from} data-started={started || undefined}>
-      <Image src="/art/apple.svg" width={20} height={20} alt="" aria-hidden />
+      <IconApple size={20} mode="raw" />
       <span className={styles.labels}>
         <span className={styles.label} aria-hidden={started}>
           Download for Mac
