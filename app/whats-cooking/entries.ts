@@ -38,6 +38,15 @@ export const RELEASES: { version: string; at: string }[] = [
 ];
 
 export const ENTRIES: Entry[] = [
+  // ---- 13 Oct ----------------------------------------------------------------------------------
+  {
+    at: "2026-10-13T00:59+05:30",
+    title: "The new home page is live",
+    what: "The home page with little Mac windows, previewed on 9 Oct, is now the page you land on. Old preview links take you here.",
+    why: "It shows the real app moving instead of describing it, so it replaces the old page.",
+    kind: "better",
+    where: "website",
+  },
   // ---- 9 Oct -----------------------------------------------------------------------------------
   {
     at: "2026-10-09T21:15+05:30",
